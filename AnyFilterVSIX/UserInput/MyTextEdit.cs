@@ -116,7 +116,7 @@ namespace lpubsppop01.AnyFilterVSIX
             {
                 int backupCaretIndex = CaretIndex;
                 int count = (CaretIndex < Text.Length - 1 && Text.Substring(CaretIndex, NLLength) == NL) ? NLLength : 1;
-                Text = Text.Remove(CaretIndex, 1);
+                Text = Text.Remove(CaretIndex, count);
                 CaretIndex = backupCaretIndex;
             }
         }
