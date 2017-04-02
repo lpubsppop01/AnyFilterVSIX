@@ -137,9 +137,14 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #endregion
 
-        #region Template Check
+        #region Variable Check
 
-        public bool TemplateContains(string str)
+        public bool ContainsVariable(params string[] varNames)
+        {
+            return varNames.Any(n => Arguments.Contains(n) || TemplateContains(n));
+        }
+
+        bool TemplateContains(string str)
         {
             if (!UsesTemplateFile) return false;
             try

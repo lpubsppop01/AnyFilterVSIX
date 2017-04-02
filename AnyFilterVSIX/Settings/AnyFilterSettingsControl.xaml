@@ -70,7 +70,7 @@
             <Popup PlacementTarget="{Binding ElementName=txtArguments}" Placement="Bottom" VerticalOffset="6"
                    IsOpen="{Binding IsFocused, ElementName=txtArguments, Mode=OneWay}">
                 <Border BorderBrush="LightGray" BorderThickness="1" Background="Snow" Padding="2">
-                    <TextBlock>$(InputTempFilePath), $(InputText), $(UserInput) is available.</TextBlock>
+                    <TextBlock>$(InputText), $(InputTempFilePath), $(UserInput), $(UserInputTempFilePath) is available.</TextBlock>
                 </Border>
             </Popup>
         </Grid>
@@ -98,9 +98,9 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <CheckBox Grid.Row="0" IsChecked="{Binding SelectedValue.InsertsAfterCurrentLine, ElementName=lstMaster}">Inserts result text after current line</CheckBox>
-            <CheckBox Grid.Row="1" IsChecked="{Binding SelectedValue.PassesInputTextToStandardInput, ElementName=lstMaster}">Passes source text to standard input</CheckBox>
+            <CheckBox Grid.Row="1" IsChecked="{Binding SelectedValue.PassesInputTextToStandardInput, ElementName=lstMaster}">Passes input text to standard input</CheckBox>
             <DockPanel Grid.Row="2">
-                <CheckBox DockPanel.Dock="Left" IsChecked="{Binding SelectedValue.UsesTemplateFile, ElementName=lstMaster}">Use source template file:</CheckBox>
+                <CheckBox DockPanel.Dock="Left" IsChecked="{Binding SelectedValue.UsesTemplateFile, ElementName=lstMaster}">Use input template file:</CheckBox>
                 <Button DockPanel.Dock="Right" Width="20" Margin="6,0,0,0" Height="{Binding ActualHeight, ElementName=txtTemplate}" Click="btnTemplate_Click"
                         IsEnabled="{Binding SelectedValue.UsesTemplateFile, ElementName=lstMaster}">...</Button>
                 <TextBox Margin="6,0,0,0" Name="txtTemplate" Text="{Binding SelectedValue.TemplateFilePath, ElementName=lstMaster, UpdateSourceTrigger=PropertyChanged}"

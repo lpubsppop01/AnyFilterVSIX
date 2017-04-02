@@ -177,8 +177,7 @@ namespace lpubsppop01.AnyFilterVSIX
 
                 // Get user input
                 string userInputText = "";
-                if (filter.Arguments.Contains(FilterRunner.VariableName_UserInput) ||
-                    filter.TemplateContains(FilterRunner.VariableName_UserInput))
+                if (filter.ContainsVariable(FilterRunner.VariableName_UserInput, FilterRunner.VariableName_UserInputTempFilePath))
                 {
                     var support = new RepeatedAsyncTaskSupport();
                     var buffer = new UserInputBuffer();

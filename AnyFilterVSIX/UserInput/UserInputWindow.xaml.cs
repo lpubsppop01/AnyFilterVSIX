@@ -35,6 +35,16 @@ namespace lpubsppop01.AnyFilterVSIX
             Keyboard.Focus(txtInput);
         }
 
+        void txtInput_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
+            {
+                e.Handled = true;
+                DialogResult = true;
+                Close();
+            }
+        }
+
         void btnOK_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
@@ -78,70 +88,33 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #region Overrides
 
+        MyTextEdit textEdit;
+        Dictionary<Key, Action> keyToAction;
+
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             if (UsesEmacsLikeKeybindings && Keyboard.Modifiers == ModifierKeys.Control)
             {
-                if (e.Key == Key.F)
+                if (textEdit == null)
                 {
-                    if (txtInput.CaretIndex < txtInput.Text.Length)
+                    textEdit = new MyTextEdit(() => txtInput.Text, (t) => txtInput.Text = t, () => txtInput.CaretIndex, (i) => txtInput.CaretIndex = i);
+                    keyToAction = new Dictionary<Key, Action>
                     {
-                        txtInput.CaretIndex = txtInput.CaretIndex + 1;
-                    }
-                    e.Handled = true;
+                        { Key.F, textEdit.ForwardChar },
+                        { Key.B, textEdit.BackwardChar },
+                        { Key.A, textEdit.MoveBiginningOfLine },
+                        { Key.E, textEdit.MoveEndOfLine },
+                        { Key.N, textEdit.NextLine },
+                        { Key.P, textEdit.PreviousLine },
+                        { Key.D, textEdit.DeleteChar },
+                        { Key.H, textEdit.DeleteBackwardChar },
+                        { Key.K, textEdit.KillLine },
+                   };
                 }
-                else if (e.Key == Key.B)
+                Action action;
+                if (keyToAction.TryGetValue(e.Key, out action))
                 {
-                    if (txtInput.CaretIndex > 0)
-                    {
-                        txtInput.CaretIndex = txtInput.CaretIndex - 1;
-                    }
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.A)
-                {
-                    if (txtInput.CaretIndex > 0)
-                    {
-                        txtInput.CaretIndex = 0;
-                    }
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.E)
-                {
-                    if (txtInput.CaretIndex < txtInput.Text.Length)
-                    {
-                        txtInput.CaretIndex = txtInput.Text.Length;
-                    }
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.D)
-                {
-                    if (txtInput.CaretIndex < txtInput.Text.Length)
-                    {
-                        int backupCaretIndex = txtInput.CaretIndex;
-                        txtInput.Text = txtInput.Text.Remove(txtInput.CaretIndex, 1);
-                        txtInput.CaretIndex = backupCaretIndex;
-                    }
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.H)
-                {
-                    if (txtInput.CaretIndex > 0)
-                    {
-                        int backupCaretIndex = txtInput.CaretIndex;
-                        txtInput.Text = txtInput.Text.Remove(txtInput.CaretIndex - 1, 1);
-                        txtInput.CaretIndex = backupCaretIndex - 1;
-                    }
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.K)
-                {
-                    if (txtInput.CaretIndex < txtInput.Text.Length)
-                    {
-                        int backupCaretIndex = txtInput.CaretIndex;
-                        txtInput.Text = txtInput.Text.Substring(0, txtInput.CaretIndex);
-                        txtInput.CaretIndex = backupCaretIndex;
-                    }
+                    action();
                     e.Handled = true;
                 }
             }

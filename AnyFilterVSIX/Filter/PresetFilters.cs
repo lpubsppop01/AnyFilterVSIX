@@ -10,7 +10,7 @@ namespace lpubsppop01.AnyFilterVSIX
 {
     public enum PresetFilterID
     {
-        Empty, MonoCSharpScript, CygwinBash
+        Empty, MonoCSharpScript, CygwinBash, CygwinSed
     }
 
     public class PresetFilters
@@ -39,6 +39,16 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.TemplateFilePath = Path.Combine(GetTemplateDirectoryPath(), "CygwinBashTemplate.txt");
                     filter.UsesTemplateFile = true;
+                    break;
+                case PresetFilterID.CygwinSed:
+                    filter.Title = "Cygwin sed";
+                    filter.Command = @"C:\cygwin64\bin\bash.exe";
+                    // unescaped: -lc "sed -f \"$(cygpath -u '$(UserInputTempFilePath)')\""
+                    filter.Arguments = string.Format(@"-lc ""sed -f \""$(cygpath -u '{0}')\""""", FilterRunner.VariableName_UserInputTempFilePath);
+                    filter.InputNewLineKind = MyNewLineKind.LF;
+                    filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
+                    filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
+                    filter.PassesInputTextToStandardInput = true;
                     break;
             }
             return filter;

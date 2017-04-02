@@ -7,6 +7,7 @@
         <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=Empty, ElementName=this}" Margin="0">Empty</RadioButton>
         <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=MonoCSharpScript, ElementName=this}" Margin="0,6,0,0">Mono C# Script</RadioButton>
         <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=CygwinBash, ElementName=this}" Margin="0,6,0,0">Cygwin bash</RadioButton>
+        <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=CygwinSed, ElementName=this}" Margin="0,6,0,0">Cygwin sed</RadioButton>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,6,0,0">
             <Button Name="btnOK" Click="btnOK_Click" Width="60">OK</Button>
             <Button Name="btnCancel" Click="btnCancel_Click" Width="60" Margin="6,0,0,0">Cancel</Button>

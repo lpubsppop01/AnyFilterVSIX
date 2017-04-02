@@ -169,6 +169,7 @@
     <Compile Include="Settings\AnyFilterSettingsWindow.xaml.cs">
       <DependentUpon>AnyFilterSettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserInput\MyTextEdit.cs" />
     <Compile Include="UserInput\RepeatedAsyncTaskSupport.cs" />
     <Compile Include="UserInput\UserInputBuffer.cs" />
     <Compile Include="UserInput\UserInputWindow.xaml.cs">

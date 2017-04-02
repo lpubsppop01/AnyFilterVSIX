@@ -14,14 +14,14 @@ namespace lpubsppop01.AnyFilterVSIX
         {
             try
             {
-                string actualInputText = filter.UsesTemplateFile
-                    ? BuildActualInputText(inputText, userInputText, filter.TemplateFilePath, MyEncoding.GetEncoding(filter.InputEncodingName))
-                    : inputText;
+                string actualInputText, userInputTempFilePath;
+                Prepare(filter, inputText, userInputText, out actualInputText, out userInputTempFilePath);
                 var outputBuf = new StringBuilder();
-                var proc = CreateProcess(filter, actualInputText, userInputText, outputBuf);
+                var proc = CreateProcess(filter, actualInputText, userInputText, userInputTempFilePath, outputBuf);
                 StartProcess(proc, filter, actualInputText);
                 proc.WaitForExit();
                 proc.Close();
+                if (userInputTempFilePath != null) File.Delete(userInputTempFilePath);
                 return TrimLastNewLine(outputBuf.ToString());
             }
             catch (Exception e)
@@ -32,30 +32,57 @@ namespace lpubsppop01.AnyFilterVSIX
 
         public static Task<string> RunAsync(Filter filter, string inputText, string userInputText)
         {
+            var tcs = new TaskCompletionSource<string>();
             try
             {
-                string actualInputText = filter.UsesTemplateFile
-                    ? BuildActualInputText(inputText, userInputText, filter.TemplateFilePath, MyEncoding.GetEncoding(filter.InputEncodingName))
-                    : inputText;
+                string actualInputText, userInputTempFilePath;
+                Prepare(filter, inputText, userInputText, out actualInputText, out userInputTempFilePath);
                 var outputBuf = new StringBuilder();
-                var proc = CreateProcess(filter, actualInputText, userInputText, outputBuf);
-                var tcs = new TaskCompletionSource<string>();
+                var proc = CreateProcess(filter, actualInputText, userInputText, userInputTempFilePath, outputBuf);
                 proc.EnableRaisingEvents = true;
                 proc.Exited += (sender, e) =>
                 {
                     proc.Close();
                     tcs.TrySetResult(TrimLastNewLine(outputBuf.ToString()));
+                    if (userInputTempFilePath != null) File.Delete(userInputTempFilePath);
                 };
                 StartProcess(proc, filter, actualInputText);
-                return tcs.Task;
             }
             catch (Exception e)
             {
-                return new Task<string>(() => e.ToString());
+                tcs.TrySetResult(e.ToString());
             }
+            return tcs.Task;
         }
 
-        static Process CreateProcess(Filter filter, string inputText, string userInputText, StringBuilder outputBuf)
+        static void Prepare(Filter filter, string inputText, string userInputText, out string actualInputText, out string userInputTempFilePath)
+        {
+            userInputTempFilePath = null;
+            if (filter.ContainsVariable(VariableName_UserInputTempFilePath))
+            {
+                userInputTempFilePath = CreateUserInputTempFile(filter, userInputText);
+            }
+
+            actualInputText = filter.UsesTemplateFile
+                ? BuildActualInputText(inputText, userInputText, userInputTempFilePath, filter.TemplateFilePath, MyEncoding.GetEncoding(filter.InputEncodingName))
+                : inputText;
+        }
+
+        static string CreateUserInputTempFile(Filter filter, string userInputText)
+        {
+            string userInputTempFilePath = Path.GetTempFileName();
+            var inputEncoding = MyEncoding.GetEncoding(filter.InputEncodingName);
+            using (var writer = new StreamWriter(userInputTempFilePath, /* append: */ false, inputEncoding)
+            {
+                NewLine = filter.InputNewLineKind.ToNewLineString()
+            })
+            {
+                writer.Write(userInputText);
+            }
+            return userInputTempFilePath;
+        }
+
+        static Process CreateProcess(Filter filter, string inputText, string userInputText, string userInputTempFilePath, StringBuilder outputBuf)
         {
             string inputTempFilePath = null;
             if (filter.Arguments.Contains(VariableName_InputTempFilePath))
@@ -72,7 +99,7 @@ namespace lpubsppop01.AnyFilterVSIX
 
             var proc = new Process();
             proc.StartInfo.FileName = filter.Command;
-            proc.StartInfo.Arguments = BuildActualArguments(filter.Arguments, inputText, inputTempFilePath, userInputText);
+            proc.StartInfo.Arguments = BuildActualArguments(filter.Arguments, inputText, inputTempFilePath, userInputText, userInputTempFilePath);
             proc.StartInfo.CreateNoWindow = true;
             proc.StartInfo.UseShellExecute = false;
             proc.StartInfo.RedirectStandardInput = filter.PassesInputTextToStandardInput;
@@ -115,19 +142,21 @@ namespace lpubsppop01.AnyFilterVSIX
             return src.Substring(0, iLastNewLine);
         }
 
-        public const string VariableName_InputTempFilePath = "$(InputTempFilePath)";
         const string VariableName_InputText = "$(InputText)";
+        public const string VariableName_InputTempFilePath = "$(InputTempFilePath)";
         public const string VariableName_UserInput = "$(UserInput)";
+        public const string VariableName_UserInputTempFilePath = "$(UserInputTempFilePath)";
 
-        static string BuildActualArguments(string srcArguments, string inputText, string inputTempFilePath, string userInputText)
+        static string BuildActualArguments(string srcArguments, string inputText, string inputTempFilePath, string userInputText, string userInputTempFilePath)
         {
             return srcArguments
                 .Replace(VariableName_InputText, inputText)
                 .Replace(VariableName_InputTempFilePath, inputTempFilePath)
-                .Replace(VariableName_UserInput, userInputText);
+                .Replace(VariableName_UserInput, userInputText)
+                .Replace(VariableName_UserInputTempFilePath, userInputTempFilePath);
         }
 
-        static string BuildActualInputText(string inputText, string userInputText, string templateFilePath, Encoding encoding)
+        static string BuildActualInputText(string inputText, string userInputText, string userInputTempFilePath, string templateFilePath, Encoding encoding)
         {
             try
             {
@@ -135,7 +164,8 @@ namespace lpubsppop01.AnyFilterVSIX
                 {
                     return reader.ReadToEnd()
                         .Replace(VariableName_InputText, inputText)
-                        .Replace(VariableName_UserInput, userInputText);
+                        .Replace(VariableName_UserInput, userInputText)
+                        .Replace(VariableName_UserInputTempFilePath, userInputTempFilePath);
                 }
             }
             catch

@@ -4,7 +4,7 @@ This Visual Studio Extension provides filter commands which passes selected text
 ## Feature Details
 * Settings by "AnyFilter Settings..." in Tools menu.
 * Registered filter commands will show following the Settings command.
-* Some samples are available on filter registration: Mono C# Script, Cygwin bash
+* Some samples are available on filter registration: Mono C# Script, Cygwin bash, sed
     + Attention: the Cygwin bash filter is useful (at least for me), but it might be dangerous because of its powerful and simple name commands.
 
 ## Download
