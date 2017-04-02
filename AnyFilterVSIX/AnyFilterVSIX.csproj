@@ -159,6 +159,7 @@
   <ItemGroup>
     <Compile Include="Converters\EnumToStringConverter.cs" />
     <Compile Include="Converters\NameToMyEncodingInfoConverter.cs" />
+    <Compile Include="Converters\DoubleToMultipliedConverter.cs" />
     <Compile Include="Encodings\MyEncoding.cs" />
     <Compile Include="Encodings\MyNewLine.cs" />
     <Compile Include="Filter\PresetFilters.cs" />

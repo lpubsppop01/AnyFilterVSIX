@@ -45,6 +45,11 @@ namespace lpubsppop01.AnyFilterVSIX
             }
         }
 
+        void txtInput_TextChanged(object sender, RoutedEventArgs e)
+        {
+            txtInputHint.Visibility = string.IsNullOrEmpty(txtInput.Text) ? Visibility.Visible : Visibility.Hidden;
+        }
+
         void btnOK_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
@@ -78,9 +83,11 @@ namespace lpubsppop01.AnyFilterVSIX
             var fontSizeConverter = new FontSizeConverter();
             double fontSizePx = (double)fontSizeConverter.ConvertFromString(string.Format("{0}pt", fontSizePt));
 
-            txtInput.FontFamily = new System.Windows.Media.FontFamily(fontName);
+            txtInput.FontFamily = new FontFamily(fontName);
             txtInput.FontSize = fontSizePx;
-            txtPreview.FontFamily = new System.Windows.Media.FontFamily(fontName);
+            txtInputHint.FontFamily = new FontFamily(fontName);
+            txtInputHint.FontSize = fontSizePx;
+            txtPreview.FontFamily = new FontFamily(fontName);
             txtPreview.FontSize = fontSizePx;
         }
 

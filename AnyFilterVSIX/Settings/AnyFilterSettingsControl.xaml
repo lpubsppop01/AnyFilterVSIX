@@ -97,8 +97,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <CheckBox Grid.Row="0" IsChecked="{Binding SelectedValue.InsertsAfterCurrentLine, ElementName=lstMaster}">Inserts result text after current line</CheckBox>
-            <CheckBox Grid.Row="1" IsChecked="{Binding SelectedValue.PassesInputTextToStandardInput, ElementName=lstMaster}">Passes input text to standard input</CheckBox>
+            <CheckBox Grid.Row="0" IsChecked="{Binding SelectedValue.InsertsAfterCurrentLine, ElementName=lstMaster}">Insert result text after current line</CheckBox>
+            <CheckBox Grid.Row="1" IsChecked="{Binding SelectedValue.PassesInputTextToStandardInput, ElementName=lstMaster}">Pass input text to standard input</CheckBox>
             <DockPanel Grid.Row="2">
                 <CheckBox DockPanel.Dock="Left" IsChecked="{Binding SelectedValue.UsesTemplateFile, ElementName=lstMaster}">Use input template file:</CheckBox>
                 <Button DockPanel.Dock="Right" Width="20" Margin="6,0,0,0" Height="{Binding ActualHeight, ElementName=txtTemplate}" Click="btnTemplate_Click"

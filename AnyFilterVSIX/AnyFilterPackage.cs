@@ -199,6 +199,7 @@ namespace lpubsppop01.AnyFilterVSIX
                             support.End();
                         });
                     };
+                    buffer.InputText = "";
                     var dialog = new UserInputWindow
                     {
                         DataContext = buffer,
