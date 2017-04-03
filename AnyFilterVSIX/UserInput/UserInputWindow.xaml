@@ -18,7 +18,7 @@
         <TextBox Grid.Row="0" Name="txtInput" Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
                  AcceptsReturn="True" PreviewKeyDown="txtInput_PreviewKeyDown" TextChanged="txtInput_TextChanged"
                  VerticalScrollBarVisibility="Auto" MaxHeight="{local:DoubleToHalfBinding ActualHeight, ElementName=pnlMain}"/>
-        <TextBlock Name="txtInputHint" Foreground="Gray" Margin="3,0,0,0" VerticalAlignment="Center"
+        <TextBlock Name="txtInputHint" Foreground="Gray" Margin="3,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"
                    Height="{Binding ActualHeight, ElementName=txtInput}">$(UserInput) will be replaced by this text. Shift+Enter to newline.</TextBlock>
         <TextBox Grid.Row="1" Name="txtPreview" Text="{Binding PreviewText}"
                  IsReadOnly="True" Margin="0,6,0,0"
