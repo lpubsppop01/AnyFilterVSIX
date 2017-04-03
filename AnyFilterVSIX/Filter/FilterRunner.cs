@@ -22,7 +22,7 @@ namespace lpubsppop01.AnyFilterVSIX
                 proc.WaitForExit();
                 proc.Close();
                 if (userInputTempFilePath != null) File.Delete(userInputTempFilePath);
-                return TrimLastNewLine(outputBuf.ToString());
+                return PostProcess(outputBuf.ToString(), inputText);
             }
             catch (Exception e)
             {
@@ -43,7 +43,7 @@ namespace lpubsppop01.AnyFilterVSIX
                 proc.Exited += (sender, e) =>
                 {
                     proc.Close();
-                    tcs.TrySetResult(TrimLastNewLine(outputBuf.ToString()));
+                    tcs.TrySetResult(PostProcess(outputBuf.ToString(), inputText));
                     if (userInputTempFilePath != null) File.Delete(userInputTempFilePath);
                 };
                 StartProcess(proc, filter, actualInputText);
@@ -132,6 +132,12 @@ namespace lpubsppop01.AnyFilterVSIX
                     stdin.Flush();
                 }
             }
+        }
+
+        static string PostProcess(string rawOuputText, string rawInputText)
+        {
+            if (rawInputText.EndsWith(Environment.NewLine)) return rawOuputText;
+            return TrimLastNewLine(rawOuputText);
         }
 
         static string TrimLastNewLine(string src)
