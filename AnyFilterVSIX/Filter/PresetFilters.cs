@@ -76,10 +76,11 @@ namespace lpubsppop01.AnyFilterVSIX
                             NewLine = newLineKind.ToNewLineString()
                         })
                         {
-                            writer.WriteLine(@"cat <<'EOF' | $(UserInput)");
+                            writer.WriteLine(@"INPUT_TEXT=$(cat << 'EOS'");
                             writer.WriteLine(@"$(InputText)");
-                            writer.WriteLine(@"EOF");
-                            writer.WriteLine(@"");
+                            writer.WriteLine(@"EOS");
+                            writer.WriteLine(@")");
+                            writer.WriteLine(@"echo ""$INPUT_TEXT"" | $(UserInput)");
                         }
                         return true;
                 }
