@@ -10,18 +10,20 @@ namespace lpubsppop01.AnyFilterVSIX
 {
     class FilterRunner
     {
+        #region Run
+
         public static string Run(Filter filter, string inputText, string userInputText)
         {
             try
             {
-                string actualInputText, userInputTempFilePath;
-                Prepare(filter, inputText, userInputText, out actualInputText, out userInputTempFilePath);
+                string actualInputText, actualUserInputText, userInputTempFilePath;
+                Prepare(filter, inputText, userInputText, out actualInputText, out actualUserInputText, out userInputTempFilePath);
                 var outputBuf = new StringBuilder();
                 var proc = CreateProcess(filter, actualInputText, userInputText, userInputTempFilePath, outputBuf);
                 StartProcess(proc, filter, actualInputText);
                 proc.WaitForExit();
                 proc.Close();
-                if (userInputTempFilePath != null) File.Delete(userInputTempFilePath);
+                if (userInputTempFilePath != null) DeleteTempFile(userInputTempFilePath);
                 return PostProcess(outputBuf.ToString(), inputText);
             }
             catch (Exception e)
@@ -35,8 +37,8 @@ namespace lpubsppop01.AnyFilterVSIX
             var tcs = new TaskCompletionSource<string>();
             try
             {
-                string actualInputText, userInputTempFilePath;
-                Prepare(filter, inputText, userInputText, out actualInputText, out userInputTempFilePath);
+                string actualInputText, actualUserInputText, userInputTempFilePath;
+                Prepare(filter, inputText, userInputText, out actualInputText, out actualUserInputText, out userInputTempFilePath);
                 var outputBuf = new StringBuilder();
                 var proc = CreateProcess(filter, actualInputText, userInputText, userInputTempFilePath, outputBuf);
                 proc.EnableRaisingEvents = true;
@@ -44,7 +46,7 @@ namespace lpubsppop01.AnyFilterVSIX
                 {
                     proc.Close();
                     tcs.TrySetResult(PostProcess(outputBuf.ToString(), inputText));
-                    if (userInputTempFilePath != null) File.Delete(userInputTempFilePath);
+                    if (userInputTempFilePath != null) DeleteTempFile(userInputTempFilePath);
                 };
                 StartProcess(proc, filter, actualInputText);
             }
@@ -55,29 +57,31 @@ namespace lpubsppop01.AnyFilterVSIX
             return tcs.Task;
         }
 
-        static void Prepare(Filter filter, string inputText, string userInputText, out string actualInputText, out string userInputTempFilePath)
+        #endregion
+
+        #region Main
+
+        static void Prepare(Filter filter, string inputText, string userInputText, out string actualInputText, out string actualUserInputText, out string userInputTempFilePath)
         {
+            actualUserInputText = ConvertNewLineFromEnvironment(userInputText, filter.InputNewLineKind);
             userInputTempFilePath = null;
             if (filter.ContainsVariable(VariableName_UserInputTempFilePath))
             {
-                userInputTempFilePath = CreateUserInputTempFile(filter, userInputText);
+                userInputTempFilePath = CreateUserInputTempFile(filter, actualUserInputText);
             }
 
             actualInputText = filter.UsesTemplateFile
-                ? BuildActualInputText(inputText, userInputText, userInputTempFilePath, filter.TemplateFilePath, MyEncoding.GetEncoding(filter.InputEncodingName))
+                ? BuildActualInputText(inputText, userInputText, userInputTempFilePath, filter.TemplateFilePath, MyEncoding.GetEncoding(filter.InputEncodingName), filter.InputNewLineKind)
                 : inputText;
         }
 
-        static string CreateUserInputTempFile(Filter filter, string userInputText)
+        static string CreateUserInputTempFile(Filter filter, string actualUserInputText)
         {
-            string userInputTempFilePath = Path.GetTempFileName();
+            string userInputTempFilePath = CreateTempFile();
             var inputEncoding = MyEncoding.GetEncoding(filter.InputEncodingName);
-            using (var writer = new StreamWriter(userInputTempFilePath, /* append: */ false, inputEncoding)
+            using (var writer = new StreamWriter(userInputTempFilePath, /* append: */ false, inputEncoding))
             {
-                NewLine = filter.InputNewLineKind.ToNewLineString()
-            })
-            {
-                writer.Write(userInputText);
+                writer.Write(actualUserInputText);
             }
             return userInputTempFilePath;
         }
@@ -87,11 +91,9 @@ namespace lpubsppop01.AnyFilterVSIX
             string inputTempFilePath = null;
             if (filter.Arguments.Contains(VariableName_InputTempFilePath))
             {
-                inputTempFilePath = Path.GetTempFileName();
+                inputTempFilePath = CreateTempFile();
                 var inputEncoding = MyEncoding.GetEncoding(filter.InputEncodingName);
-                using (var writer = new StreamWriter(inputTempFilePath, /* append: */ false, inputEncoding) {
-                    NewLine = filter.InputNewLineKind.ToNewLineString()
-                })
+                using (var writer = new StreamWriter(inputTempFilePath, /* append: */ false, inputEncoding))
                 {
                     writer.Write(inputText);
                 }
@@ -111,7 +113,7 @@ namespace lpubsppop01.AnyFilterVSIX
             proc.ErrorDataReceived += (sender, e) => { if (e.Data != null) { outputBuf.AppendLine(e.Data); } };
             if (inputTempFilePath != null)
             {
-                proc.Exited += (sender, e) => File.Delete(inputTempFilePath);
+                proc.Exited += (sender, e) => DeleteTempFile(inputTempFilePath);
             }
 
             return proc;
@@ -140,13 +142,9 @@ namespace lpubsppop01.AnyFilterVSIX
             return TrimLastNewLine(rawOuputText);
         }
 
-        static string TrimLastNewLine(string src)
-        {
-            int iLastNewLine = src.LastIndexOf(Environment.NewLine);
-            if (iLastNewLine == -1) return src;
-            if (src.Substring(iLastNewLine) != Environment.NewLine) return src;
-            return src.Substring(0, iLastNewLine);
-        }
+        #endregion
+
+        #region Variable Replace
 
         const string VariableName_InputText = "$(InputText)";
         public const string VariableName_InputTempFilePath = "$(InputTempFilePath)";
@@ -162,16 +160,20 @@ namespace lpubsppop01.AnyFilterVSIX
                 .Replace(VariableName_UserInputTempFilePath, userInputTempFilePath);
         }
 
-        static string BuildActualInputText(string inputText, string userInputText, string userInputTempFilePath, string templateFilePath, Encoding encoding)
+        static string BuildActualInputText(string inputText, string userInputText, string userInputTempFilePath, string templateFilePath, Encoding encoding, MyNewLineKind newLineKind)
         {
             try
             {
                 using (var reader = new StreamReader(templateFilePath, encoding))
                 {
-                    return reader.ReadToEnd()
+                    string templateText = reader.ReadToEnd();
+                    templateText = ConvertNewLineToEnvironment(templateText, newLineKind);
+                    string actualInputText = templateText
                         .Replace(VariableName_InputText, inputText)
                         .Replace(VariableName_UserInput, userInputText)
                         .Replace(VariableName_UserInputTempFilePath, userInputTempFilePath);
+                    actualInputText = ConvertNewLineFromEnvironment(actualInputText, newLineKind);
+                    return actualInputText;
                 }
             }
             catch
@@ -179,5 +181,83 @@ namespace lpubsppop01.AnyFilterVSIX
                 return inputText;
             }
         }
+
+        #endregion
+
+        #region New Line Convert
+
+        static string TrimLastNewLine(string src)
+        {
+            int iLastNewLine = src.LastIndexOf(Environment.NewLine);
+            if (iLastNewLine == -1) return src;
+            if (src.Substring(iLastNewLine) != Environment.NewLine) return src;
+            return src.Substring(0, iLastNewLine);
+        }
+
+        static string ConvertNewLineToEnvironment(string src, MyNewLineKind newLineKind)
+        {
+            if (newLineKind.ToNewLineString() != Environment.NewLine)
+            {
+                return src.Replace(newLineKind.ToNewLineString(), Environment.NewLine);
+            }
+            return src;
+        }
+
+        static string ConvertNewLineFromEnvironment(string src, MyNewLineKind newLineKind)
+        {
+            if (newLineKind.ToNewLineString() != Environment.NewLine)
+            {
+                return src.Replace(Environment.NewLine, newLineKind.ToNewLineString());
+            }
+            return src;
+        }
+
+        #endregion
+
+        #region Temp File
+
+#if DEBUG
+        static DateTime lastDateTime;
+        static int lastNumber;
+#endif
+
+        static string CreateTempFile()
+        {
+#if DEBUG
+            string dirPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"AnyFilterVSIX\Debug");
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
+            var now = DateTime.Now;
+            int number = lastNumber;
+            if (now == lastDateTime)
+            {
+                lastNumber = ++number;
+            }
+            else
+            {
+                lastDateTime = now;
+                lastNumber = 0;
+            }
+            string filename = now.ToString("yyyyMMdd_hhmmss_fff_") + number.ToString() + ".txt";
+            return Path.Combine(dirPath, filename);
+#else
+            return Path.GetTempFileName();
+#endif
+        }
+
+        static void DeleteTempFile(string path)
+        {
+#if !DEBUG
+            try
+            {
+                File.Delete(path);
+            }
+            catch { }
+#endif
+        }
+
+        #endregion
     }
 }
