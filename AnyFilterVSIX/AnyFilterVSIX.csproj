@@ -163,6 +163,11 @@
     <Compile Include="Encodings\MyEncoding.cs" />
     <Compile Include="Encodings\MyNewLine.cs" />
     <Compile Include="Filter\PresetFilters.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Settings\FilterAdditionWindow.xaml.cs">
       <DependentUpon>FilterAdditionWindow.xaml</DependentUpon>
     </Compile>
@@ -190,6 +195,11 @@
     <Compile Include="Settings\AnyFilterSettings.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.ja-JP.resx" />
     <EmbeddedResource Include="VSPackage.resx">
       <MergeWithCTO>true</MergeWithCTO>
       <ManifestResourceName>VSPackage</ManifestResourceName>
