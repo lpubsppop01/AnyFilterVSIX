@@ -61,6 +61,24 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         }
         
         /// <summary>
+        ///   Add に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Arguments に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Arguments {
+            get {
+                return ResourceManager.GetString("Arguments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Cancel に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Cancel {
@@ -70,11 +88,119 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         }
         
         /// <summary>
+        ///   Command に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Command {
+            get {
+                return ResourceManager.GetString("Command", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Input Encoding に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InputEncoding {
+            get {
+                return ResourceManager.GetString("InputEncoding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Insert output text after current line に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string InsertOutputTextAfterCurrentLine {
+            get {
+                return ResourceManager.GetString("InsertOutputTextAfterCurrentLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   OK に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string OK {
             get {
                 return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Output Encoding に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string OutputEncoding {
+            get {
+                return ResourceManager.GetString("OutputEncoding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Pass input text to standard input に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string PassInputTextToStandardInput {
+            get {
+                return ResourceManager.GetString("PassInputTextToStandardInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Remove に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   $(InputText), $(InputTempFilePath), $(UserInput), $(UserInputTempFilePath) is available. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_ArgumentsHint {
+            get {
+                return ResourceManager.GetString("Settings_ArgumentsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   $(InputText), $(UserInput) is available in template file content. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_TemplateFilePathHint {
+            get {
+                return ResourceManager.GetString("Settings_TemplateFilePathHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Title に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Use Emacs like keybindings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string UseEmacsLikeKeybindings {
+            get {
+                return ResourceManager.GetString("UseEmacsLikeKeybindings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Use input template file に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string UseInputTemplateFile {
+            get {
+                return ResourceManager.GetString("UseInputTemplateFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   $(UserInput) will be replaced by this text. Shift+Enter to newline. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string UserInput_InputTextHint {
+            get {
+                return ResourceManager.GetString("UserInput_InputTextHint", resourceCulture);
             }
         }
     }
