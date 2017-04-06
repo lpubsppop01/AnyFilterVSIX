@@ -25,16 +25,10 @@ namespace lpubsppop01.AnyFilterVSIX
         public AnyFilterSettingsWindow()
         {
             InitializeComponent();
-        }
 
-        #endregion
-
-        #region Properties
-
-        public ObservableCollection<Filter> ItemsSource
-        {
-            get { return ctrlMain.ItemsSource; }
-            set { ctrlMain.ItemsSource = value; }
+            cmbCulture.ItemsSource = new[] { MyCultureInfo.Auto, MyCultureInfo.en_US, MyCultureInfo.ja_JP };
+            cmbCulture.DisplayMemberPath = "DisplayName";
+            cmbCulture.SetBinding(ComboBox.SelectedValueProperty, new Binding("Culture"));
         }
 
         #endregion

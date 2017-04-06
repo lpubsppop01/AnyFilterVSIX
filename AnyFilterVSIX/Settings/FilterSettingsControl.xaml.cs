@@ -18,13 +18,13 @@ using System.Windows.Shapes;
 namespace lpubsppop01.AnyFilterVSIX
 {
     /// <summary>
-    /// Interaction logic for AnyFilterSettingsControl.xaml
+    /// Interaction logic for FilterSettingsControl.xaml
     /// </summary>
-    public partial class AnyFilterSettingsControl : UserControl
+    public partial class FilterSettingsControl : UserControl
     {
         #region Constructor
 
-        public AnyFilterSettingsControl()
+        public FilterSettingsControl()
         {
             InitializeComponent();
 
@@ -70,11 +70,17 @@ namespace lpubsppop01.AnyFilterVSIX
         }
 
         public static readonly DependencyProperty HasSelectionProperty = DependencyProperty.Register(
-            "HasSelection", typeof(bool), typeof(AnyFilterSettingsControl), new PropertyMetadata(false));
+            "HasSelection", typeof(bool), typeof(FilterSettingsControl), new PropertyMetadata(false));
 
         #endregion
 
         #region Event Handlers
+
+        void this_DataContextChanged(object sender, RoutedEventArgs e)
+        {
+            var settings = DataContext as AnyFilterSettings;
+            ItemsSource = (settings != null) ? settings.Filters : null;
+        }
 
         void btnAdd_Click(object sender, RoutedEventArgs e)
         {

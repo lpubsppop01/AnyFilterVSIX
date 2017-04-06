@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.Settings;
@@ -12,22 +15,84 @@ namespace lpubsppop01.AnyFilterVSIX
 {
     // ref. https://github.com/omsharp/BetterComments/blob/master/BetterComments/Options/FontSettingsManager.cs
 
-    class AnyFilterSettings
+    sealed class AnyFilterSettings : ICloneable, INotifyPropertyChanged
     {
         #region Constructor
 
         public AnyFilterSettings()
         {
-            Filters = new List<Filter>();
+            Filters = new ObservableCollection<Filter>();
+            Culture = MyCultureInfo.Auto;
+        }
+
+        AnyFilterSettings(AnyFilterSettings src)
+        {
+            Copy(src);
         }
 
         #endregion
 
         #region Properties
 
-        public List<Filter> Filters { get; private set; }
+        ObservableCollection<Filter> filters;
+        public ObservableCollection<Filter> Filters
+        {
+            get { return filters; }
+            private set { filters = value; OnPropertyChanged(); }
+        }
 
-        public bool UsesEmacsLikeKeybindings { get; set; }
+        bool usesEmacsLikeKeybindings;
+        public bool UsesEmacsLikeKeybindings
+        {
+            get { return usesEmacsLikeKeybindings; }
+            set { usesEmacsLikeKeybindings = value; OnPropertyChanged(); }
+        }
+
+        MyCultureInfo culture;
+        public MyCultureInfo Culture
+        {
+            get { return culture; }
+            set { culture = value; OnPropertyChanged(); }
+        }
+
+        #endregion
+
+        #region Copy
+
+        public void Copy(AnyFilterSettings src)
+        {
+            Filters = new ObservableCollection<Filter>(src.Filters.Select(f => f.Clone()));
+            UsesEmacsLikeKeybindings = src.UsesEmacsLikeKeybindings;
+            Culture = src.Culture;
+        }
+
+        #endregion
+
+        #region ICloneable Members
+
+        object ICloneable.Clone()
+        {
+            return Clone();
+        }
+
+        public AnyFilterSettings Clone()
+        {
+            return new AnyFilterSettings(this);
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
 
         #endregion
 
@@ -56,14 +121,16 @@ namespace lpubsppop01.AnyFilterVSIX
 
             Current.Filters.SaveCollection(settingsStore, Path.Combine(CollectionPath, "Filters"), (e, s, p) => e.Save(s, p));
             settingsStore.SetBoolean(CollectionPath, "UsesEmacsLikeKeybindings", Current.UsesEmacsLikeKeybindings);
+            settingsStore.SetString(CollectionPath, "Culture", Current.Culture.Name);
         }
 
         public static void LoadCurrent()
         {
             if (!settingsStore.CollectionExists(CollectionPath)) return;
 
-            Current.Filters = WritableSettingsStoreExtension.LoadCollection(settingsStore, Path.Combine(CollectionPath, "Filters"), Filter.Load);
+            Current.Filters = new ObservableCollection<Filter>(WritableSettingsStoreExtension.LoadCollection(settingsStore, Path.Combine(CollectionPath, "Filters"), Filter.Load));
             Current.UsesEmacsLikeKeybindings = settingsStore.GetBoolean(CollectionPath, "UsesEmacsLikeKeybindings", false);
+            Current.Culture = MyCultureInfo.GetCultureInfo(settingsStore.GetString(CollectionPath, "Culture", ""));
         }
 
         #endregion

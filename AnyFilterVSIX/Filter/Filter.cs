@@ -199,20 +199,6 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #endregion
 
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        #endregion
-
         #region ICloneable Members
 
         object ICloneable.Clone()
@@ -223,6 +209,20 @@ namespace lpubsppop01.AnyFilterVSIX
         public Filter Clone()
         {
             return new Filter(this);
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
         #endregion

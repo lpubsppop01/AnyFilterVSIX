@@ -157,13 +157,15 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\EnumToStringConverter.cs" />
-    <Compile Include="Converters\NameToMyEncodingInfoConverter.cs" />
-    <Compile Include="Converters\DoubleToMultipliedConverter.cs" />
-    <Compile Include="Converters\NameToResourceBinding.cs" />
-    <Compile Include="Encodings\MyEncoding.cs" />
-    <Compile Include="Encodings\MyNewLine.cs" />
+    <Compile Include="_Lib\Converters\EnumToStringConverter.cs" />
+    <Compile Include="_Lib\Converters\NameToMyEncodingInfoConverter.cs" />
+    <Compile Include="_Lib\Converters\DoubleToMultipliedConverter.cs" />
+    <Compile Include="_Lib\i18n\MyCultureInfo.cs" />
+    <Compile Include="i18n\NameToResourceBinding.cs" />
+    <Compile Include="_Lib\Encodings\MyEncoding.cs" />
+    <Compile Include="_Lib\Encodings\MyNewLine.cs" />
     <Compile Include="Filter\PresetFilters.cs" />
+    <Compile Include="_Lib\i18n\NameToResourceBindingSource.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -172,20 +174,20 @@
     <Compile Include="Settings\FilterAdditionWindow.xaml.cs">
       <DependentUpon>FilterAdditionWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\EnumToBooleanConverter.cs" />
+    <Compile Include="_Lib\Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Settings\AnyFilterSettingsWindow.xaml.cs">
       <DependentUpon>AnyFilterSettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserInput\MyTextEdit.cs" />
-    <Compile Include="UserInput\RepeatedAsyncTaskSupport.cs" />
+    <Compile Include="_Lib\Misc\MyTextEdit.cs" />
+    <Compile Include="_Lib\Misc\RepeatedAsyncTaskSupport.cs" />
     <Compile Include="UserInput\UserInputBuffer.cs" />
     <Compile Include="UserInput\UserInputWindow.xaml.cs">
       <DependentUpon>UserInputWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings\WritableSettingsStoreExtension.cs" />
+    <Compile Include="_Lib\Misc\WritableSettingsStoreExtension.cs" />
     <Compile Include="Filter\Filter.cs" />
-    <Compile Include="Settings\AnyFilterSettingsControl.xaml.cs">
-      <DependentUpon>AnyFilterSettingsControl.xaml</DependentUpon>
+    <Compile Include="Settings\FilterSettingsControl.xaml.cs">
+      <DependentUpon>FilterSettingsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Guids.cs" />
     <Compile Include="Filter\FilterRunner.cs" />
@@ -246,7 +248,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\AnyFilterSettingsControl.xaml">
+    <Page Include="Settings\FilterSettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -39,6 +39,13 @@ namespace lpubsppop01.AnyFilterVSIX
 
             if (!TryCacheRequiredServices()) return;
 
+            NameToResourceBinding.Culture = AnyFilterSettings.Current.Culture;
+            AnyFilterSettings.Current.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName != "Culture") return;
+                NameToResourceBinding.Culture = AnyFilterSettings.Current.Culture;
+            };
+
             AddSettingsMenuItem();
             UpdateRunFilterMenuItems();
         }
@@ -111,18 +118,20 @@ namespace lpubsppop01.AnyFilterVSIX
             var menuCommandID = new CommandID(GuidList.guidAnyFilterCmdSet, (int)PkgCmdIDList.cmdidSettings);
             var menuItem = new MenuCommand((sender, e) =>
             {
+                var backup = AnyFilterSettings.Current.Clone();
                 var dialog = new AnyFilterSettingsWindow
                 {
-                    ItemsSource = new ObservableCollection<Filter>(AnyFilterSettings.Current.Filters),
+                    DataContext = AnyFilterSettings.Current,
                     WindowStartupLocation = WindowStartupLocation.CenterScreen
                 };
                 if (dialog.ShowDialog() ?? false)
                 {
-                    AnyFilterSettings.Current.Filters.Clear();
-                    AnyFilterSettings.Current.Filters.AddRange(dialog.ItemsSource.Select(c => c.Clone()));
                     AnyFilterSettings.SaveCurrent();
-
                     UpdateRunFilterMenuItems();
+                }
+                else
+                {
+                    AnyFilterSettings.Current.Copy(backup);
                 }
             }, menuCommandID);
             menuCommandService.AddCommand(menuItem);
