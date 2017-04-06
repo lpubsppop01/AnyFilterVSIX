@@ -2,7 +2,7 @@
 This Visual Studio Extension provides external filter commands for selected texts,
 which passes a selected text to an arbitrary external program and replace the text by the output of the external program.
 
-## Feature Details
+## Features
 * Settings by "AnyFilter Settings..." in Tools menu.
 * Registered filter commands will show following the Settings command.
 * Some samples are available on filter registration: Mono C# Script, Cygwin bash, sed
