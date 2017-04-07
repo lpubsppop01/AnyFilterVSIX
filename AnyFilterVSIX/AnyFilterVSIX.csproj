@@ -157,15 +157,15 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="_Lib\Converters\EnumToStringConverter.cs" />
-    <Compile Include="_Lib\Converters\NameToMyEncodingInfoConverter.cs" />
-    <Compile Include="_Lib\Converters\DoubleToMultipliedConverter.cs" />
-    <Compile Include="_Lib\i18n\MyCultureInfo.cs" />
+    <Compile Include="_MyLib\Converters\EnumToStringConverter.cs" />
+    <Compile Include="_MyLib\Converters\NameToMyEncodingInfoConverter.cs" />
+    <Compile Include="_MyLib\Converters\DoubleToMultipliedConverter.cs" />
+    <Compile Include="_MyLib\i18n\MyCultureInfo.cs" />
     <Compile Include="i18n\NameToResourceBinding.cs" />
-    <Compile Include="_Lib\Encodings\MyEncoding.cs" />
-    <Compile Include="_Lib\Encodings\MyNewLine.cs" />
+    <Compile Include="_MyLib\Encodings\MyEncoding.cs" />
+    <Compile Include="_MyLib\Encodings\MyNewLine.cs" />
     <Compile Include="Filter\PresetFilters.cs" />
-    <Compile Include="_Lib\i18n\NameToResourceBindingSource.cs" />
+    <Compile Include="_MyLib\i18n\NameToResourceBindingSource.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -174,17 +174,17 @@
     <Compile Include="Settings\FilterAdditionWindow.xaml.cs">
       <DependentUpon>FilterAdditionWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Lib\Converters\EnumToBooleanConverter.cs" />
+    <Compile Include="_MyLib\Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Settings\AnyFilterSettingsWindow.xaml.cs">
       <DependentUpon>AnyFilterSettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Lib\Misc\MyTextEdit.cs" />
-    <Compile Include="_Lib\Misc\RepeatedAsyncTaskSupport.cs" />
+    <Compile Include="_MyLib\Misc\MyTextEdit.cs" />
+    <Compile Include="_MyLib\Misc\RepeatedAsyncTaskSupport.cs" />
     <Compile Include="UserInput\UserInputBuffer.cs" />
     <Compile Include="UserInput\UserInputWindow.xaml.cs">
       <DependentUpon>UserInputWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="_Lib\Misc\WritableSettingsStoreExtension.cs" />
+    <Compile Include="_MyLib\Misc\WritableSettingsStoreExtension.cs" />
     <Compile Include="Filter\Filter.cs" />
     <Compile Include="Settings\FilterSettingsControl.xaml.cs">
       <DependentUpon>FilterSettingsControl.xaml</DependentUpon>
