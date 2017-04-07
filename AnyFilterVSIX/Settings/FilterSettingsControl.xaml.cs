@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -172,6 +173,30 @@ namespace lpubsppop01.AnyFilterVSIX
                 return false;
             }
             return true;
+        }
+
+        #endregion
+
+        #region Popup Location Update
+
+        IEnumerable<Popup> Popups
+        {
+            get
+            {
+                yield return popupArgumentsHint;
+                yield return popupTemplateFilePathHint;
+            }
+        }
+
+        public void OnWindowLocationChanged()
+        {
+            // ref. http://stackoverflow.com/questions/1600218/how-can-i-move-a-wpf-popup-when-its-anchor-element-moves
+            foreach (var popup in Popups.Where(p => p.IsOpen))
+            {
+                double offset = popup.HorizontalOffset;
+                popup.HorizontalOffset = offset + 1;
+                popup.HorizontalOffset = offset;
+            }
         }
 
         #endregion

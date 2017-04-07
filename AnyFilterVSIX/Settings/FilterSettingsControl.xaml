@@ -69,7 +69,7 @@
             <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Name="txtArguments"
                      Text="{Binding SelectedValue.Arguments, ElementName=lstMaster, UpdateSourceTrigger=PropertyChanged}"/>
             <Popup PlacementTarget="{Binding ElementName=txtArguments}" Placement="Bottom" VerticalOffset="6"
-                   IsOpen="{Binding IsFocused, ElementName=txtArguments, Mode=OneWay}">
+                   IsOpen="{Binding IsFocused, ElementName=txtArguments, Mode=OneWay}" Name="popupArgumentsHint">
                 <Border BorderBrush="LightGray" BorderThickness="1" Background="Snow" Padding="2">
                     <TextBlock Text="{local:NameToResourceBinding Settings_ArgumentsHint}"/>
                 </Border>
@@ -108,7 +108,7 @@
                          IsEnabled="{Binding SelectedValue.UsesTemplateFile, ElementName=lstMaster}"/>
             </DockPanel>
             <Popup PlacementTarget="{Binding ElementName=txtTemplate}" Placement="Top" VerticalOffset="-6"
-                   IsOpen="{Binding IsFocused, ElementName=txtTemplate, Mode=OneWay}">
+                   IsOpen="{Binding IsFocused, ElementName=txtTemplate, Mode=OneWay}" Name="popupTemplateFilePathHint">
                 <Border BorderBrush="LightGray" BorderThickness="1" Background="Snow" Padding="2">
                     <TextBlock Text="{local:NameToResourceBinding Settings_TemplateFilePathHint}"/>
                 </Border>

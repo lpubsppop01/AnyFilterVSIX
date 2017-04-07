@@ -35,6 +35,11 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #region Event Handlers
 
+        void this_LocationChanged(object sender, EventArgs e)
+        {
+            ctrlFilters.OnWindowLocationChanged();
+        }
+
         void btnOK_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
