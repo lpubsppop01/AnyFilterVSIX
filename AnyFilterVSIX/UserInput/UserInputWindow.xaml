@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:lpubsppop01.AnyFilterVSIX"
         Title="AnyFilter User Input" Width="800" Height="400"
-        Name="this" Loaded="this_Loaded">
+        Name="this" Loaded="this_Loaded" DataContextChanged="this_DataContextChanged">
     <Window.Resources>
         <Style TargetType="CheckBox">
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -15,15 +15,22 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBox Grid.Row="0" Name="txtInput" Text="{Binding InputText, UpdateSourceTrigger=PropertyChanged}"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <TextBox Grid.Row="0" Name="txtInput" Text="{Binding UserInputText, UpdateSourceTrigger=PropertyChanged}"
                  AcceptsReturn="True" PreviewKeyDown="txtInput_PreviewKeyDown" TextChanged="txtInput_TextChanged"
                  VerticalScrollBarVisibility="Auto" MaxHeight="{local:DoubleToHalfBinding ActualHeight, ElementName=pnlMain}"/>
         <TextBlock Name="txtInputHint" Foreground="Gray" Margin="3,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"
-                   Height="{Binding ActualHeight, ElementName=txtInput}" Text="{local:NameToResourceBinding UserInput_InputTextHint}"/>
-        <TextBox Grid.Row="1" Name="txtPreview" Text="{Binding PreviewText}"
-                 IsReadOnly="True" Margin="0,6,0,0"
-                 HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
-        <DockPanel Grid.Row="2" Margin="0,6,0,0" LastChildFill="False">
+                   Height="{Binding ActualHeight, ElementName=txtInput}" Text="{local:NameToResourceBinding UserInput_UserInputTextHint}"/>
+        <StackPanel Grid.Row="0" Grid.Column="1" Margin="6,0,0,0" Orientation="Horizontal">
+            <CheckBox IsChecked="{Binding ShowsDifference}" Content="{local:NameToResourceBinding Diff}"/>
+        </StackPanel>
+        <RichTextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name="txtPreview"
+                     IsReadOnly="True" Margin="0,6,0,0"
+                     HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
+        <DockPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,0,0" LastChildFill="False">
             <CheckBox IsChecked="{Binding UsesEmacsLikeKeybindings, ElementName=this}" Content="{local:NameToResourceBinding UseEmacsLikeKeybindings}"/>
             <Button DockPanel.Dock="Right" Name="btnCancel" IsCancel="True" Click="btnCancel_Click" Width="70" Margin="6,0,0,0" Content="{local:NameToResourceBinding Cancel}"/>
             <Button DockPanel.Dock="Right" Name="btnOK" IsDefault="True" Click="btnOK_Click" Width="70" Content="{local:NameToResourceBinding OK}"/>

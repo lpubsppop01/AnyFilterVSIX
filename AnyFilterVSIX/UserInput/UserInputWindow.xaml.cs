@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +34,31 @@ namespace lpubsppop01.AnyFilterVSIX
         void this_Loaded(object sender, RoutedEventArgs e)
         {
             Keyboard.Focus(txtInput);
+        }
+
+        UserInputBuffer buffer;
+
+        void this_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (buffer != null)
+            {
+                buffer.PropertyChanged -= buffer_PropertyChanged;
+                buffer = null;
+            }
+            buffer = DataContext as UserInputBuffer;
+            if (buffer != null)
+            {
+                buffer.PropertyChanged += buffer_PropertyChanged;
+            }
+        }
+
+        void buffer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "PreviewText") return;
+            Dispatcher.BeginInvoke(new Action(() =>
+            {
+                txtPreview.Document = UserInputPreviewDocumentBuilder.Build(buffer.PreviewText, buffer.InputText, buffer.ShowsDifference);
+            }));
         }
 
         void txtInput_PreviewKeyDown(object sender, KeyEventArgs e)

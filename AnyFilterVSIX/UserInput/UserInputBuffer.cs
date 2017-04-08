@@ -14,25 +14,26 @@ namespace lpubsppop01.AnyFilterVSIX
 
         public UserInputBuffer()
         {
-            InputText = "";
-            PreviewText = "";
+            UserInputText = "";
         }
 
         protected UserInputBuffer(UserInputBuffer src)
         {
-            InputText = src.InputText;
+            UserInputText = src.UserInputText;
             PreviewText = src.PreviewText;
+            ShowsDifference = src.ShowsDifference;
+            InputText = src.InputText;
         }
 
         #endregion
 
         #region Properties
 
-        string inputText;
-        public string InputText
+        string userInputText;
+        public string UserInputText
         {
-            get { return inputText; }
-            set { inputText = value; OnPropertyChanged(); }
+            get { return userInputText; }
+            set { userInputText = value; OnPropertyChanged(); }
         }
 
         string previewText;
@@ -40,6 +41,20 @@ namespace lpubsppop01.AnyFilterVSIX
         {
             get { return previewText; }
             set { previewText = value; OnPropertyChanged(); }
+        }
+
+        bool showsDifference;
+        public bool ShowsDifference
+        {
+            get { return showsDifference; }
+            set { showsDifference = value; OnPropertyChanged(); }
+        }
+
+        string inputText;
+        public string InputText
+        {
+            get { return inputText; }
+            set { inputText = value; OnPropertyChanged(); }
         }
 
         #endregion

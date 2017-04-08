@@ -192,23 +192,27 @@ namespace lpubsppop01.AnyFilterVSIX
                     var buffer = new UserInputBuffer();
                     buffer.PropertyChanged += (sender_, e_) =>
                     {
-                        if (e_.PropertyName != "InputText") return;
+                        if (e_.PropertyName != "UserInputText" && e_.PropertyName != "ShowsDifference") return;
                         if (!support.TryBegin()) return;
                         System.Threading.Tasks.Task.Factory.StartNew(async () =>
                         {
                             do
                             {
+                                var inputTextBuf = (buffer.InputText == null) ? new StringBuilder() : default(StringBuilder);
                                 var previewTextBuf = new StringBuilder();
                                 foreach (var span in targetSpans)
                                 {
-                                    previewTextBuf.Append(await FilterRunner.RunAsync(filter, span.GetText(), buffer.InputText));
+                                    string currInputText = span.GetText();
+                                    if (inputTextBuf != null) inputTextBuf.Append(currInputText);
+                                    previewTextBuf.Append(await FilterRunner.RunAsync(filter, currInputText, buffer.UserInputText));
                                 }
+                                if (buffer.InputText == null) buffer.InputText = inputTextBuf.ToString();
                                 buffer.PreviewText = previewTextBuf.ToString();
                             } while (support.TryContinue());
                             support.End();
                         });
                     };
-                    buffer.InputText = "";
+                    buffer.UserInputText = "";
                     var dialog = new UserInputWindow
                     {
                         DataContext = buffer,
@@ -221,7 +225,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     AnyFilterSettings.Current.UsesEmacsLikeKeybindings = dialog.UsesEmacsLikeKeybindings;
                     AnyFilterSettings.SaveCurrent();
                     if (!dialogResultIsOK) return;
-                    userInputText = buffer.InputText;
+                    userInputText = buffer.UserInputText;
                 }
 
                 // Edit text buffer

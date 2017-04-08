@@ -129,6 +129,9 @@
   <data name="Command" xml:space="preserve">
     <value>コマンド</value>
   </data>
+  <data name="Diff" xml:space="preserve">
+    <value>差分</value>
+  </data>
   <data name="InputEncoding" xml:space="preserve">
     <value>入力エンコーディング</value>
   </data>
@@ -162,7 +165,7 @@
   <data name="UseInputTemplateFile" xml:space="preserve">
     <value>入力テンプレートファイルを使用する</value>
   </data>
-  <data name="UserInput_InputTextHint" xml:space="preserve">
+  <data name="UserInput_UserInputTextHint" xml:space="preserve">
     <value>$(UserInput) はこのテキストに置換されます。Shift+Enter で改行します。</value>
   </data>
 </root>

@@ -97,6 +97,15 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         }
         
         /// <summary>
+        ///   Diff に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Diff {
+            get {
+                return ResourceManager.GetString("Diff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Input Encoding に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string InputEncoding {
@@ -198,9 +207,9 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         /// <summary>
         ///   $(UserInput) will be replaced by this text. Shift+Enter to newline. に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string UserInput_InputTextHint {
+        public static string UserInput_UserInputTextHint {
             get {
-                return ResourceManager.GetString("UserInput_InputTextHint", resourceCulture);
+                return ResourceManager.GetString("UserInput_UserInputTextHint", resourceCulture);
             }
         }
     }

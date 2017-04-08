@@ -157,6 +157,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UserInput\UserInputPreviewDocumentBuilder.cs" />
     <Compile Include="_MyLib\Converters\EnumToStringConverter.cs" />
     <Compile Include="_MyLib\Converters\NameToMyEncodingInfoConverter.cs" />
     <Compile Include="_MyLib\Converters\DoubleToMultipliedConverter.cs" />

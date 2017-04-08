@@ -129,6 +129,9 @@
   <data name="Command" xml:space="preserve">
     <value>Command</value>
   </data>
+  <data name="Diff" xml:space="preserve">
+    <value>Diff</value>
+  </data>
   <data name="InputEncoding" xml:space="preserve">
     <value>Input Encoding</value>
   </data>
@@ -162,7 +165,7 @@
   <data name="UseInputTemplateFile" xml:space="preserve">
     <value>Use input template file</value>
   </data>
-  <data name="UserInput_InputTextHint" xml:space="preserve">
+  <data name="UserInput_UserInputTextHint" xml:space="preserve">
     <value>$(UserInput) will be replaced by this text. Shift+Enter to newline.</value>
   </data>
 </root>
