@@ -61,6 +61,24 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         }
         
         /// <summary>
+        ///   About AnyFilter に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string AboutThisSoftware {
+            get {
+                return ResourceManager.GetString("AboutThisSoftware", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   About AnyFilter... に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string AboutThisSoftware_ {
+            get {
+                return ResourceManager.GetString("AboutThisSoftware_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Add に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Add {

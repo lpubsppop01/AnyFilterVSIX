@@ -184,6 +184,22 @@ namespace lpubsppop01.AnyFilterVSIX
                     forcesInsertsAfterCurrentLine = true;
                 }
 
+                // Get connected input text
+                string _inputText = null;
+                Func<string> getInputText = () =>
+                {
+                    if (_inputText == null)
+                    {
+                        var inputTextBuf = new StringBuilder();
+                        foreach (var span in targetSpans)
+                        {
+                            inputTextBuf.Append(span.GetText());
+                        }
+                        _inputText = inputTextBuf.ToString();
+                    }
+                    return _inputText;
+                };
+
                 // Get user input
                 string userInputText = "";
                 if (filter.ContainsVariable(FilterRunner.VariableName_UserInput, FilterRunner.VariableName_UserInputTempFilePath))
@@ -198,16 +214,12 @@ namespace lpubsppop01.AnyFilterVSIX
                         {
                             do
                             {
-                                var inputTextBuf = (buffer.InputText == null) ? new StringBuilder() : default(StringBuilder);
                                 var previewTextBuf = new StringBuilder();
                                 foreach (var span in targetSpans)
                                 {
-                                    string currInputText = span.GetText();
-                                    if (inputTextBuf != null) inputTextBuf.Append(currInputText);
-                                    previewTextBuf.Append(await FilterRunner.RunAsync(filter, currInputText, buffer.UserInputText));
+                                    previewTextBuf.Append(await FilterRunner.RunAsync(filter, span.GetText(), buffer.UserInputText));
                                 }
-                                if (buffer.InputText == null) buffer.InputText = inputTextBuf.ToString();
-                                buffer.PreviewText = previewTextBuf.ToString();
+                                buffer.PreviewDocument = new UserInputPreviewDocument(previewTextBuf.ToString(), buffer.ShowsDifference ? getInputText() : null);
                             } while (support.TryContinue());
                             support.End();
                         });

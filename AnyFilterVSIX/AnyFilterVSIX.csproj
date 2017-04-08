@@ -27,7 +27,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>lpubsppop01.AnyFilterVSIX</RootNamespace>
     <AssemblyName>AnyFilterVSIX</AssemblyName>
-    <SignAssembly>True</SignAssembly>
+    <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -52,6 +52,14 @@
     <RunRegRiched>true</RunRegRiched>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Diff.Match.Patch, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Diff.Match.Patch.2.0.1\lib\net45\Diff.Match.Patch.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharp.Core, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FSharp.Core.4.0.0.1\lib\net40\FSharp.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.ComponentModelHost, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.CoreUtility, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -157,7 +165,10 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UserInput\UserInputPreviewDocumentBuilder.cs" />
+    <Compile Include="Settings\AboutThisSoftwareWindow.xaml.cs">
+      <DependentUpon>AboutThisSoftwareWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserInput\UserInputPreviewDocument.cs" />
     <Compile Include="_MyLib\Converters\EnumToStringConverter.cs" />
     <Compile Include="_MyLib\Converters\NameToMyEncodingInfoConverter.cs" />
     <Compile Include="_MyLib\Converters\DoubleToMultipliedConverter.cs" />
@@ -211,6 +222,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="_Build\CopyBuildResult.ps1" />
     <None Include="_Build\IncrementBuildVersion.ps1" />
     <None Include="source.extension.vsixmanifest">
@@ -243,8 +255,16 @@
       <Link>LICENSE.txt</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="..\README.md">
+      <Link>README.md</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Settings\AboutThisSoftwareWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Settings\FilterAdditionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

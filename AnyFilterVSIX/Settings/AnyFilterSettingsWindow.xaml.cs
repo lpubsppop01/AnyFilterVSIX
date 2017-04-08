@@ -40,6 +40,16 @@ namespace lpubsppop01.AnyFilterVSIX
             ctrlFilters.OnWindowLocationChanged();
         }
 
+        void btnAboutThisSoftware_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new AboutThisSoftwareWindow
+            {
+                Owner = this,
+                WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner
+            };
+            dialog.ShowDialog();
+        }
+
         void btnOK_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;

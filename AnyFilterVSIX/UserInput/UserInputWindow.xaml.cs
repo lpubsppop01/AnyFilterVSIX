@@ -18,7 +18,7 @@ namespace lpubsppop01.AnyFilterVSIX
     /// <summary>
     /// Interaction logic for UserInputWindow.xaml
     /// </summary>
-    public partial class UserInputWindow : Window
+    partial class UserInputWindow : Window
     {
         #region Constructor
 
@@ -54,10 +54,10 @@ namespace lpubsppop01.AnyFilterVSIX
 
         void buffer_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName != "PreviewText") return;
+            if (e.PropertyName != "PreviewDocument") return;
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                txtPreview.Document = UserInputPreviewDocumentBuilder.Build(buffer.PreviewText, buffer.InputText, buffer.ShowsDifference);
+                txtPreview.Document = buffer.PreviewDocument.ToFlowDocument();
             }));
         }
 

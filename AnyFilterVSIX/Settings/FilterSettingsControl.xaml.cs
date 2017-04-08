@@ -56,6 +56,7 @@ namespace lpubsppop01.AnyFilterVSIX
             set
             {
                 lstMaster.ItemsSource = value;
+                if (value == null) return;
                 Dispatcher.BeginInvoke((Action)(() =>
                 {
                     lstMaster.SelectedValue = value.FirstOrDefault();

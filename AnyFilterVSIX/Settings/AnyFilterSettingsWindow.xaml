@@ -11,13 +11,16 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <local:FilterSettingsControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" x:Name="ctrlFilters" Margin="0,0,0,6"/>
+        <local:FilterSettingsControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" x:Name="ctrlFilters" Margin="0,0,0,6"/>
         <ComboBox Grid.Row="1" Grid.Column="0" Name="cmbCulture" Width="220"/>
-        <Button Grid.Row="1" Grid.Column="2" Name="btnOK" Click="btnOK_Click" Width="70" Content="{local:NameToResourceBinding OK}"/>
-        <Button Grid.Row="1" Grid.Column="3" Name="btnCancel" Click="btnCancel_Click" Width="70" Margin="6,0,0,0" Content="{local:NameToResourceBinding Cancel}"/>
+        <Button Grid.Row="1" Grid.Column="1" Name="btnAboutThisSoftware" Width="120" Margin="6,0,0,0" Content="{local:NameToResourceBinding AboutThisSoftware_}"
+                Click="btnAboutThisSoftware_Click"/>
+        <Button Grid.Row="1" Grid.Column="3" Name="btnOK" IsDefault="True" Click="btnOK_Click" Width="70" Content="{local:NameToResourceBinding OK}"/>
+        <Button Grid.Row="1" Grid.Column="4" Name="btnCancel" IsCancel="True" Click="btnCancel_Click" Width="70" Margin="6,0,0,0" Content="{local:NameToResourceBinding Cancel}"/>
     </Grid>
 </Window>

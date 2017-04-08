@@ -8,21 +8,13 @@ using System.Threading.Tasks;
 
 namespace lpubsppop01.AnyFilterVSIX
 {
-    public class UserInputBuffer : ICloneable, INotifyPropertyChanged
+    sealed class UserInputBuffer : INotifyPropertyChanged
     {
-        #region Constructors
+        #region Constructor
 
         public UserInputBuffer()
         {
             UserInputText = "";
-        }
-
-        protected UserInputBuffer(UserInputBuffer src)
-        {
-            UserInputText = src.UserInputText;
-            PreviewText = src.PreviewText;
-            ShowsDifference = src.ShowsDifference;
-            InputText = src.InputText;
         }
 
         #endregion
@@ -36,11 +28,11 @@ namespace lpubsppop01.AnyFilterVSIX
             set { userInputText = value; OnPropertyChanged(); }
         }
 
-        string previewText;
-        public string PreviewText
+        UserInputPreviewDocument previewDocument;
+        public UserInputPreviewDocument PreviewDocument
         {
-            get { return previewText; }
-            set { previewText = value; OnPropertyChanged(); }
+            get { return previewDocument; }
+            set { previewDocument = value; OnPropertyChanged(); }
         }
 
         bool showsDifference;
@@ -50,34 +42,13 @@ namespace lpubsppop01.AnyFilterVSIX
             set { showsDifference = value; OnPropertyChanged(); }
         }
 
-        string inputText;
-        public string InputText
-        {
-            get { return inputText; }
-            set { inputText = value; OnPropertyChanged(); }
-        }
-
-        #endregion
-
-        #region ICloneable Members
-
-        object ICloneable.Clone()
-        {
-            return Clone();
-        }
-
-        public UserInputBuffer Clone()
-        {
-            return new UserInputBuffer(this);
-        }
-
         #endregion
 
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             if (PropertyChanged != null)
             {
