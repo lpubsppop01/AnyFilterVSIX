@@ -144,6 +144,9 @@
   <data name="InsertOutputTextAfterCurrentLine" xml:space="preserve">
     <value>Insert output text after current line</value>
   </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
@@ -152,6 +155,9 @@
   </data>
   <data name="PassInputTextToStandardInput" xml:space="preserve">
     <value>Pass input text to standard input</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Previous</value>
   </data>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>

@@ -30,31 +30,80 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #region Convert
 
+        public class LineTag
+        {
+            #region Constructor
+
+            public LineTag(int lineIndex, bool hasDifferecne)
+            {
+                LineIndex = lineIndex;
+                HasDifference = hasDifferecne;
+            }
+
+            #endregion
+
+            #region Properties
+
+            public int LineIndex { get; private set; }
+            public bool HasDifference { get; private set; }
+
+            #endregion
+        }
+
         public FlowDocument ToFlowDocument()
         {
-            var previewDoc = new FlowDocument();
+            var previewDoc = new FlowDocument
+            {
+                PageWidth = 2000, // disable wrapping ref. http://stackoverflow.com/questions/1368047/c-wpf-disable-text-wrap-of-richtextbox
+                LineHeight = 1
+            };
             if (diffs != null)
             {
+                int iLine = 0;
+                bool lineHasDiff = false;
                 var para = new Paragraph();
                 foreach (var diff in diffs)
                 {
-                    var run = new Run(diff.Text);
-                    if (diff.Operation.IsInsert)
+                    bool isFirstSplitted = true;
+                    foreach (var splitted in diff.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
                     {
-                        run.TextDecorations.Add(TextDecorations.Underline);
+                        if (isFirstSplitted)
+                        {
+                            isFirstSplitted = false;
+                        }
+                        else
+                        {
+                            para.Tag = new LineTag(iLine++, lineHasDiff);
+                            previewDoc.Blocks.Add(para);
+                            lineHasDiff = false;
+                            para = new Paragraph();
+                        }
+
+                        var run = new Run(splitted);
+                        if (diff.Operation.IsInsert)
+                        {
+                            run.TextDecorations.Add(TextDecorations.Underline);
+                            lineHasDiff = true;
+                        }
+                        else if (diff.Operation.IsDelete)
+                        {
+                            run.Foreground = Brushes.Silver;
+                            run.TextDecorations.Add(TextDecorations.Strikethrough);
+                            lineHasDiff = true;
+                        }
+                        para.Inlines.Add(run);
                     }
-                    else if (diff.Operation.IsDelete)
-                    {
-                        run.Foreground = Brushes.Silver;
-                        run.TextDecorations.Add(TextDecorations.Strikethrough);
-                    }
-                    para.Inlines.Add(run);
                 }
+                para.Tag = new LineTag(iLine, lineHasDiff);
                 previewDoc.Blocks.Add(para);
             }
             else
             {
-                previewDoc.Blocks.Add(new Paragraph(new Run(previewText)));
+                int iLine = 0;
+                foreach (var line in previewText.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
+                {
+                    previewDoc.Blocks.Add(new Paragraph(new Run(line)) { Tag = new LineTag(iLine++, false) });
+                }
             }
             return previewDoc;
         }

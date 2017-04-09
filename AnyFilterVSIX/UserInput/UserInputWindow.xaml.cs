@@ -29,6 +29,61 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #endregion
 
+        #region Current Line
+
+        Paragraph currPara;
+
+        void ResetCurrentLine()
+        {
+            currPara = txtPreview.Document.Blocks.OfType<Paragraph>().FirstOrDefault();
+            if (currPara != null) currPara.BringIntoView();
+        }
+
+        void MoveToNextPreviousDifference(bool toPrev)
+        {
+            var currTag = currPara.Tag as UserInputPreviewDocument.LineTag;
+            if (currTag == null) return;
+
+            Func<Paragraph, bool> hasDifference = (para) =>
+            {
+                var tag = para.Tag as UserInputPreviewDocument.LineTag;
+                if (tag == null) return false;
+                return tag.HasDifference;
+            };
+            var paraQuery = toPrev
+                ? txtPreview.Document.Blocks.OfType<Paragraph>().Where(hasDifference).Reverse()
+                : txtPreview.Document.Blocks.OfType<Paragraph>().Where(hasDifference);
+            Paragraph destPara = null;
+            foreach (var para in paraQuery)
+            {
+                var tag = para.Tag as UserInputPreviewDocument.LineTag;
+                if (toPrev)
+                {
+                    if (tag.LineIndex >= currTag.LineIndex) continue;
+                }
+                else
+                {
+                    if (tag.LineIndex <= currTag.LineIndex) continue;
+                }
+                destPara = para;
+                break;
+            }
+            if (destPara == null)
+            {
+                destPara = paraQuery.FirstOrDefault(hasDifference);
+            }
+
+            if (destPara != null)
+            {
+                new TextRange(currPara.ElementStart, currPara.ElementEnd).ApplyPropertyValue(TextElement.BackgroundProperty, null);
+                currPara = destPara;
+                currPara.BringIntoView();
+                new TextRange(currPara.ElementStart, currPara.ElementEnd).ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.Yellow);
+            }
+        }
+
+        #endregion
+
         #region Event Handlers
 
         void this_Loaded(object sender, RoutedEventArgs e)
@@ -58,6 +113,7 @@ namespace lpubsppop01.AnyFilterVSIX
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 txtPreview.Document = buffer.PreviewDocument.ToFlowDocument();
+                ResetCurrentLine();
             }));
         }
 
@@ -74,6 +130,16 @@ namespace lpubsppop01.AnyFilterVSIX
         void txtInput_TextChanged(object sender, RoutedEventArgs e)
         {
             txtInputHint.Visibility = string.IsNullOrEmpty(txtInput.Text) ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        void btnNext_Click(object sender, RoutedEventArgs e)
+        {
+            MoveToNextPreviousDifference(toPrev: false);
+        }
+
+        void btnPrevious_Click(object sender, RoutedEventArgs e)
+        {
+            MoveToNextPreviousDifference(toPrev: true);
         }
 
         void btnOK_Click(object sender, RoutedEventArgs e)

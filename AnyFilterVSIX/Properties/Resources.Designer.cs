@@ -142,6 +142,15 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         }
         
         /// <summary>
+        ///   Next に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Next {
+            get {
+                return ResourceManager.GetString("Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   OK に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string OK {
@@ -165,6 +174,15 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         public static string PassInputTextToStandardInput {
             get {
                 return ResourceManager.GetString("PassInputTextToStandardInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Previous に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Previous {
+            get {
+                return ResourceManager.GetString("Previous", resourceCulture);
             }
         }
         

@@ -27,6 +27,8 @@
                    Height="{Binding ActualHeight, ElementName=txtInput}" Text="{local:NameToResourceBinding UserInput_UserInputTextHint}"/>
         <StackPanel Grid.Row="0" Grid.Column="1" Margin="6,0,0,0" Orientation="Horizontal" VerticalAlignment="Top">
             <CheckBox IsChecked="{Binding ShowsDifference}" Content="{local:NameToResourceBinding Diff}"/>
+            <Button Width="60" Margin="6,0,0,0" Click="btnPrevious_Click" Content="{local:NameToResourceBinding Previous}"/>
+            <Button Width="60" Margin="6,0,0,0" Click="btnNext_Click" Content="{local:NameToResourceBinding Next}"/>
         </StackPanel>
         <RichTextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Name="txtPreview"
                      IsReadOnly="True" Margin="0,6,0,0"
