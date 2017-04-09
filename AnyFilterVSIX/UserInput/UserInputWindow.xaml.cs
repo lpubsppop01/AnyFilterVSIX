@@ -29,58 +29,16 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #endregion
 
-        #region Current Line
+        #region Properties
 
-        Paragraph currPara;
-
-        void ResetCurrentLine()
+        public bool UsesEmacsLikeKeybindings
         {
-            currPara = txtPreview.Document.Blocks.OfType<Paragraph>().FirstOrDefault();
-            if (currPara != null) currPara.BringIntoView();
+            get { return (bool)GetValue(UsesEmacsLikeKeybindingsProperty); }
+            set { SetValue(UsesEmacsLikeKeybindingsProperty, value); }
         }
 
-        void MoveToNextPreviousDifference(bool toPrev)
-        {
-            var currTag = currPara.Tag as UserInputPreviewDocument.LineTag;
-            if (currTag == null) return;
-
-            Func<Paragraph, bool> hasDifference = (para) =>
-            {
-                var tag = para.Tag as UserInputPreviewDocument.LineTag;
-                if (tag == null) return false;
-                return tag.HasDifference;
-            };
-            var paraQuery = toPrev
-                ? txtPreview.Document.Blocks.OfType<Paragraph>().Where(hasDifference).Reverse()
-                : txtPreview.Document.Blocks.OfType<Paragraph>().Where(hasDifference);
-            Paragraph destPara = null;
-            foreach (var para in paraQuery)
-            {
-                var tag = para.Tag as UserInputPreviewDocument.LineTag;
-                if (toPrev)
-                {
-                    if (tag.LineIndex >= currTag.LineIndex) continue;
-                }
-                else
-                {
-                    if (tag.LineIndex <= currTag.LineIndex) continue;
-                }
-                destPara = para;
-                break;
-            }
-            if (destPara == null)
-            {
-                destPara = paraQuery.FirstOrDefault(hasDifference);
-            }
-
-            if (destPara != null)
-            {
-                new TextRange(currPara.ElementStart, currPara.ElementEnd).ApplyPropertyValue(TextElement.BackgroundProperty, null);
-                currPara = destPara;
-                currPara.BringIntoView();
-                new TextRange(currPara.ElementStart, currPara.ElementEnd).ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.Yellow);
-            }
-        }
+        public static readonly DependencyProperty UsesEmacsLikeKeybindingsProperty = DependencyProperty.Register(
+            "UsesEmacsLikeKeybindings", typeof(bool), typeof(UserInputWindow), new PropertyMetadata(false));
 
         #endregion
 
@@ -155,36 +113,6 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #endregion
 
-        #region Properties
-
-        public bool UsesEmacsLikeKeybindings
-        {
-            get { return (bool)GetValue(UsesEmacsLikeKeybindingsProperty); }
-            set { SetValue(UsesEmacsLikeKeybindingsProperty, value); }
-        }
-
-        public static readonly DependencyProperty UsesEmacsLikeKeybindingsProperty = DependencyProperty.Register(
-            "UsesEmacsLikeKeybindings", typeof(bool), typeof(UserInputWindow), new PropertyMetadata(false));
-
-        #endregion
-
-        #region Font Setting
-
-        public void SetFont(string fontName, int fontSizePt)
-        {
-            var fontSizeConverter = new FontSizeConverter();
-            double fontSizePx = (double)fontSizeConverter.ConvertFromString(string.Format("{0}pt", fontSizePt));
-
-            txtInput.FontFamily = new FontFamily(fontName);
-            txtInput.FontSize = fontSizePx;
-            txtInputHint.FontFamily = new FontFamily(fontName);
-            txtInputHint.FontSize = fontSizePx;
-            txtPreview.FontFamily = new FontFamily(fontName);
-            txtPreview.FontSize = fontSizePx;
-        }
-
-        #endregion
-
         #region Overrides
 
         MyTextEdit textEdit;
@@ -218,6 +146,78 @@ namespace lpubsppop01.AnyFilterVSIX
                 }
             }
             base.OnPreviewKeyDown(e);
+        }
+
+        #endregion
+
+        #region Font Setting
+
+        public void SetFont(string fontName, int fontSizePt)
+        {
+            var fontSizeConverter = new FontSizeConverter();
+            double fontSizePx = (double)fontSizeConverter.ConvertFromString(string.Format("{0}pt", fontSizePt));
+
+            txtInput.FontFamily = new FontFamily(fontName);
+            txtInput.FontSize = fontSizePx;
+            txtInputHint.FontFamily = new FontFamily(fontName);
+            txtInputHint.FontSize = fontSizePx;
+            txtPreview.FontFamily = new FontFamily(fontName);
+            txtPreview.FontSize = fontSizePx;
+        }
+
+        #endregion
+
+        #region Current Line Update
+
+        Paragraph currPara;
+
+        void ResetCurrentLine()
+        {
+            currPara = txtPreview.Document.Blocks.OfType<Paragraph>().FirstOrDefault();
+            if (currPara != null) currPara.BringIntoView();
+        }
+
+        void MoveToNextPreviousDifference(bool toPrev)
+        {
+            var currTag = currPara.Tag as UserInputPreviewDocument.LineTag;
+            if (currTag == null) return;
+
+            Func<Paragraph, bool> hasDifference = (para) =>
+            {
+                var tag = para.Tag as UserInputPreviewDocument.LineTag;
+                if (tag == null) return false;
+                return tag.HasDifference;
+            };
+            var paraQuery = toPrev
+                ? txtPreview.Document.Blocks.OfType<Paragraph>().Where(hasDifference).Reverse()
+                : txtPreview.Document.Blocks.OfType<Paragraph>().Where(hasDifference);
+            Paragraph destPara = null;
+            foreach (var para in paraQuery)
+            {
+                var tag = para.Tag as UserInputPreviewDocument.LineTag;
+                if (toPrev)
+                {
+                    if (tag.LineIndex >= currTag.LineIndex) continue;
+                }
+                else
+                {
+                    if (tag.LineIndex <= currTag.LineIndex) continue;
+                }
+                destPara = para;
+                break;
+            }
+            if (destPara == null)
+            {
+                destPara = paraQuery.FirstOrDefault(hasDifference);
+            }
+
+            if (destPara != null)
+            {
+                new TextRange(currPara.ElementStart, currPara.ElementEnd).ApplyPropertyValue(TextElement.BackgroundProperty, null);
+                currPara = destPara;
+                currPara.BringIntoView();
+                new TextRange(currPara.ElementStart, currPara.ElementEnd).ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.Yellow);
+            }
         }
 
         #endregion

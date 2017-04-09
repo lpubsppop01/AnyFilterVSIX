@@ -28,31 +28,6 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #endregion
 
-        #region Line Width
-
-        static double GetParagraphLengthPx(Paragraph para, double fontSizePx)
-        {
-            return para.Inlines.OfType<Run>().Select(r => GetStringLengthPx(r.Text, fontSizePx)).Sum();
-        }
-
-        static double GetStringLengthPx(string str, double fontSizePx)
-        {
-            double width = 0;
-            foreach (char c in str)
-            {
-                width += IsMultiByteChar(c) ? (double)fontSizePx : (double)fontSizePx / 2;
-            }
-            return width;
-        }
-
-        static bool IsMultiByteChar(char c)
-        {
-            int byteCount = MyEncodingInfo.UTF8_WithoutBOM.GetEncoding().GetByteCount(new[] { c });
-            return byteCount > 1;
-        }
-
-        #endregion
-
         #region Convert
 
         public class LineTag
@@ -128,6 +103,31 @@ namespace lpubsppop01.AnyFilterVSIX
             }
             previewDoc.PageWidth = previewDoc.Blocks.OfType<Paragraph>().Max(p => GetParagraphLengthPx(p, fontSizePx));
             return previewDoc;
+        }
+
+        #endregion
+
+        #region Line Length Calculation
+
+        static double GetParagraphLengthPx(Paragraph para, double fontSizePx)
+        {
+            return para.Inlines.OfType<Run>().Select(r => GetStringLengthPx(r.Text, fontSizePx)).Sum();
+        }
+
+        static double GetStringLengthPx(string str, double fontSizePx)
+        {
+            double width = 0;
+            foreach (char c in str)
+            {
+                width += IsMultiByteChar(c) ? (double)fontSizePx : (double)fontSizePx / 2;
+            }
+            return width;
+        }
+
+        static bool IsMultiByteChar(char c)
+        {
+            int byteCount = MyEncodingInfo.UTF8_WithoutBOM.GetEncoding().GetByteCount(new[] { c });
+            return byteCount > 1;
         }
 
         #endregion
