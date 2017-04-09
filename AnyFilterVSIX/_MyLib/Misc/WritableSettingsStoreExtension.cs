@@ -48,10 +48,25 @@ namespace lpubsppop01.AnyFilterVSIX
         public static T GetEnum<T>(this WritableSettingsStore settingsStore, string collectionPath, string propertyName, T defaultValue) where T : struct
         {
             var strValue = settingsStore.GetString(collectionPath, propertyName, "");
-            if (string.IsNullOrEmpty(strValue)) return default(T);
+            if (string.IsNullOrEmpty(strValue)) return defaultValue;
             T enumValue;
-            if (!Enum.TryParse<T>(strValue, out enumValue)) return default(T);
+            if (!Enum.TryParse<T>(strValue, out enumValue)) return defaultValue;
             return enumValue;
+        }
+
+        public static void SetNullableDouble(this WritableSettingsStore settingsStore, string collectionPath, string propertyName, double? value)
+        {
+            settingsStore.SetString(collectionPath, propertyName, value.HasValue ? value.Value.ToString() : "");
+        }
+
+        public static double? GetNullableDouble(this WritableSettingsStore settingsStore, string collectionPath, string propertyName, double? defaultValue)
+        {
+            var strValue = settingsStore.GetString(collectionPath, propertyName, "");
+            if (strValue == null) return defaultValue;
+            if (strValue == "") return null;
+            double doubleValue;
+            if (!double.TryParse(strValue, out doubleValue)) return defaultValue;
+            return doubleValue;
         }
     }
 }

@@ -205,7 +205,7 @@ namespace lpubsppop01.AnyFilterVSIX
                 if (filter.ContainsVariable(FilterRunner.VariableName_UserInput, FilterRunner.VariableName_UserInputTempFilePath))
                 {
                     var support = new RepeatedAsyncTaskSupport();
-                    var buffer = new UserInputBuffer();
+                    var buffer = new UserInputBuffer { ShowsDifference = filter.UserInputWindow_ShowsDifference };
                     buffer.PropertyChanged += (sender_, e_) =>
                     {
                         if (e_.PropertyName != "UserInputText" && e_.PropertyName != "ShowsDifference") return;
@@ -229,9 +229,12 @@ namespace lpubsppop01.AnyFilterVSIX
                     {
                         DataContext = buffer,
                         WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                        UsesEmacsLikeKeybindings = AnyFilterSettings.Current.UsesEmacsLikeKeybindings
+                        UsesEmacsLikeKeybindings = AnyFilterSettings.Current.UsesEmacsLikeKeybindings,
                     };
-                    dialog.MoveToNextPreviousDifferenceDone += (sender_, e_) => {
+                    if (filter.UserInputWindow_Width.HasValue) dialog.Width = filter.UserInputWindow_Width.Value;
+                    if (filter.UserInputWindow_Height.HasValue) dialog.Height = filter.UserInputWindow_Height.Value;
+                    dialog.MoveToNextPreviousDifferenceDone += (sender_, e_) =>
+                    {
                         // ref. http://stackoverflow.com/questions/6186925/visual-studio-extensibility-move-to-line-in-a-textdocument
                         var startLine = wpfTextView.VisualSnapshot.GetLineFromPosition(targetSpans.First().Start.Position);
                         if (startLine == null) return;
@@ -246,6 +249,9 @@ namespace lpubsppop01.AnyFilterVSIX
                     dialog.Title = "AnyFilter " + filter.Title;
                     dialog.SetFont(textEditorFontName, textEditorFontSizePt);
                     bool dialogResultIsOK = dialog.ShowDialog() ?? false;
+                    filter.UserInputWindow_ShowsDifference = buffer.ShowsDifference;
+                    filter.UserInputWindow_Width = dialog.ActualWidth;
+                    filter.UserInputWindow_Height = dialog.ActualHeight;
                     AnyFilterSettings.Current.UsesEmacsLikeKeybindings = dialog.UsesEmacsLikeKeybindings;
                     AnyFilterSettings.SaveCurrent();
                     if (!dialogResultIsOK) return;
