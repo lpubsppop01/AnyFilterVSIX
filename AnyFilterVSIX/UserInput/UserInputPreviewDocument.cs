@@ -28,6 +28,31 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #endregion
 
+        #region Line Width
+
+        static double GetParagraphLengthPx(Paragraph para, double fontSizePx)
+        {
+            return para.Inlines.OfType<Run>().Select(r => GetStringLengthPx(r.Text, fontSizePx)).Sum();
+        }
+
+        static double GetStringLengthPx(string str, double fontSizePx)
+        {
+            double width = 0;
+            foreach (char c in str)
+            {
+                width += IsMultiByteChar(c) ? (double)fontSizePx : (double)fontSizePx / 2;
+            }
+            return width;
+        }
+
+        static bool IsMultiByteChar(char c)
+        {
+            int byteCount = MyEncodingInfo.UTF8_WithoutBOM.GetEncoding().GetByteCount(new[] { c });
+            return byteCount > 1;
+        }
+
+        #endregion
+
         #region Convert
 
         public class LineTag
@@ -50,13 +75,9 @@ namespace lpubsppop01.AnyFilterVSIX
             #endregion
         }
 
-        public FlowDocument ToFlowDocument()
+        public FlowDocument ToFlowDocument(double fontSizePx)
         {
-            var previewDoc = new FlowDocument
-            {
-                PageWidth = 2000, // disable wrapping ref. http://stackoverflow.com/questions/1368047/c-wpf-disable-text-wrap-of-richtextbox
-                LineHeight = 1
-            };
+            var previewDoc = new FlowDocument { LineHeight = fontSizePx * 0.1 };
             if (diffs != null)
             {
                 int iLine = 0;
@@ -105,6 +126,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     previewDoc.Blocks.Add(new Paragraph(new Run(line)) { Tag = new LineTag(iLine++, false) });
                 }
             }
+            previewDoc.PageWidth = previewDoc.Blocks.OfType<Paragraph>().Max(p => GetParagraphLengthPx(p, fontSizePx));
             return previewDoc;
         }
 

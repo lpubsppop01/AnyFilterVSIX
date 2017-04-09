@@ -112,7 +112,7 @@ namespace lpubsppop01.AnyFilterVSIX
             if (e.PropertyName != "PreviewDocument") return;
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                txtPreview.Document = buffer.PreviewDocument.ToFlowDocument();
+                txtPreview.Document = buffer.PreviewDocument.ToFlowDocument(txtPreview.FontSize);
                 ResetCurrentLine();
             }));
         }
