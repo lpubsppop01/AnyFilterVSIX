@@ -42,6 +42,41 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #endregion
 
+        #region Events
+
+        public class MoveToNextPreviousDoneDifferenceEventArgs : EventArgs
+        {
+            #region Constructor
+
+            public MoveToNextPreviousDoneDifferenceEventArgs(int lineIndex)
+            {
+                LineIndex = lineIndex;
+            }
+
+            #endregion
+
+            #region Properties
+
+            public int LineIndex { get; private set; }
+
+            #endregion
+        }
+
+        public event EventHandler<MoveToNextPreviousDoneDifferenceEventArgs> MoveToNextPreviousDifferenceDone;
+
+        protected void OnMoveToNextPreviousDifferenceDone()
+        {
+            if (MoveToNextPreviousDifferenceDone != null)
+            {
+                if (currPara == null) return;
+                var currTag = currPara.Tag as UserInputPreviewDocument.LineTag;
+                if (currTag == null) return;
+                MoveToNextPreviousDifferenceDone(this, new MoveToNextPreviousDoneDifferenceEventArgs(currTag.LineIndex));
+            }
+        }
+
+        #endregion
+
         #region Event Handlers
 
         void this_Loaded(object sender, RoutedEventArgs e)
@@ -217,6 +252,7 @@ namespace lpubsppop01.AnyFilterVSIX
                 currPara = destPara;
                 currPara.BringIntoView();
                 new TextRange(currPara.ElementStart, currPara.ElementEnd).ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.Yellow);
+                OnMoveToNextPreviousDifferenceDone();
             }
         }
 

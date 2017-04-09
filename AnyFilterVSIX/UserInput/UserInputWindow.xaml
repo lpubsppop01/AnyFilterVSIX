@@ -35,8 +35,10 @@
                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
         <DockPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,0,0" LastChildFill="False">
             <CheckBox IsChecked="{Binding UsesEmacsLikeKeybindings, ElementName=this}" Content="{local:NameToResourceBinding UseEmacsLikeKeybindings}"/>
-            <Button DockPanel.Dock="Right" Name="btnCancel" IsCancel="True" Click="btnCancel_Click" Width="70" Margin="6,0,0,0" Content="{local:NameToResourceBinding Cancel}"/>
-            <Button DockPanel.Dock="Right" Name="btnOK" IsDefault="True" Click="btnOK_Click" Width="70" Content="{local:NameToResourceBinding OK}"/>
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <Button Name="btnOK" IsDefault="True" Click="btnOK_Click" Width="70" Content="{local:NameToResourceBinding OK}"/>
+                <Button Name="btnCancel" IsCancel="True" Click="btnCancel_Click" Width="70" Margin="6,0,0,0" Content="{local:NameToResourceBinding Cancel}"/>
+            </StackPanel>
         </DockPanel>
     </Grid>
 </Window>

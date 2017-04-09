@@ -231,6 +231,18 @@ namespace lpubsppop01.AnyFilterVSIX
                         WindowStartupLocation = WindowStartupLocation.CenterScreen,
                         UsesEmacsLikeKeybindings = AnyFilterSettings.Current.UsesEmacsLikeKeybindings
                     };
+                    dialog.MoveToNextPreviousDifferenceDone += (sender_, e_) => {
+                        // ref. http://stackoverflow.com/questions/6186925/visual-studio-extensibility-move-to-line-in-a-textdocument
+                        var startLine = wpfTextView.VisualSnapshot.GetLineFromPosition(targetSpans.First().Start.Position);
+                        if (startLine == null) return;
+                        int lineNumber = e_.LineIndex + startLine.LineNumber;
+                        var targetLine = wpfTextView.VisualSnapshot.Lines.FirstOrDefault(l => l.LineNumber == lineNumber);
+                        if (targetLine == null) return;
+                        var span = Span.FromBounds(targetLine.Start.Position, targetLine.End.Position);
+                        var snapshotSpan = new SnapshotSpan(wpfTextView.TextSnapshot, span);
+                        wpfTextView.ViewScroller.EnsureSpanVisible(snapshotSpan);
+                        wpfTextView.Caret.MoveTo(snapshotSpan.Start);
+                    };
                     dialog.Title = "AnyFilter " + filter.Title;
                     dialog.SetFont(textEditorFontName, textEditorFontSizePt);
                     bool dialogResultIsOK = dialog.ShowDialog() ?? false;
