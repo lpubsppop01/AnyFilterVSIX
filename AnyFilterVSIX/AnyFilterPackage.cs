@@ -179,9 +179,16 @@ namespace lpubsppop01.AnyFilterVSIX
                 }
                 if (!targetSpans.Any())
                 {
-                    var currLine = wpfTextView.TextViewLines.GetTextViewLineContainingBufferPosition(wpfTextView.Caret.Position.BufferPosition);
-                    targetSpans.Add(currLine.Extent);
-                    forcesInsertsAfterCurrentLine = true;
+                    if (filter.NoSelectionMeaning == NoSelectionMeaning.CurrentLine)
+                    {
+                        var currLine = wpfTextView.TextViewLines.GetTextViewLineContainingBufferPosition(wpfTextView.Caret.Position.BufferPosition);
+                        targetSpans.Add(currLine.Extent);
+                        forcesInsertsAfterCurrentLine = true;
+                    }
+                    else if (filter.NoSelectionMeaning == NoSelectionMeaning.WholeDocument)
+                    {
+                        targetSpans.Add(new SnapshotSpan(wpfTextView.VisualSnapshot, new Span(0, wpfTextView.VisualSnapshot.Length)));
+                    }
                 }
 
                 // Get connected input text

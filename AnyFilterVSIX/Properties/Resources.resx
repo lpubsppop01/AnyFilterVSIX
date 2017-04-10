@@ -135,8 +135,14 @@
   <data name="Command" xml:space="preserve">
     <value>Command</value>
   </data>
+  <data name="CurrentLine" xml:space="preserve">
+    <value>Current Line</value>
+  </data>
   <data name="Diff" xml:space="preserve">
     <value>Diff</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>Empty</value>
   </data>
   <data name="InputEncoding" xml:space="preserve">
     <value>Input Encoding</value>
@@ -146,6 +152,9 @@
   </data>
   <data name="Next" xml:space="preserve">
     <value>Next</value>
+  </data>
+  <data name="NoSelectionMeans" xml:space="preserve">
+    <value>No selection means</value>
   </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
@@ -179,5 +188,8 @@
   </data>
   <data name="UserInput_UserInputTextHint" xml:space="preserve">
     <value>$(UserInput) will be replaced by this text. Shift+Enter to newline.</value>
+  </data>
+  <data name="WholeDocument" xml:space="preserve">
+    <value>Whole Document</value>
   </data>
 </root>

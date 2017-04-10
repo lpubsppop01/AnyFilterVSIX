@@ -115,11 +115,29 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         }
         
         /// <summary>
+        ///   Current Line に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string CurrentLine {
+            get {
+                return ResourceManager.GetString("CurrentLine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Diff に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Diff {
             get {
                 return ResourceManager.GetString("Diff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Empty に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Empty {
+            get {
+                return ResourceManager.GetString("Empty", resourceCulture);
             }
         }
         
@@ -147,6 +165,15 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         public static string Next {
             get {
                 return ResourceManager.GetString("Next", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   No selection means に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string NoSelectionMeans {
+            get {
+                return ResourceManager.GetString("NoSelectionMeans", resourceCulture);
             }
         }
         
@@ -246,6 +273,15 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         public static string UserInput_UserInputTextHint {
             get {
                 return ResourceManager.GetString("UserInput_UserInputTextHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Whole Document に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string WholeDocument {
+            get {
+                return ResourceManager.GetString("WholeDocument", resourceCulture);
             }
         }
     }
