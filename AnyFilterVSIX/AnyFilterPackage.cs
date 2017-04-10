@@ -205,6 +205,7 @@ namespace lpubsppop01.AnyFilterVSIX
                 if (filter.ContainsVariable(FilterRunner.VariableName_UserInput, FilterRunner.VariableName_UserInputTempFilePath))
                 {
                     var support = new RepeatedAsyncTaskSupport();
+                    int tabSize = wpfTextView.Options.GetOptionValue(DefaultOptions.TabSizeOptionId);
                     var buffer = new UserInputBuffer { ShowsDifference = filter.UserInputWindow_ShowsDifference };
                     buffer.PropertyChanged += (sender_, e_) =>
                     {
@@ -219,7 +220,7 @@ namespace lpubsppop01.AnyFilterVSIX
                                 {
                                     previewTextBuf.Append(await FilterRunner.RunAsync(filter, span.GetText(), buffer.UserInputText));
                                 }
-                                buffer.PreviewDocument = new UserInputPreviewDocument(previewTextBuf.ToString(), buffer.ShowsDifference ? getInputText() : null);
+                                buffer.PreviewDocument = new UserInputPreviewDocument(previewTextBuf.ToString(), tabSize, buffer.ShowsDifference ? getInputText() : null);
                             } while (support.TryContinue());
                             support.End();
                         });

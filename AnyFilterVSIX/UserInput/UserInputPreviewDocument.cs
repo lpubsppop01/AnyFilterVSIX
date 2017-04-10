@@ -14,11 +14,13 @@ namespace lpubsppop01.AnyFilterVSIX
         #region Constructor
 
         string previewText;
+        int tabSize;
         IList<DiffMatchPatch.Diff> diffs;
 
-        public UserInputPreviewDocument(string previewText, string inputText)
+        public UserInputPreviewDocument(string previewText, int tabSize, string inputText)
         {
             this.previewText = previewText;
+            this.tabSize = tabSize;
             if (inputText != null)
             {
                 var dmp = DiffMatchPatch.DiffMatchPatchModule.Default;
@@ -53,6 +55,7 @@ namespace lpubsppop01.AnyFilterVSIX
         public FlowDocument ToFlowDocument(double fontSizePx)
         {
             var previewDoc = new FlowDocument { LineHeight = fontSizePx * 0.1 };
+            string tabSizeSpaces = string.Concat((Enumerable.Repeat(' ', tabSize)));
             if (diffs != null)
             {
                 int iLine = 0;
@@ -60,8 +63,9 @@ namespace lpubsppop01.AnyFilterVSIX
                 var para = new Paragraph();
                 foreach (var diff in diffs)
                 {
+                    string untabified = diff.Text.Replace("\t", tabSizeSpaces);
                     bool isFirstSplitted = true;
-                    foreach (var splitted in diff.Text.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
+                    foreach (var splitted in untabified.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
                     {
                         if (isFirstSplitted)
                         {
@@ -98,7 +102,8 @@ namespace lpubsppop01.AnyFilterVSIX
                 int iLine = 0;
                 foreach (var line in previewText.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
                 {
-                    previewDoc.Blocks.Add(new Paragraph(new Run(line)) { Tag = new LineTag(iLine++, false) });
+                    string untabified = line.Replace("\t", tabSizeSpaces);
+                    previewDoc.Blocks.Add(new Paragraph(new Run(untabified)) { Tag = new LineTag(iLine++, false) });
                 }
             }
             previewDoc.PageWidth = previewDoc.Blocks.OfType<Paragraph>().Max(p => GetParagraphLengthPx(p, fontSizePx));
