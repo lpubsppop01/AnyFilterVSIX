@@ -172,20 +172,22 @@ namespace lpubsppop01.AnyFilterVSIX
 
                 // Get target spans
                 var targetSpans = new List<SnapshotSpan>();
-                bool forcesInsertsAfterCurrentLine = false;
                 foreach (var span in wpfTextView.Selection.SelectedSpans.Where(s => s.Length > 0))
                 {
                     targetSpans.Add(span);
                 }
                 if (!targetSpans.Any())
                 {
-                    if (filter.NoSelectionMeaning == NoSelectionMeaning.CurrentLine)
+                    if (filter.TargetForNoSelection == TargetForNoSelection.CaretPosition)
+                    {
+                        targetSpans.Add(new SnapshotSpan(wpfTextView.VisualSnapshot, new Span(wpfTextView.Caret.Position.BufferPosition, 0)));
+                    }
+                    else if (filter.TargetForNoSelection == TargetForNoSelection.CurrentLine)
                     {
                         var currLine = wpfTextView.TextViewLines.GetTextViewLineContainingBufferPosition(wpfTextView.Caret.Position.BufferPosition);
                         targetSpans.Add(currLine.Extent);
-                        forcesInsertsAfterCurrentLine = true;
                     }
-                    else if (filter.NoSelectionMeaning == NoSelectionMeaning.WholeDocument)
+                    else if (filter.TargetForNoSelection == TargetForNoSelection.WholeDocument)
                     {
                         targetSpans.Add(new SnapshotSpan(wpfTextView.VisualSnapshot, new Span(0, wpfTextView.VisualSnapshot.Length)));
                     }
@@ -271,7 +273,7 @@ namespace lpubsppop01.AnyFilterVSIX
                 foreach (var span in targetSpans)
                 {
                     string resultText = FilterRunner.Run(filter, span.GetText(), userInputText);
-                    if (filter.InsertsAfterCurrentLine || forcesInsertsAfterCurrentLine)
+                    if (filter.InsertsAfterCurrentLine)
                     {
                         var currLine = wpfTextView.TextViewLines.GetTextViewLineContainingBufferPosition(span.End);
                         textEdit.Insert(currLine.End, Environment.NewLine + resultText);

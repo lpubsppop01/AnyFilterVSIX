@@ -132,8 +132,14 @@
   <data name="Cancel" xml:space="preserve">
     <value>キャンセル</value>
   </data>
+  <data name="CaretPosition" xml:space="preserve">
+    <value>キャレット位置（長さ 0）</value>
+  </data>
   <data name="Command" xml:space="preserve">
     <value>コマンド</value>
+  </data>
+  <data name="CurrentLine" xml:space="preserve">
+    <value>現在行</value>
   </data>
   <data name="Diff" xml:space="preserve">
     <value>差分</value>
@@ -168,6 +174,9 @@
   <data name="Settings_TemplateFilePathHint" xml:space="preserve">
     <value>$(InputText), $(UserInput) をテンプレートファイルの内容に使用できます。</value>
   </data>
+  <data name="TargetForNoSelection" xml:space="preserve">
+    <value>選択なしのときの対象</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>タイトル</value>
   </data>
@@ -179,5 +188,8 @@
   </data>
   <data name="UserInput_UserInputTextHint" xml:space="preserve">
     <value>$(UserInput) はこのテキストに置換されます。Shift+Enter で改行します。</value>
+  </data>
+  <data name="WholeDocument" xml:space="preserve">
+    <value>ドキュメント全体</value>
   </data>
 </root>

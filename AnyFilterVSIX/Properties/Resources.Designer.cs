@@ -106,6 +106,15 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         }
         
         /// <summary>
+        ///   Caret Position (0-Length) に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string CaretPosition {
+            get {
+                return ResourceManager.GetString("CaretPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Command に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Command {
@@ -133,15 +142,6 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         }
         
         /// <summary>
-        ///   Empty に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string Empty {
-            get {
-                return ResourceManager.GetString("Empty", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Input Encoding に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string InputEncoding {
@@ -165,15 +165,6 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         public static string Next {
             get {
                 return ResourceManager.GetString("Next", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   No selection means に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string NoSelectionMeans {
-            get {
-                return ResourceManager.GetString("NoSelectionMeans", resourceCulture);
             }
         }
         
@@ -237,6 +228,15 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         public static string Settings_TemplateFilePathHint {
             get {
                 return ResourceManager.GetString("Settings_TemplateFilePathHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Target for No Selection に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TargetForNoSelection {
+            get {
+                return ResourceManager.GetString("TargetForNoSelection", resourceCulture);
             }
         }
         

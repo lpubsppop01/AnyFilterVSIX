@@ -28,7 +28,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.Title = "Mono C# Script";
                     filter.Command = "cmd";
                     filter.Arguments = string.Format(@"/c ""C:\Program Files (x86)\Mono\bin\csharp.bat"" {0}", FilterRunner.VariableName_InputTempFilePath);
-                    filter.NoSelectionMeaning = NoSelectionMeaning.CurrentLine;
+                    filter.TargetForNoSelection = TargetForNoSelection.CurrentLine;
                     filter.InsertsAfterCurrentLine = true;
                     break;
                 case PresetFilterID.CygwinBash:
@@ -38,7 +38,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.InputNewLineKind = MyNewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
-                    filter.NoSelectionMeaning = NoSelectionMeaning.WholeDocument;
+                    filter.TargetForNoSelection = TargetForNoSelection.WholeDocument;
                     filter.TemplateFilePath = Path.Combine(GetTemplateDirectoryPath(), "CygwinBashTemplate.txt");
                     filter.UsesTemplateFile = true;
                     break;
@@ -50,7 +50,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.InputNewLineKind = MyNewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
-                    filter.NoSelectionMeaning = NoSelectionMeaning.WholeDocument;
+                    filter.TargetForNoSelection = TargetForNoSelection.WholeDocument;
                     filter.PassesInputTextToStandardInput = true;
                     break;
             }
