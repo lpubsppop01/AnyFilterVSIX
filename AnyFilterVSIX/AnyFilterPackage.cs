@@ -173,24 +173,28 @@ namespace lpubsppop01.AnyFilterVSIX
 
                 // Get target spans
                 var targetSpans = new List<SnapshotSpan>();
-                bool ensuresTargetSpanVisible = false;
+                SnapshotSpan? snapshotSpanToVisible = null;
                 foreach (var span in wpfTextView.Selection.SelectedSpans.Where(s => s.Length > 0))
                 {
                     targetSpans.Add(span);
-                    ensuresTargetSpanVisible = true;
                 }
-                if (!targetSpans.Any())
+                if (targetSpans.Any())
+                {
+                    snapshotSpanToVisible = targetSpans.First();
+                }
+                else
                 {
                     if (filter.TargetForNoSelection == TargetForNoSelection.CaretPosition)
                     {
                         targetSpans.Add(new SnapshotSpan(wpfTextView.VisualSnapshot, new Span(wpfTextView.Caret.Position.BufferPosition, 0)));
-                        ensuresTargetSpanVisible = true;
+                        var currLine = wpfTextView.TextViewLines.GetTextViewLineContainingBufferPosition(wpfTextView.Caret.Position.BufferPosition);
+                        snapshotSpanToVisible = currLine.Extent;
                     }
                     else if (filter.TargetForNoSelection == TargetForNoSelection.CurrentLine)
                     {
                         var currLine = wpfTextView.TextViewLines.GetTextViewLineContainingBufferPosition(wpfTextView.Caret.Position.BufferPosition);
                         targetSpans.Add(currLine.Extent);
-                        ensuresTargetSpanVisible = true;
+                        snapshotSpanToVisible = currLine.Extent;
                     }
                     else if (filter.TargetForNoSelection == TargetForNoSelection.WholeDocument)
                     {
@@ -254,9 +258,9 @@ namespace lpubsppop01.AnyFilterVSIX
                     dialog.Title = "AnyFilter " + filter.Title;
                     dialog.SetPosition(wpfTextView.VisualElement);
                     dialog.SetFont(textEditorFontName, textEditorFontSizePt);
-                    if (ensuresTargetSpanVisible)
+                    if (snapshotSpanToVisible.HasValue)
                     {
-                        wpfTextView.ViewScroller.EnsureSpanVisible(targetSpans.First(), EnsureSpanVisibleOptions.AlwaysCenter);
+                        wpfTextView.ViewScroller.EnsureSpanVisible(snapshotSpanToVisible.Value, EnsureSpanVisibleOptions.AlwaysCenter);
                     }
                     bool dialogResultIsOK = dialog.ShowDialog() ?? false;
                     filter.UserInputWindow_ShowsDifference = buffer.ShowsDifference;
