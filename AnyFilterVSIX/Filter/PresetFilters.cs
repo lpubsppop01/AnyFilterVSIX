@@ -35,7 +35,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.Title = "Cygwin bash";
                     filter.Command = @"C:\cygwin64\bin\bash.exe";
                     filter.Arguments = string.Format(@"-lc ""$(cygpath -u '{0}')""", FilterRunner.VariableName_InputTempFilePath);
-                    filter.InputNewLineKind = MyNewLineKind.LF;
+                    filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.TargetForNoSelection = TargetForNoSelection.WholeDocument;
@@ -47,7 +47,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.Command = @"C:\cygwin64\bin\bash.exe";
                     // unescaped: -lc "sed -f \"$(cygpath -u '$(UserInputTempFilePath)')\""
                     filter.Arguments = string.Format(@"-lc ""sed -f \""$(cygpath -u '{0}')\""""", FilterRunner.VariableName_UserInputTempFilePath);
-                    filter.InputNewLineKind = MyNewLineKind.LF;
+                    filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.TargetForNoSelection = TargetForNoSelection.WholeDocument;
@@ -62,7 +62,7 @@ namespace lpubsppop01.AnyFilterVSIX
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "AnyFilterVSIX");
         }
 
-        public static bool TryCreateTemplateFile(PresetFilterID presetID, string filePath, string encodingName, MyNewLineKind newLineKind)
+        public static bool TryCreateTemplateFile(PresetFilterID presetID, string filePath, string encodingName, NewLineKind newLineKind)
         {
             try
             {

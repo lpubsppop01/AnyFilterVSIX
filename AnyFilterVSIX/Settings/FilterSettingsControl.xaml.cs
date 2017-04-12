@@ -35,7 +35,7 @@ namespace lpubsppop01.AnyFilterVSIX
             cmbInputEncoding.SetBinding(ComboBox.SelectedValueProperty, new Binding("SelectedValue.InputEncodingName") {
                 ElementName = "lstMaster", Converter = new NameToMyEncodingInfoConverter(encodings)
             });
-            cmbInputNewLineKind.ItemsSource = Enum.GetValues(typeof(MyNewLineKind));
+            cmbInputNewLineKind.ItemsSource = Enum.GetValues(typeof(NewLineKind));
             cmbInputNewLineKind.SetBinding(ComboBox.SelectedValueProperty, new Binding("SelectedValue.InputNewLineKind") {
                 ElementName = "lstMaster", Converter = new EnumToStringConverter()
             });

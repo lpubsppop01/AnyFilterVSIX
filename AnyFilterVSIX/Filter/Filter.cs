@@ -30,7 +30,7 @@ namespace lpubsppop01.AnyFilterVSIX
             Title = "";
             Command = "";
             Arguments = "";
-            InputNewLineKind = MyNewLineKind.CRLF;
+            InputNewLineKind = NewLineKind.CRLF;
             InputEncodingName = Encoding.Default.WebName;
             OutputEncodingName = Encoding.Default.WebName;
             TargetForNoSelection = TargetForNoSelection.CaretPosition;
@@ -94,8 +94,8 @@ namespace lpubsppop01.AnyFilterVSIX
             set { arguments = value; OnPropertyChanged(); }
         }
 
-        MyNewLineKind inputNewLineKind;
-        public MyNewLineKind InputNewLineKind
+        NewLineKind inputNewLineKind;
+        public NewLineKind InputNewLineKind
         {
             get { return inputNewLineKind; }
             set { inputNewLineKind = value; OnPropertyChanged(); }
@@ -227,7 +227,7 @@ namespace lpubsppop01.AnyFilterVSIX
                 Title = settingsStore.GetString(collectionPath, "Title", ""),
                 Command = settingsStore.GetString(collectionPath, "Command", ""),
                 Arguments = settingsStore.GetString(collectionPath, "Arguments", ""),
-                InputNewLineKind = settingsStore.GetEnum(collectionPath, "InputNewLineKind", default(MyNewLineKind)),
+                InputNewLineKind = settingsStore.GetEnum(collectionPath, "InputNewLineKind", default(NewLineKind)),
                 InputEncodingName = settingsStore.GetString(collectionPath, "InputEncodingName", Encoding.Default.WebName),
                 OutputEncodingName = settingsStore.GetString(collectionPath, "OutputEncodingName", Encoding.Default.WebName),
                 TargetForNoSelection = settingsStore.GetEnum<TargetForNoSelection>(collectionPath, "TargetForNoSelection", TargetForNoSelection.CaretPosition),

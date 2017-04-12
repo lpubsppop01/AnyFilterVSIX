@@ -175,7 +175,7 @@
     <Compile Include="_MyLib\i18n\MyCultureInfo.cs" />
     <Compile Include="i18n\NameToResourceBinding.cs" />
     <Compile Include="_MyLib\Encodings\MyEncoding.cs" />
-    <Compile Include="_MyLib\Encodings\MyNewLine.cs" />
+    <Compile Include="_MyLib\Encodings\NewLineUtility.cs" />
     <Compile Include="Filter\PresetFilters.cs" />
     <Compile Include="_MyLib\i18n\NameToResourceBindingSource.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

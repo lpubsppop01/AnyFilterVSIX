@@ -63,7 +63,7 @@ namespace lpubsppop01.AnyFilterVSIX
 
         static void Prepare(Filter filter, string inputText, string userInputText, out string actualInputText, out string actualUserInputText, out string userInputTempFilePath)
         {
-            actualUserInputText = ConvertNewLineFromEnvironment(userInputText, filter.InputNewLineKind);
+            actualUserInputText = userInputText.ConvertNewLineFromEnvironment(filter.InputNewLineKind);
             userInputTempFilePath = null;
             if (filter.ContainsVariable(VariableName_UserInputTempFilePath))
             {
@@ -160,19 +160,19 @@ namespace lpubsppop01.AnyFilterVSIX
                 .Replace(VariableName_UserInputTempFilePath, userInputTempFilePath);
         }
 
-        static string BuildActualInputText(string inputText, string userInputText, string userInputTempFilePath, string templateFilePath, Encoding encoding, MyNewLineKind newLineKind)
+        static string BuildActualInputText(string inputText, string userInputText, string userInputTempFilePath, string templateFilePath, Encoding encoding, NewLineKind newLineKind)
         {
             try
             {
                 using (var reader = new StreamReader(templateFilePath, encoding))
                 {
                     string templateText = reader.ReadToEnd();
-                    templateText = ConvertNewLineToEnvironment(templateText, newLineKind);
+                    templateText = templateText.ConvertNewLineToEnvironment(newLineKind);
                     string actualInputText = templateText
                         .Replace(VariableName_InputText, inputText)
                         .Replace(VariableName_UserInput, userInputText)
                         .Replace(VariableName_UserInputTempFilePath, userInputTempFilePath);
-                    actualInputText = ConvertNewLineFromEnvironment(actualInputText, newLineKind);
+                    actualInputText = actualInputText.ConvertNewLineFromEnvironment(newLineKind);
                     return actualInputText;
                 }
             }
@@ -192,24 +192,6 @@ namespace lpubsppop01.AnyFilterVSIX
             if (iLastNewLine == -1) return src;
             if (src.Substring(iLastNewLine) != Environment.NewLine) return src;
             return src.Substring(0, iLastNewLine);
-        }
-
-        static string ConvertNewLineToEnvironment(string src, MyNewLineKind newLineKind)
-        {
-            if (newLineKind.ToNewLineString() != Environment.NewLine)
-            {
-                return src.Replace(newLineKind.ToNewLineString(), Environment.NewLine);
-            }
-            return src;
-        }
-
-        static string ConvertNewLineFromEnvironment(string src, MyNewLineKind newLineKind)
-        {
-            if (newLineKind.ToNewLineString() != Environment.NewLine)
-            {
-                return src.Replace(Environment.NewLine, newLineKind.ToNewLineString());
-            }
-            return src;
         }
 
         #endregion

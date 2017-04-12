@@ -194,20 +194,9 @@ namespace lpubsppop01.AnyFilterVSIX
                 }
 
                 // Get connected input text
-                string _inputText = null;
-                Func<string> getInputText = () =>
-                {
-                    if (_inputText == null)
-                    {
-                        var inputTextBuf = new StringBuilder();
-                        foreach (var span in targetSpans)
-                        {
-                            inputTextBuf.Append(span.GetText());
-                        }
-                        _inputText = inputTextBuf.ToString();
-                    }
-                    return _inputText;
-                };
+                string rawInputText = string.Join("", targetSpans.Select(s => s.GetText()));
+                var envNewLineKind = Environment.NewLine.ToNewLineKind();
+                var srcNewLineKind = rawInputText.DetectNewLineKind() ?? envNewLineKind;
 
                 // Get user input
                 string userInputText = "";
@@ -215,6 +204,7 @@ namespace lpubsppop01.AnyFilterVSIX
                 {
                     var support = new RepeatedAsyncTaskSupport();
                     int tabSize = wpfTextView.Options.GetOptionValue(DefaultOptions.TabSizeOptionId);
+                    string envNLInputText = rawInputText.ConvertNewLine(srcNewLineKind, envNewLineKind);
                     var buffer = new UserInputBuffer { ShowsDifference = filter.UserInputWindow_ShowsDifference };
                     buffer.PropertyChanged += (sender_, e_) =>
                     {
@@ -227,9 +217,10 @@ namespace lpubsppop01.AnyFilterVSIX
                                 var previewTextBuf = new StringBuilder();
                                 foreach (var span in targetSpans)
                                 {
-                                    previewTextBuf.Append(await FilterRunner.RunAsync(filter, span.GetText(), buffer.UserInputText));
+                                    string envNLSpanText = span.GetText().ConvertNewLine(srcNewLineKind, envNewLineKind);
+                                    previewTextBuf.Append(await FilterRunner.RunAsync(filter, envNLSpanText, buffer.UserInputText));
                                 }
-                                buffer.PreviewDocument = new UserInputPreviewDocument(previewTextBuf.ToString(), tabSize, buffer.ShowsDifference ? getInputText() : null);
+                                buffer.PreviewDocument = new UserInputPreviewDocument(previewTextBuf.ToString(), tabSize, buffer.ShowsDifference ? envNLInputText : null);
                             } while (support.TryContinue());
                             support.End();
                         });
@@ -272,7 +263,9 @@ namespace lpubsppop01.AnyFilterVSIX
                 var textEdit = wpfTextView.TextBuffer.CreateEdit();
                 foreach (var span in targetSpans)
                 {
-                    string resultText = FilterRunner.Run(filter, span.GetText(), userInputText);
+                    string envNLSpanText = span.GetText().ConvertNewLine(srcNewLineKind, envNewLineKind);
+                    string envNLResultText = FilterRunner.Run(filter, envNLSpanText, userInputText);
+                    string resultText = envNLResultText.ConvertNewLine(envNewLineKind, srcNewLineKind);
                     if (filter.InsertsAfterCurrentLine)
                     {
                         var currLine = wpfTextView.TextViewLines.GetTextViewLineContainingBufferPosition(span.End);
