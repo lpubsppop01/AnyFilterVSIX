@@ -34,8 +34,8 @@ namespace lpubsppop01.AnyFilterVSIX
         {
             if (!(value is MyEncodingInfo)) return value;
 
-            var valueEncoding = value as Encoding;
-            return valueEncoding.WebName;
+            var valueEncoding = value as MyEncodingInfo;
+            return valueEncoding.Name;
         }
 
         #endregion
