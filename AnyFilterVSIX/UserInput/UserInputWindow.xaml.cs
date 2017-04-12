@@ -185,6 +185,19 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #endregion
 
+        #region Position Setting
+
+        public void SetPosition(FrameworkElement ctrlTextView)
+        {
+            Width = ctrlTextView.ActualWidth;
+            Height = ctrlTextView.ActualHeight / 3;
+            var viewTopLeftOnScreen = ctrlTextView.PointToScreen(new Point());
+            Left = viewTopLeftOnScreen.X;
+            Top = viewTopLeftOnScreen.Y + ctrlTextView.ActualHeight - Height;
+        }
+
+        #endregion
+
         #region Font Setting
 
         public void SetFont(string fontName, int fontSizePt)

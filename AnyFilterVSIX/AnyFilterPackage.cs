@@ -19,6 +19,7 @@ using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Shell.Settings;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
+using Microsoft.VisualStudio.Text.Formatting;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.Win32;
 
@@ -172,20 +173,24 @@ namespace lpubsppop01.AnyFilterVSIX
 
                 // Get target spans
                 var targetSpans = new List<SnapshotSpan>();
+                bool ensuresTargetSpanVisible = false;
                 foreach (var span in wpfTextView.Selection.SelectedSpans.Where(s => s.Length > 0))
                 {
                     targetSpans.Add(span);
+                    ensuresTargetSpanVisible = true;
                 }
                 if (!targetSpans.Any())
                 {
                     if (filter.TargetForNoSelection == TargetForNoSelection.CaretPosition)
                     {
                         targetSpans.Add(new SnapshotSpan(wpfTextView.VisualSnapshot, new Span(wpfTextView.Caret.Position.BufferPosition, 0)));
+                        ensuresTargetSpanVisible = true;
                     }
                     else if (filter.TargetForNoSelection == TargetForNoSelection.CurrentLine)
                     {
                         var currLine = wpfTextView.TextViewLines.GetTextViewLineContainingBufferPosition(wpfTextView.Caret.Position.BufferPosition);
                         targetSpans.Add(currLine.Extent);
+                        ensuresTargetSpanVisible = true;
                     }
                     else if (filter.TargetForNoSelection == TargetForNoSelection.WholeDocument)
                     {
@@ -229,11 +234,10 @@ namespace lpubsppop01.AnyFilterVSIX
                     var dialog = new UserInputWindow
                     {
                         DataContext = buffer,
-                        WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                        Owner = Window.GetWindow(wpfTextView.VisualElement),
+                        WindowStartupLocation = WindowStartupLocation.Manual,
                         UsesEmacsLikeKeybindings = AnyFilterSettings.Current.UsesEmacsLikeKeybindings,
                     };
-                    if (filter.UserInputWindow_Width.HasValue) dialog.Width = filter.UserInputWindow_Width.Value;
-                    if (filter.UserInputWindow_Height.HasValue) dialog.Height = filter.UserInputWindow_Height.Value;
                     dialog.MoveToNextPreviousDifferenceDone += (sender_, e_) =>
                     {
                         // ref. http://stackoverflow.com/questions/6186925/visual-studio-extensibility-move-to-line-in-a-textdocument
@@ -244,15 +248,18 @@ namespace lpubsppop01.AnyFilterVSIX
                         if (targetLine == null) return;
                         var span = Span.FromBounds(targetLine.Start.Position, targetLine.End.Position);
                         var snapshotSpan = new SnapshotSpan(wpfTextView.TextSnapshot, span);
-                        wpfTextView.ViewScroller.EnsureSpanVisible(snapshotSpan);
+                        wpfTextView.ViewScroller.EnsureSpanVisible(snapshotSpan, EnsureSpanVisibleOptions.AlwaysCenter);
                         wpfTextView.Caret.MoveTo(snapshotSpan.Start);
                     };
                     dialog.Title = "AnyFilter " + filter.Title;
+                    dialog.SetPosition(wpfTextView.VisualElement);
                     dialog.SetFont(textEditorFontName, textEditorFontSizePt);
+                    if (ensuresTargetSpanVisible)
+                    {
+                        wpfTextView.ViewScroller.EnsureSpanVisible(targetSpans.First(), EnsureSpanVisibleOptions.AlwaysCenter);
+                    }
                     bool dialogResultIsOK = dialog.ShowDialog() ?? false;
                     filter.UserInputWindow_ShowsDifference = buffer.ShowsDifference;
-                    filter.UserInputWindow_Width = dialog.ActualWidth;
-                    filter.UserInputWindow_Height = dialog.ActualHeight;
                     AnyFilterSettings.Current.UsesEmacsLikeKeybindings = dialog.UsesEmacsLikeKeybindings;
                     AnyFilterSettings.SaveCurrent();
                     if (!dialogResultIsOK) return;

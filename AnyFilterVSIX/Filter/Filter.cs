@@ -39,8 +39,6 @@ namespace lpubsppop01.AnyFilterVSIX
             UsesTemplateFile = false;
             TemplateFilePath = "";
             UserInputWindow_ShowsDifference = false;
-            UserInputWindow_Width = null;
-            UserInputWindow_Height = null;
         }
 
         public void Copy(Filter src)
@@ -58,8 +56,6 @@ namespace lpubsppop01.AnyFilterVSIX
             UsesTemplateFile = src.UsesTemplateFile;
             TemplateFilePath = src.TemplateFilePath;
             UserInputWindow_ShowsDifference = src.UserInputWindow_ShowsDifference;
-            UserInputWindow_Width = src.UserInputWindow_Width;
-            UserInputWindow_Height = src.UserInputWindow_Height;
         }
 
         #endregion
@@ -157,20 +153,6 @@ namespace lpubsppop01.AnyFilterVSIX
             set { userInputWindow_ShowsDifference = value; OnPropertyChanged(); }
         }
 
-        double? userInputWindow_Width;
-        public double? UserInputWindow_Width
-        {
-            get { return userInputWindow_Width; }
-            set { userInputWindow_Width = value; OnPropertyChanged(); }
-        }
-
-        double? userInputWindow_Height;
-        public double? UserInputWindow_Height
-        {
-            get { return userInputWindow_Height; }
-            set { userInputWindow_Height = value; OnPropertyChanged(); }
-        }
-
         #endregion
 
         #region Variable Check
@@ -215,8 +197,6 @@ namespace lpubsppop01.AnyFilterVSIX
             settingsStore.SetBoolean(collectionPath, "UsesTemplateFile", UsesTemplateFile);
             settingsStore.SetString(collectionPath, "TemplateFilePath", TemplateFilePath);
             settingsStore.SetBoolean(collectionPath, "UserInputWindow_ShowsDifference", UserInputWindow_ShowsDifference);
-            settingsStore.SetNullableDouble(collectionPath, "UserInputWindow_Width", UserInputWindow_Width);
-            settingsStore.SetNullableDouble(collectionPath, "UserInputWindow_Height", UserInputWindow_Height);
         }
 
         public static Filter Load(WritableSettingsStore settingsStore, string collectionPath)
@@ -236,8 +216,6 @@ namespace lpubsppop01.AnyFilterVSIX
                 UsesTemplateFile = settingsStore.GetBoolean(collectionPath, "UsesTemplateFile", false),
                 TemplateFilePath = settingsStore.GetString(collectionPath, "TemplateFilePath", ""),
                 UserInputWindow_ShowsDifference = settingsStore.GetBoolean(collectionPath, "UserInputWindow_ShowsDifference", false),
-                UserInputWindow_Width = settingsStore.GetNullableDouble(collectionPath, "UserInputWindow_Width", null),
-                UserInputWindow_Height = settingsStore.GetNullableDouble(collectionPath, "UserInputWindow_Height", null),
             };
         }
 
