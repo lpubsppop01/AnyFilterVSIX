@@ -126,7 +126,7 @@ namespace lpubsppop01.AnyFilterVSIX
             {
                 width += IsMultiByteChar(c) ? (double)fontSizePx : (double)fontSizePx / 2;
             }
-            return width;
+            return Math.Max(width * 1.1, 500);
         }
 
         static bool IsMultiByteChar(char c)
