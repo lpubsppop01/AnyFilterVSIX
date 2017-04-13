@@ -3,14 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:lpubsppop01.AnyFilterVSIX"
         Title="Add Filter" SizeToContent="WidthAndHeight" ResizeMode="NoResize" Name="this">
-    <StackPanel Margin="6">
-        <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=Empty, ElementName=this}" Margin="0">Empty</RadioButton>
-        <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=MonoCSharpScript, ElementName=this}" Margin="0,6,0,0">Mono C# Script</RadioButton>
-        <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=CygwinBash, ElementName=this}" Margin="0,6,0,0">Cygwin bash</RadioButton>
-        <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=CygwinSed, ElementName=this}" Margin="0,6,0,0">Cygwin sed</RadioButton>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,6,0,0">
+    <Window.Resources>
+        <Style TargetType="RadioButton">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="3"/>
+        </Style>
+    </Window.Resources>
+    <Grid Margin="3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <RadioButton Grid.Row="0" Grid.Column="0" IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=Empty, ElementName=this}">Empty</RadioButton>
+        <RadioButton Grid.Row="1" Grid.Column="0" IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=Sed, ElementName=this}">sed</RadioButton>
+        <RadioButton Grid.Row="2" Grid.Column="0" IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=Awk, ElementName=this}">AWK</RadioButton>
+        <RadioButton Grid.Row="3" Grid.Column="0" IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=MonoCSharpScript, ElementName=this}">Mono C# Script</RadioButton>
+        <RadioButton Grid.Row="0" Grid.Column="1" IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=CygwinBash, ElementName=this}">Cygwin bash</RadioButton>
+        <RadioButton Grid.Row="1" Grid.Column="1" IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=CygwinSed, ElementName=this}">Cygwin sed</RadioButton>
+        <RadioButton Grid.Row="2" Grid.Column="1" IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=CygwinGawk, ElementName=this}">Cygwin Gawk</RadioButton>
+        <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="3">
             <Button Name="btnOK" IsDefault="True" Click="btnOK_Click" Width="70" Content="{local:NameToResourceBinding OK}"/>
             <Button Name="btnCancel" IsCancel="True" Click="btnCancel_Click" Width="70" Margin="6,0,0,0" Content="{local:NameToResourceBinding Cancel}"/>
         </StackPanel>
-    </StackPanel>
+    </Grid>
 </Window>

@@ -10,7 +10,7 @@ namespace lpubsppop01.AnyFilterVSIX
 {
     public enum PresetFilterID
     {
-        Empty, MonoCSharpScript, CygwinBash, CygwinSed
+        Empty, Sed, Awk, MonoCSharpScript, CygwinBash, CygwinSed, CygwinGawk
     }
 
     public class PresetFilters
@@ -23,6 +23,26 @@ namespace lpubsppop01.AnyFilterVSIX
                 default:
                 case PresetFilterID.Empty:
                     filter.Title = "Empty";
+                    break;
+                case PresetFilterID.Sed:
+                    filter.Title = "sed";
+                    filter.Command = "sed.exe";
+                    filter.Arguments = string.Format(@"-f ""{0}""", FilterRunner.VariableName_UserInputTempFilePath);
+                    filter.InputNewLineKind = NewLineKind.LF;
+                    filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
+                    filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
+                    filter.TargetForNoSelection = TargetForNoSelection.WholeDocument;
+                    filter.PassesInputTextToStandardInput = true;
+                    break;
+                case PresetFilterID.Awk:
+                    filter.Title = "AWK";
+                    filter.Command = "awk.exe";
+                    filter.Arguments = string.Format(@"-f ""{0}""", FilterRunner.VariableName_UserInputTempFilePath);
+                    filter.InputNewLineKind = NewLineKind.LF;
+                    filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
+                    filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
+                    filter.TargetForNoSelection = TargetForNoSelection.WholeDocument;
+                    filter.PassesInputTextToStandardInput = true;
                     break;
                 case PresetFilterID.MonoCSharpScript:
                     filter.Title = "Mono C# Script";
@@ -47,6 +67,17 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.Command = @"C:\cygwin64\bin\bash.exe";
                     // unescaped: -lc "sed -f \"$(cygpath -u '$(UserInputTempFilePath)')\""
                     filter.Arguments = string.Format(@"-lc ""sed -f \""$(cygpath -u '{0}')\""""", FilterRunner.VariableName_UserInputTempFilePath);
+                    filter.InputNewLineKind = NewLineKind.LF;
+                    filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
+                    filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
+                    filter.TargetForNoSelection = TargetForNoSelection.WholeDocument;
+                    filter.PassesInputTextToStandardInput = true;
+                    break;
+                case PresetFilterID.CygwinGawk:
+                    filter.Title = "Cygwin Gawk";
+                    filter.Command = @"C:\cygwin64\bin\bash.exe";
+                    // unescaped: -lc "awk -f \"$(cygpath -u '$(UserInputTempFilePath)')\""
+                    filter.Arguments = string.Format(@"-lc ""awk -f \""$(cygpath -u '{0}')\""""", FilterRunner.VariableName_UserInputTempFilePath);
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
