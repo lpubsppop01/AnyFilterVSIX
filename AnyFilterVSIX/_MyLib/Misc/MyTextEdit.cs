@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace lpubsppop01.AnyFilterVSIX
 {
-    class MyTextEdit
+    public class MyTextEdit
     {
         #region Constructor
 
@@ -39,107 +39,133 @@ namespace lpubsppop01.AnyFilterVSIX
             set { setCaretIndex(value); }
         }
 
+        public Func<string> GetTextFromClipboard;
+        public Action<string> SetTextFromClipboard;
+
         protected static readonly string NL = Environment.NewLine;
         protected static readonly int NLLength = Environment.NewLine.Length;
+
+        protected int ColumnIndex { get; set; }
 
         #endregion
 
         #region Actions
 
+        int GetOffsetToNextChar()
+        {
+            if (CaretIndex >= Text.Length) return 0;
+            if (CaretIndex <= Text.Length - NLLength && Text.Substring(CaretIndex, NLLength) == NL) return NLLength;
+            return 1;
+        }
+
+        int GetOffsetToPreviousChar()
+        {
+            if (CaretIndex <= 0) return 0;
+            if (CaretIndex >= NLLength && Text.Substring(CaretIndex - NLLength, NLLength) == NL) return NLLength;
+            return 1;
+        }
+
+        int GetCurrentLineStartIndex()
+        {
+            int iPrevNL = Text.LastIndexOf(NL, CaretIndex);
+            int iCurrLineStart = iPrevNL != -1 ? iPrevNL + NLLength : 0;
+            return iCurrLineStart;
+        }
+
+        int GetCurrentLineEndIndex()
+        {
+            int iNextNL = Text.IndexOf(NL, CaretIndex);
+            int iCurrLineEnd = iNextNL != -1 ? iNextNL : Text.Length;
+            return iCurrLineEnd;
+        }
+
+        void UpdateColumnIndex()
+        {
+            ColumnIndex = Math.Max(CaretIndex - GetCurrentLineStartIndex(), 0);
+        }
+
         public void ForwardChar()
         {
-            if (CaretIndex < Text.Length)
-            {
-                CaretIndex = CaretIndex + 1;
-            }
+            int offset = GetOffsetToNextChar();
+            if (offset == 0) return;
+            CaretIndex += offset;
+            UpdateColumnIndex();
         }
 
         public void BackwardChar()
         {
-            if (CaretIndex > 0)
-            {
-                CaretIndex = CaretIndex - 1;
-            }
+            int offset = GetOffsetToPreviousChar();
+            if (offset == 0) return;
+            CaretIndex -= offset;
+            UpdateColumnIndex();
         }
 
-        public void MoveBiginningOfLine()
+        public void MoveBeginningOfLine()
         {
-            int iPrevNL = Text.Substring(0, CaretIndex).LastIndexOf(NL);
-            int iCurrLineStart = iPrevNL != -1 ? iPrevNL + NLLength : 0;
-            if (CaretIndex > iCurrLineStart)
-            {
-                CaretIndex = iCurrLineStart;
-            }
+            int iCurrLineStart = GetCurrentLineStartIndex();
+            if (CaretIndex < iCurrLineStart) return; // pass equal to set ColumnIndex
+            CaretIndex = iCurrLineStart;
+            UpdateColumnIndex();
         }
 
         public void MoveEndOfLine()
         {
-            int iNextNL = Text.IndexOf(NL, CaretIndex);
-            int iCurrLineEnd = iNextNL != -1 ? iNextNL : Text.Length;
-            if (CaretIndex < iCurrLineEnd)
-            {
-                CaretIndex = iCurrLineEnd;
-            }
+            int iCurrLineEnd = GetCurrentLineEndIndex();
+            if (CaretIndex > iCurrLineEnd) return; // pass equal to set ColumnIndex
+            CaretIndex = iCurrLineEnd;
+            UpdateColumnIndex();
         }
 
         public void NextLine()
         {
             int iNextNL = Text.IndexOf(NL, CaretIndex);
-            if (iNextNL != -1)
-            {
-                int iPrevNL = Text.Substring(0, CaretIndex).LastIndexOf(NL);
-                int iCaretFromCurrLineStart = CaretIndex - (iPrevNL != -1 ? iPrevNL + NLLength : 0);
-                int iNextLineStart = iNextNL + NLLength;
-                int iNextNextNL = Text.IndexOf(NL, iNextLineStart);
-                int nextLineLength = ((iNextNextNL != -1) ? iNextNextNL : Text.Length) - iNextLineStart;
-                CaretIndex = iNextLineStart + Math.Min(iCaretFromCurrLineStart, nextLineLength);
-            }
+            if (iNextNL == -1) return;
+            int iNextLineStart = iNextNL + NLLength;
+            int iNextNextNL = Text.IndexOf(NL, iNextLineStart);
+            int nextLineLength = ((iNextNextNL != -1) ? iNextNextNL : Text.Length) - iNextLineStart;
+            CaretIndex = iNextLineStart + Math.Min(ColumnIndex, nextLineLength);
         }
 
         public void PreviousLine()
         {
             int iPrevNL = Text.Substring(0, CaretIndex).LastIndexOf(NL);
-            if (iPrevNL != -1)
-            {
-                int iNextNL = Text.IndexOf(NL, CaretIndex);
-                int iCaretFromCurrLineStart = CaretIndex - (iPrevNL + NLLength);
-                int iPrevPrevNL = Text.Substring(0, iPrevNL).LastIndexOf(NL);
-                int iPrevLineStart = iPrevPrevNL != -1 ? iPrevPrevNL + NLLength : 0;
-                int prevLineLength = iPrevNL - iPrevLineStart;
-                CaretIndex = iPrevLineStart + Math.Min(iCaretFromCurrLineStart, prevLineLength);
-            }
+            if (iPrevNL == -1) return;
+            int iPrevPrevNL = Text.Substring(0, iPrevNL).LastIndexOf(NL);
+            int iPrevLineStart = iPrevPrevNL != -1 ? iPrevPrevNL + NLLength : 0;
+            int prevLineLength = iPrevNL - iPrevLineStart;
+            CaretIndex = iPrevLineStart + Math.Min(ColumnIndex, prevLineLength);
         }
 
         public void DeleteChar()
         {
-            if (CaretIndex < Text.Length)
-            {
-                int backupCaretIndex = CaretIndex;
-                int count = (CaretIndex < Text.Length - 1 && Text.Substring(CaretIndex, NLLength) == NL) ? NLLength : 1;
-                Text = Text.Remove(CaretIndex, count);
-                CaretIndex = backupCaretIndex;
-            }
+            if (CaretIndex >= Text.Length) return;
+            int backupCaretIndex = CaretIndex;
+            int count = (CaretIndex < Text.Length - 1 && Text.Substring(CaretIndex, NLLength) == NL) ? NLLength : 1;
+            Text = Text.Remove(CaretIndex, count);
+            CaretIndex = backupCaretIndex;
+            UpdateColumnIndex();
         }
 
         public void DeleteBackwardChar()
         {
-            if (CaretIndex > 0)
-            {
-                int backupCaretIndex = CaretIndex;
-                int count = (CaretIndex > 1 && Text.Substring(CaretIndex - NLLength, NLLength) == NL) ? NLLength : 1;
-                Text = Text.Remove(CaretIndex - count, count);
-                CaretIndex = backupCaretIndex - count;
-            }
+            if (CaretIndex <= 0) return;
+            int backupCaretIndex = CaretIndex;
+            int count = (CaretIndex > 1 && Text.Substring(CaretIndex - NLLength, NLLength) == NL) ? NLLength : 1;
+            Text = Text.Remove(CaretIndex - count, count);
+            CaretIndex = backupCaretIndex - count;
+            UpdateColumnIndex();
         }
 
         public void KillLine()
         {
-            if (CaretIndex < Text.Length)
-            {
-                int backupCaretIndex = CaretIndex;
-                Text = Text.Substring(0, CaretIndex);
-                CaretIndex = backupCaretIndex;
-            }
+            if (CaretIndex >= Text.Length) return;
+            // TODO: clipboard
+            int backupCaretIndex = CaretIndex;
+            int iCurrLineEnd = GetCurrentLineEndIndex();
+            int iKillEnd = (iCurrLineEnd == ColumnIndex) ? iCurrLineEnd + NLLength : iCurrLineEnd;
+            Text = Text.Substring(0, CaretIndex) + Text.Substring(iKillEnd);
+            CaretIndex = backupCaretIndex;
+            UpdateColumnIndex();
         }
 
         #endregion

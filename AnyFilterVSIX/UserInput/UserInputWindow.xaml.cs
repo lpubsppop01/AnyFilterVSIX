@@ -159,12 +159,16 @@ namespace lpubsppop01.AnyFilterVSIX
             {
                 if (textEdit == null)
                 {
-                    textEdit = new MyTextEdit(() => txtInput.Text, (t) => txtInput.Text = t, () => txtInput.CaretIndex, (i) => txtInput.CaretIndex = i);
+                    textEdit = new MyTextEdit(() => txtInput.Text, (t) => txtInput.Text = t, () => txtInput.CaretIndex, (i) => txtInput.CaretIndex = i)
+                    {
+                        GetTextFromClipboard = Clipboard.GetText,
+                        SetTextFromClipboard = (text) => Clipboard.SetText(text)
+                    };
                     keyToAction = new Dictionary<Key, Action>
                     {
                         { Key.F, textEdit.ForwardChar },
                         { Key.B, textEdit.BackwardChar },
-                        { Key.A, textEdit.MoveBiginningOfLine },
+                        { Key.A, textEdit.MoveBeginningOfLine },
                         { Key.E, textEdit.MoveEndOfLine },
                         { Key.N, textEdit.NextLine },
                         { Key.P, textEdit.PreviousLine },
