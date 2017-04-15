@@ -189,11 +189,14 @@ namespace lpubsppop01.AnyFilterVSIX
 
         public void SetPosition(FrameworkElement ctrlTextView)
         {
+            var mainWindow = Window.GetWindow(ctrlTextView);
+            Height = (mainWindow != null) ? mainWindow.ActualHeight / 4 : 300;
             Width = ctrlTextView.ActualWidth;
-            Height = ctrlTextView.ActualHeight / 3;
             var viewTopLeftOnScreen = ctrlTextView.PointToScreen(new Point());
             Left = viewTopLeftOnScreen.X;
-            Top = viewTopLeftOnScreen.Y + ctrlTextView.ActualHeight - Height;
+            Top = (viewTopLeftOnScreen.Y < ctrlTextView.ActualHeight)
+                ? viewTopLeftOnScreen.Y + ctrlTextView.ActualHeight - Height
+                : viewTopLeftOnScreen.Y - Height;
         }
 
         #endregion
