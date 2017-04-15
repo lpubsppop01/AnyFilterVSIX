@@ -184,19 +184,19 @@ namespace lpubsppop01.AnyFilterVSIX
                 }
                 else
                 {
-                    if (filter.TargetForNoSelection == TargetForNoSelection.CaretPosition)
+                    if (filter.TargetSpanForNoSelection == TargetSpanForNoSelection.CaretPosition)
                     {
                         targetSpans.Add(new SnapshotSpan(wpfTextView.VisualSnapshot, new Span(wpfTextView.Caret.Position.BufferPosition, 0)));
                         var currLine = wpfTextView.TextViewLines.GetTextViewLineContainingBufferPosition(wpfTextView.Caret.Position.BufferPosition);
                         snapshotSpanToVisible = currLine.Extent;
                     }
-                    else if (filter.TargetForNoSelection == TargetForNoSelection.CurrentLine)
+                    else if (filter.TargetSpanForNoSelection == TargetSpanForNoSelection.CurrentLine)
                     {
                         var currLine = wpfTextView.TextViewLines.GetTextViewLineContainingBufferPosition(wpfTextView.Caret.Position.BufferPosition);
                         targetSpans.Add(currLine.Extent);
                         snapshotSpanToVisible = currLine.Extent;
                     }
-                    else if (filter.TargetForNoSelection == TargetForNoSelection.WholeDocument)
+                    else if (filter.TargetSpanForNoSelection == TargetSpanForNoSelection.WholeDocument)
                     {
                         targetSpans.Add(new SnapshotSpan(wpfTextView.VisualSnapshot, new Span(0, wpfTextView.VisualSnapshot.Length)));
                     }
@@ -277,7 +277,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     string envNLSpanText = span.GetText().ConvertNewLine(srcNewLineKind, envNewLineKind);
                     string envNLResultText = FilterRunner.Run(filter, envNLSpanText, userInputText);
                     string resultText = envNLResultText.ConvertNewLine(envNewLineKind, srcNewLineKind);
-                    if (filter.InsertsAfterCurrentLine)
+                    if (filter.InsertsAfterTargetSpan)
                     {
                         var currLine = wpfTextView.TextViewLines.GetTextViewLineContainingBufferPosition(span.End);
                         textEdit.Insert(currLine.End, Environment.NewLine + resultText);

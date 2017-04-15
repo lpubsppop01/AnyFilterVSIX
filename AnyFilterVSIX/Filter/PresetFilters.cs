@@ -31,7 +31,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
-                    filter.TargetForNoSelection = TargetForNoSelection.WholeDocument;
+                    filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
                     filter.PassesInputTextToStandardInput = true;
                     break;
                 case PresetFilterID.Awk:
@@ -41,15 +41,15 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
-                    filter.TargetForNoSelection = TargetForNoSelection.WholeDocument;
+                    filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
                     filter.PassesInputTextToStandardInput = true;
                     break;
                 case PresetFilterID.MonoCSharpScript:
                     filter.Title = "Mono C# Script";
                     filter.Command = "cmd";
                     filter.Arguments = string.Format(@"/c ""C:\Program Files (x86)\Mono\bin\csharp.bat"" {0}", FilterRunner.VariableName_InputTempFilePath);
-                    filter.TargetForNoSelection = TargetForNoSelection.CurrentLine;
-                    filter.InsertsAfterCurrentLine = true;
+                    filter.TargetSpanForNoSelection = TargetSpanForNoSelection.CurrentLine;
+                    filter.InsertsAfterTargetSpan = true;
                     break;
                 case PresetFilterID.CygwinBash:
                     filter.Title = "Cygwin bash";
@@ -58,7 +58,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
-                    filter.TargetForNoSelection = TargetForNoSelection.WholeDocument;
+                    filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
                     filter.TemplateFilePath = Path.Combine(GetTemplateDirectoryPath(), "CygwinBashTemplate.txt");
                     filter.UsesTemplateFile = true;
                     break;
@@ -70,7 +70,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
-                    filter.TargetForNoSelection = TargetForNoSelection.WholeDocument;
+                    filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
                     filter.PassesInputTextToStandardInput = true;
                     break;
                 case PresetFilterID.CygwinGawk:
@@ -81,7 +81,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
-                    filter.TargetForNoSelection = TargetForNoSelection.WholeDocument;
+                    filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
                     filter.PassesInputTextToStandardInput = true;
                     break;
             }

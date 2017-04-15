@@ -33,8 +33,8 @@ namespace lpubsppop01.AnyFilterVSIX
             InputNewLineKind = NewLineKind.CRLF;
             InputEncodingName = Encoding.Default.WebName;
             OutputEncodingName = Encoding.Default.WebName;
-            TargetForNoSelection = TargetForNoSelection.CaretPosition;
-            InsertsAfterCurrentLine = false;
+            TargetSpanForNoSelection = TargetSpanForNoSelection.CaretPosition;
+            InsertsAfterTargetSpan = false;
             PassesInputTextToStandardInput = false;
             UsesTemplateFile = false;
             TemplateFilePath = "";
@@ -50,8 +50,8 @@ namespace lpubsppop01.AnyFilterVSIX
             InputNewLineKind = src.InputNewLineKind;
             InputEncodingName = src.InputEncodingName;
             OutputEncodingName = src.OutputEncodingName;
-            TargetForNoSelection = src.TargetForNoSelection;
-            InsertsAfterCurrentLine = src.InsertsAfterCurrentLine;
+            TargetSpanForNoSelection = src.TargetSpanForNoSelection;
+            InsertsAfterTargetSpan = src.InsertsAfterTargetSpan;
             PassesInputTextToStandardInput = src.PassesInputTextToStandardInput;
             UsesTemplateFile = src.UsesTemplateFile;
             TemplateFilePath = src.TemplateFilePath;
@@ -111,18 +111,18 @@ namespace lpubsppop01.AnyFilterVSIX
             set { outputEncodingName = value; OnPropertyChanged(); }
         }
 
-        TargetForNoSelection targetForNoSelection;
-        public TargetForNoSelection TargetForNoSelection
+        TargetSpanForNoSelection targetSpanForNoSelection;
+        public TargetSpanForNoSelection TargetSpanForNoSelection
         {
-            get { return targetForNoSelection; }
-            set { targetForNoSelection = value; OnPropertyChanged(); }
+            get { return targetSpanForNoSelection; }
+            set { targetSpanForNoSelection = value; OnPropertyChanged(); }
         }
 
-        bool insertsAfterCurrentLine;
-        public bool InsertsAfterCurrentLine
+        bool insertsAfterTargetSpan;
+        public bool InsertsAfterTargetSpan
         {
-            get { return insertsAfterCurrentLine; }
-            set { insertsAfterCurrentLine = value; OnPropertyChanged(); }
+            get { return insertsAfterTargetSpan; }
+            set { insertsAfterTargetSpan = value; OnPropertyChanged(); }
         }
 
         bool passesInputTextToStandardInput;
@@ -191,8 +191,8 @@ namespace lpubsppop01.AnyFilterVSIX
             settingsStore.SetEnum(collectionPath, "InputNewLineKind", InputNewLineKind);
             settingsStore.SetString(collectionPath, "InputEncodingName", InputEncodingName);
             settingsStore.SetString(collectionPath, "OutputEncodingName", OutputEncodingName);
-            settingsStore.SetEnum<TargetForNoSelection>(collectionPath, "TargetForNoSelection", TargetForNoSelection);
-            settingsStore.SetBoolean(collectionPath, "InsertsAfterCurrentLine", InsertsAfterCurrentLine);
+            settingsStore.SetEnum<TargetSpanForNoSelection>(collectionPath, "TargetSpanForNoSelection", TargetSpanForNoSelection);
+            settingsStore.SetBoolean(collectionPath, "InsertsAfterTargetSpan", InsertsAfterTargetSpan);
             settingsStore.SetBoolean(collectionPath, "PassesInputTextToStandardInput", PassesInputTextToStandardInput);
             settingsStore.SetBoolean(collectionPath, "UsesTemplateFile", UsesTemplateFile);
             settingsStore.SetString(collectionPath, "TemplateFilePath", TemplateFilePath);
@@ -210,8 +210,8 @@ namespace lpubsppop01.AnyFilterVSIX
                 InputNewLineKind = settingsStore.GetEnum(collectionPath, "InputNewLineKind", default(NewLineKind)),
                 InputEncodingName = settingsStore.GetString(collectionPath, "InputEncodingName", Encoding.Default.WebName),
                 OutputEncodingName = settingsStore.GetString(collectionPath, "OutputEncodingName", Encoding.Default.WebName),
-                TargetForNoSelection = settingsStore.GetEnum<TargetForNoSelection>(collectionPath, "TargetForNoSelection", TargetForNoSelection.CaretPosition),
-                InsertsAfterCurrentLine = settingsStore.GetBoolean(collectionPath, "InsertsAfterCurrentLine", false),
+                TargetSpanForNoSelection = settingsStore.GetEnum<TargetSpanForNoSelection>(collectionPath, "TargetSpanForNoSelection", TargetSpanForNoSelection.CaretPosition),
+                InsertsAfterTargetSpan = settingsStore.GetBoolean(collectionPath, "InsertsAfterTargetSpan", false),
                 PassesInputTextToStandardInput = settingsStore.GetBoolean(collectionPath, "PassesInputTextToStandardInput", false),
                 UsesTemplateFile = settingsStore.GetBoolean(collectionPath, "UsesTemplateFile", false),
                 TemplateFilePath = settingsStore.GetString(collectionPath, "TemplateFilePath", ""),
@@ -250,7 +250,7 @@ namespace lpubsppop01.AnyFilterVSIX
         #endregion
     }
 
-    public enum TargetForNoSelection
+    public enum TargetSpanForNoSelection
     {
         CaretPosition, CurrentLine, WholeDocument
     }

@@ -104,18 +104,18 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
-                <Label Grid.Row="0" Content="{local:NameToResourceBinding TargetForNoSelection}"/>
-                <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedValue.TargetForNoSelection, ConverterParameter=CaretPosition, ElementName=lstMaster}"
+                <Label Grid.Row="0" Content="{local:NameToResourceBinding TargetSpanForNoSelection}"/>
+                <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedValue.TargetSpanForNoSelection, ConverterParameter=CaretPosition, ElementName=lstMaster}"
                              Margin="6,0,0,0" Content="{local:NameToResourceBinding CaretPosition}"/>
-                <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedValue.TargetForNoSelection, ConverterParameter=CurrentLine, ElementName=lstMaster}"
+                <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedValue.TargetSpanForNoSelection, ConverterParameter=CurrentLine, ElementName=lstMaster}"
                              Margin="6,0,0,0" Content="{local:NameToResourceBinding CurrentLine}" />
-                <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedValue.TargetForNoSelection, ConverterParameter=WholeDocument, ElementName=lstMaster}"
+                <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedValue.TargetSpanForNoSelection, ConverterParameter=WholeDocument, ElementName=lstMaster}"
                              Margin="6,0,0,0" Content="{local:NameToResourceBinding WholeDocument}"/>
             </StackPanel>
-            <CheckBox Grid.Row="2" IsChecked="{Binding SelectedValue.InsertsAfterCurrentLine, ElementName=lstMaster}" Content="{local:NameToResourceBinding InsertOutputTextAfterCurrentLine}"/>
+            <CheckBox Grid.Row="2" IsChecked="{Binding SelectedValue.InsertsAfterTargetSpan, ElementName=lstMaster}" Content="{local:NameToResourceBinding InsertOutputTextAfterTargetSpan}"/>
             <CheckBox Grid.Row="3" IsChecked="{Binding SelectedValue.PassesInputTextToStandardInput, ElementName=lstMaster}" Content="{local:NameToResourceBinding PassInputTextToStandardInput}"/>
             <DockPanel Grid.Row="4">
-                <CheckBox DockPanel.Dock="Left" IsChecked="{Binding SelectedValue.UsesTemplateFile, ElementName=lstMaster}" Content="{local:NameToResourceBinding UseInputTemplateFile:}"/>
+                <CheckBox DockPanel.Dock="Left" IsChecked="{Binding SelectedValue.UsesTemplateFile, ElementName=lstMaster}" Content="{local:NameToResourceBinding UseInputTemplateFile}"/>
                 <Button DockPanel.Dock="Right" Width="20" Margin="6,0,0,0" Height="{Binding ActualHeight, ElementName=txtTemplate}" Click="btnTemplate_Click"
                         IsEnabled="{Binding SelectedValue.UsesTemplateFile, ElementName=lstMaster}">...</Button>
                 <TextBox Margin="6,0,0,0" Name="txtTemplate" Text="{Binding SelectedValue.TemplateFilePath, ElementName=lstMaster, UpdateSourceTrigger=PropertyChanged}"

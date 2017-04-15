@@ -151,11 +151,11 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         }
         
         /// <summary>
-        ///   Insert output text after current line に類似しているローカライズされた文字列を検索します。
+        ///   Insert output text after target span に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string InsertOutputTextAfterCurrentLine {
+        public static string InsertOutputTextAfterTargetSpan {
             get {
-                return ResourceManager.GetString("InsertOutputTextAfterCurrentLine", resourceCulture);
+                return ResourceManager.GetString("InsertOutputTextAfterTargetSpan", resourceCulture);
             }
         }
         
@@ -232,11 +232,11 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         }
         
         /// <summary>
-        ///   Target for No Selection に類似しているローカライズされた文字列を検索します。
+        ///   Target Span for No Selection に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string TargetForNoSelection {
+        public static string TargetSpanForNoSelection {
             get {
-                return ResourceManager.GetString("TargetForNoSelection", resourceCulture);
+                return ResourceManager.GetString("TargetSpanForNoSelection", resourceCulture);
             }
         }
         
