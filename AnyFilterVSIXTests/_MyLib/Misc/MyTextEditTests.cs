@@ -143,13 +143,21 @@ namespace AnyFilterVSIXTests
         {
             int iCaret = 0;
             var textBuf = TestText;
-            var textEdit = new MyTextEdit(() => textBuf, (text) => textBuf = text, () => iCaret, (caretIndex) => iCaret = caretIndex);
+            string clipboard = "";
+            var textEdit = new MyTextEdit(() => textBuf, (text) => textBuf = text, () => iCaret, (caretIndex) => iCaret = caretIndex)
+            {
+                GetTextFromClipboard = () => clipboard,
+                SetTextFromClipboard = (text) => clipboard = text
+            };
             textEdit.KillLine();
             Assert.IsTrue(textBuf.StartsWith(NL));
+            Assert.IsTrue(clipboard == "HogeHoge");
             textEdit.KillLine();
             Assert.IsTrue(textBuf.StartsWith("Piyo"));
+            Assert.IsTrue(clipboard == "HogeHoge" + NL);
             for (int i = 0; i < ManyCount; ++i) textEdit.KillLine();
             Assert.AreEqual(textBuf, "");
+            Assert.IsTrue(clipboard == TestText);
         }
     }
 }

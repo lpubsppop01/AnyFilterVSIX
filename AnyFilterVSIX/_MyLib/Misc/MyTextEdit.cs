@@ -84,8 +84,30 @@ namespace lpubsppop01.AnyFilterVSIX
             ColumnIndex = Math.Max(CaretIndex - GetCurrentLineStartIndex(), 0);
         }
 
+        string killedTextBuf;
+
+        void SetKilledTextToClipboard(int iKillStart, int iKillEnd, bool combinesWithBuf)
+        {
+            if (SetTextFromClipboard != null)
+            {
+                string killedText = Text.Substring(iKillStart, iKillEnd - iKillStart);
+                if (combinesWithBuf && !string.IsNullOrEmpty(killedTextBuf))
+                {
+                    killedText = killedTextBuf + killedText;
+                }
+                SetTextFromClipboard(killedText);
+                killedTextBuf = killedText;
+            }
+        }
+
+        void ClearKilledTextBuffer()
+        {
+            killedTextBuf = null;
+        }
+
         public void ForwardChar()
         {
+            ClearKilledTextBuffer();
             int offset = GetOffsetToNextChar();
             if (offset == 0) return;
             CaretIndex += offset;
@@ -94,6 +116,7 @@ namespace lpubsppop01.AnyFilterVSIX
 
         public void BackwardChar()
         {
+            ClearKilledTextBuffer();
             int offset = GetOffsetToPreviousChar();
             if (offset == 0) return;
             CaretIndex -= offset;
@@ -102,6 +125,7 @@ namespace lpubsppop01.AnyFilterVSIX
 
         public void MoveBeginningOfLine()
         {
+            ClearKilledTextBuffer();
             int iCurrLineStart = GetCurrentLineStartIndex();
             if (CaretIndex < iCurrLineStart) return; // pass equal to set ColumnIndex
             CaretIndex = iCurrLineStart;
@@ -110,6 +134,7 @@ namespace lpubsppop01.AnyFilterVSIX
 
         public void MoveEndOfLine()
         {
+            ClearKilledTextBuffer();
             int iCurrLineEnd = GetCurrentLineEndIndex();
             if (CaretIndex > iCurrLineEnd) return; // pass equal to set ColumnIndex
             CaretIndex = iCurrLineEnd;
@@ -118,6 +143,7 @@ namespace lpubsppop01.AnyFilterVSIX
 
         public void NextLine()
         {
+            ClearKilledTextBuffer();
             int iNextNL = Text.IndexOf(NL, CaretIndex);
             if (iNextNL == -1) return;
             int iNextLineStart = iNextNL + NLLength;
@@ -128,6 +154,7 @@ namespace lpubsppop01.AnyFilterVSIX
 
         public void PreviousLine()
         {
+            ClearKilledTextBuffer();
             int iPrevNL = Text.Substring(0, CaretIndex).LastIndexOf(NL);
             if (iPrevNL == -1) return;
             int iPrevPrevNL = Text.Substring(0, iPrevNL).LastIndexOf(NL);
@@ -138,6 +165,7 @@ namespace lpubsppop01.AnyFilterVSIX
 
         public void DeleteChar()
         {
+            ClearKilledTextBuffer();
             if (CaretIndex >= Text.Length) return;
             int backupCaretIndex = CaretIndex;
             int count = (CaretIndex < Text.Length - 1 && Text.Substring(CaretIndex, NLLength) == NL) ? NLLength : 1;
@@ -148,6 +176,7 @@ namespace lpubsppop01.AnyFilterVSIX
 
         public void DeleteBackwardChar()
         {
+            ClearKilledTextBuffer();
             if (CaretIndex <= 0) return;
             int backupCaretIndex = CaretIndex;
             int count = (CaretIndex > 1 && Text.Substring(CaretIndex - NLLength, NLLength) == NL) ? NLLength : 1;
@@ -159,10 +188,10 @@ namespace lpubsppop01.AnyFilterVSIX
         public void KillLine()
         {
             if (CaretIndex >= Text.Length) return;
-            // TODO: clipboard
             int backupCaretIndex = CaretIndex;
             int iCurrLineEnd = GetCurrentLineEndIndex();
             int iKillEnd = (iCurrLineEnd == ColumnIndex) ? iCurrLineEnd + NLLength : iCurrLineEnd;
+            SetKilledTextToClipboard(ColumnIndex, iKillEnd, combinesWithBuf: true);
             Text = Text.Substring(0, CaretIndex) + Text.Substring(iKillEnd);
             CaretIndex = backupCaretIndex;
             UpdateColumnIndex();
