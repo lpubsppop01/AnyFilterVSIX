@@ -144,6 +144,12 @@
   <data name="Diff" xml:space="preserve">
     <value>差分</value>
   </data>
+  <data name="Export" xml:space="preserve">
+    <value>エクスポート</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>インポート</value>
+  </data>
   <data name="InputEncoding" xml:space="preserve">
     <value>入力エンコーディング</value>
   </data>

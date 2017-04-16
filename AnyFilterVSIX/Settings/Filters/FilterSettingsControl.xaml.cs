@@ -78,7 +78,14 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #region Event Handlers
 
-        void this_DataContextChanged(object sender, RoutedEventArgs e)
+        FilterListEdit edit;
+
+        void this_Loaded(object sender, RoutedEventArgs e)
+        {
+            edit = new FilterListEdit(() => ItemsSource, () => lstMaster.SelectedIndex, i => lstMaster.SelectedIndex = i, Window.GetWindow(this));
+        }
+
+        void this_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var settings = DataContext as AnyFilterSettings;
             ItemsSource = (settings != null) ? settings.Filters : null;
@@ -86,40 +93,24 @@ namespace lpubsppop01.AnyFilterVSIX
 
         void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (ItemsSource.Count == PkgCmdIDList.FilterCountMax)
-            {
-                string message = string.Format("The maximum number of filter entry is {0}.", PkgCmdIDList.FilterCountMax);
-                MessageBox.Show(message, "Failed");
-                return;
-            }
-            var dialog = new FilterAdditionWindow
-            {
-                Owner = Window.GetWindow(this),
-                WindowStartupLocation = WindowStartupLocation.CenterScreen
-            };
-            if (!(dialog.ShowDialog() ?? false)) return;
-            var filter = PresetFilters.Get(dialog.SelectedID);
-            if (filter.UsesTemplateFile)
-            {
-                if (!ConfirmToCreateTemplateFile(filter)) return;
-                if (!TryCreateTemplateFile(dialog.SelectedID, filter)) return;
-            }
-            ItemsSource.Add(filter);
-            filter.Number = ItemsSource.Count;
-            lstMaster.SelectedIndex = ItemsSource.Count - 1;
+            if (!edit.Add()) return;
             HasSelection = (lstMaster.SelectedIndex != -1);
         }
 
         void btnRemove_Click(object sender, RoutedEventArgs e)
         {
-            if (lstMaster.SelectedIndex == -1) return;
-            int iRemove = lstMaster.SelectedIndex;
-            ItemsSource.RemoveAt(iRemove);
-            foreach (var filter in ItemsSource.Skip(iRemove))
-            {
-                filter.Number -= 1;
-            }
-            lstMaster.SelectedIndex = Math.Max(Math.Min(iRemove, ItemsSource.Count - 1), 0);
+            if (!edit.Remove()) return;
+            HasSelection = (lstMaster.SelectedIndex != -1);
+        }
+
+        void btnExport_Click(object sender, RoutedEventArgs e)
+        {
+            edit.Export();
+        }
+
+        void btnImport_Click(object sender, RoutedEventArgs e)
+        {
+            if (!edit.Import()) return;
             HasSelection = (lstMaster.SelectedIndex != -1);
         }
 
@@ -149,32 +140,32 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #region Template File Creation
 
-        static bool ConfirmToCreateTemplateFile(Filter filter)
-        {
-            var messageBuf = new StringBuilder();
-            if (File.Exists(filter.TemplateFilePath))
-            {
-                messageBuf.AppendLine("The following file will be overwritten:");
-            }
-            else
-            {
-                messageBuf.AppendLine("A new template file will be created at the following location:");
-            }
-            messageBuf.AppendLine(filter.TemplateFilePath);
-            messageBuf.Append("Continue?");
-            return MessageBox.Show(messageBuf.ToString(), "Add Filter", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
-        }
+        //static bool ConfirmToCreateTemplateFile(Filter filter)
+        //{
+        //    var messageBuf = new StringBuilder();
+        //    if (File.Exists(filter.TemplateFilePath))
+        //    {
+        //        messageBuf.AppendLine("The following file will be overwritten:");
+        //    }
+        //    else
+        //    {
+        //        messageBuf.AppendLine("A new template file will be created at the following location:");
+        //    }
+        //    messageBuf.AppendLine(filter.TemplateFilePath);
+        //    messageBuf.Append("Continue?");
+        //    return MessageBox.Show(messageBuf.ToString(), "Add Filter", MessageBoxButton.YesNo) == MessageBoxResult.Yes;
+        //}
 
-        static bool TryCreateTemplateFile(PresetFilterID presetID, Filter filter)
-        {
-            if (!PresetFilters.TryCreateTemplateFile(presetID, filter.TemplateFilePath, filter.InputEncodingName, filter.InputNewLineKind))
-            {
-                string message = "File creation failed:" + Environment.NewLine + filter.TemplateFilePath;
-                MessageBox.Show(string.Format(message), "Failed");
-                return false;
-            }
-            return true;
-        }
+        //static bool TryCreateTemplateFile(PresetFilterID presetID, Filter filter)
+        //{
+        //    if (!PresetFilters.TryCreateTemplateFile(presetID, filter.TemplateFilePath, filter.InputEncodingName, filter.InputNewLineKind))
+        //    {
+        //        string message = "File creation failed:" + Environment.NewLine + filter.TemplateFilePath;
+        //        MessageBox.Show(string.Format(message), "Failed");
+        //        return false;
+        //    }
+        //    return true;
+        //}
 
         #endregion
 

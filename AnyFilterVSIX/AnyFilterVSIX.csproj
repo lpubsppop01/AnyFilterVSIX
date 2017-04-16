@@ -166,8 +166,13 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Settings\AboutThisSoftwareWindow.xaml.cs">
+    <Compile Include="Filter\FilterExporter.cs" />
+    <Compile Include="Settings\Filters\FilterListEdit.cs" />
+    <Compile Include="Settings\Misc\AboutThisSoftwareWindow.xaml.cs">
       <DependentUpon>AboutThisSoftwareWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Settings\Filters\FilterSelectionWindow.xaml.cs">
+      <DependentUpon>FilterSelectionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserInput\UserInputPreviewDocument.cs" />
     <Compile Include="_MyLib\Converters\EnumToStringConverter.cs" />
@@ -184,7 +189,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Settings\FilterAdditionWindow.xaml.cs">
+    <Compile Include="Settings\Filters\FilterAdditionWindow.xaml.cs">
       <DependentUpon>FilterAdditionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="_MyLib\Converters\EnumToBooleanConverter.cs" />
@@ -202,7 +207,7 @@
     <Compile Include="_MyLib\Serialization\WritableSettingsStoreAdapter.cs" />
     <Compile Include="_MyLib\Serialization\WritableSettingsStoreExtension.cs" />
     <Compile Include="Filter\Filter.cs" />
-    <Compile Include="Settings\FilterSettingsControl.xaml.cs">
+    <Compile Include="Settings\Filters\FilterSettingsControl.xaml.cs">
       <DependentUpon>FilterSettingsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Guids.cs" />
@@ -265,15 +270,19 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Settings\AboutThisSoftwareWindow.xaml">
+    <Page Include="Settings\Misc\AboutThisSoftwareWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\FilterAdditionWindow.xaml">
+    <Page Include="Settings\Filters\FilterAdditionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\FilterSettingsControl.xaml">
+    <Page Include="Settings\Filters\FilterSelectionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Settings\Filters\FilterSettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

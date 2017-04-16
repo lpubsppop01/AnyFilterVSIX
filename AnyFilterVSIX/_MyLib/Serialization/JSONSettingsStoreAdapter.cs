@@ -30,7 +30,6 @@ namespace lpubsppop01.AnyFilterVSIX
             Dictionary<string, object> node;
             if (!pathToNode.TryGetValue(path, out node))
             {
-                if (!createsIfNotExists) return null;
                 var tokens = path.Split('/', '\\');
                 var currNode = rootNode;
                 foreach (var token in tokens)
@@ -38,6 +37,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     object childValue;
                     if (!currNode.TryGetValue(token, out childValue))
                     {
+                        if (!createsIfNotExists) return null;
                         currNode[token] = childValue = new Dictionary<string, object>();
                     }
                     currNode = childValue as Dictionary<string, object>;
@@ -148,6 +148,7 @@ namespace lpubsppop01.AnyFilterVSIX
         {
             var serializer = new JavaScriptSerializer();
             rootNode = serializer.Deserialize<Dictionary<string, object>>(input);
+            pathToNode = new Dictionary<string, Dictionary<string, object>>();
         }
 
         #endregion
