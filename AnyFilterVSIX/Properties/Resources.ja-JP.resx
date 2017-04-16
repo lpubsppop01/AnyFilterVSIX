@@ -156,6 +156,9 @@
   <data name="InsertOutputTextAfterTargetSpan" xml:space="preserve">
     <value>対象範囲の後に出力テキストを挿入する</value>
   </data>
+  <data name="JSONFileFilter" xml:space="preserve">
+    <value>JSON ファイル (*.json)|*.json</value>
+  </data>
   <data name="Next" xml:space="preserve">
     <value>次へ</value>
   </data>

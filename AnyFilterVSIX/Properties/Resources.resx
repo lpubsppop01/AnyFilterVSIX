@@ -156,6 +156,9 @@
   <data name="InsertOutputTextAfterTargetSpan" xml:space="preserve">
     <value>Insert output text after target span</value>
   </data>
+  <data name="JSONFileFilter" xml:space="preserve">
+    <value>JSON Files (*.json)|*.json</value>
+  </data>
   <data name="Next" xml:space="preserve">
     <value>Next</value>
   </data>

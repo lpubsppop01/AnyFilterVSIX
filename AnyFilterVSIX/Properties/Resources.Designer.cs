@@ -178,6 +178,15 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         }
         
         /// <summary>
+        ///   JSON Files (*.json)|*.json に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string JSONFileFilter {
+            get {
+                return ResourceManager.GetString("JSONFileFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Next に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Next {

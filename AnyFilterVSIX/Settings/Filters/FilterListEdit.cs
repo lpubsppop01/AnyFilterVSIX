@@ -143,6 +143,8 @@ namespace lpubsppop01.AnyFilterVSIX
             // Get file path
             var saveFileDialog = new Microsoft.Win32.SaveFileDialog();
             saveFileDialog.DefaultExt = "*.json";
+            saveFileDialog.AddExtension = true;
+            saveFileDialog.Filter = Properties.Resources.JSONFileFilter;
             if (!(saveFileDialog.ShowDialog() ?? false)) return false;
             string filePath = saveFileDialog.FileName;
 
@@ -157,6 +159,8 @@ namespace lpubsppop01.AnyFilterVSIX
             var openFileDialog = new Microsoft.Win32.OpenFileDialog();
             openFileDialog.FileName = "";
             openFileDialog.DefaultExt = "*.json";
+            openFileDialog.AddExtension = true;
+            openFileDialog.Filter = Properties.Resources.JSONFileFilter;
             if (!(openFileDialog.ShowDialog() ?? false)) return false;
             string filePath = openFileDialog.FileName;
 
