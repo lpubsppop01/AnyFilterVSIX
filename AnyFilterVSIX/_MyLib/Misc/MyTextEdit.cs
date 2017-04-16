@@ -190,10 +190,22 @@ namespace lpubsppop01.AnyFilterVSIX
             if (CaretIndex >= Text.Length) return;
             int backupCaretIndex = CaretIndex;
             int iCurrLineEnd = GetCurrentLineEndIndex();
-            int iKillEnd = (iCurrLineEnd == ColumnIndex) ? iCurrLineEnd + NLLength : iCurrLineEnd;
-            SetKilledTextToClipboard(ColumnIndex, iKillEnd, combinesWithBuf: true);
+            int iKillEnd = (iCurrLineEnd == CaretIndex) ? iCurrLineEnd + NLLength : iCurrLineEnd;
+            SetKilledTextToClipboard(CaretIndex, iKillEnd, combinesWithBuf: true);
             Text = Text.Substring(0, CaretIndex) + Text.Substring(iKillEnd);
             CaretIndex = backupCaretIndex;
+            UpdateColumnIndex();
+        }
+
+        public void Yank()
+        {
+            ClearKilledTextBuffer();
+            if (GetTextFromClipboard == null) return;
+            string textToInsert = GetTextFromClipboard();
+            if (string.IsNullOrEmpty(textToInsert)) return;
+            int backupCaretIndex = CaretIndex;
+            Text = Text.Insert(CaretIndex, textToInsert);
+            CaretIndex = backupCaretIndex + textToInsert.Length;
             UpdateColumnIndex();
         }
 

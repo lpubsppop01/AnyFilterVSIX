@@ -159,5 +159,22 @@ namespace AnyFilterVSIXTests
             Assert.AreEqual(textBuf, "");
             Assert.IsTrue(clipboard == TestText);
         }
+
+        [TestMethod]
+        public void TestYank()
+        {
+            int iCaret = 0;
+            var textBuf = TestText;
+            string clipboard = "";
+            var textEdit = new MyTextEdit(() => textBuf, (text) => textBuf = text, () => iCaret, (caretIndex) => iCaret = caretIndex)
+            {
+                GetTextFromClipboard = () => clipboard,
+                SetTextFromClipboard = (text) => clipboard = text
+            };
+            textEdit.KillLine();
+            textEdit.KillLine();
+            textEdit.Yank();
+            Assert.AreEqual(textBuf, TestText);
+        }
     }
 }

@@ -175,6 +175,7 @@ namespace lpubsppop01.AnyFilterVSIX
                         { Key.D, textEdit.DeleteChar },
                         { Key.H, textEdit.DeleteBackwardChar },
                         { Key.K, textEdit.KillLine },
+                        { Key.Y, textEdit.Yank },
                    };
                 }
                 Action action;
