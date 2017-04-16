@@ -16,7 +16,7 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <local:FilterSettingsControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" x:Name="ctrlFilters" Margin="0,0,0,6"/>
+        <local:FilterListEditControl Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" x:Name="ctrlFilters" Margin="0,0,0,6"/>
         <ComboBox Grid.Row="1" Grid.Column="0" Name="cmbCulture" Width="220"/>
         <Button Grid.Row="1" Grid.Column="1" Name="btnAboutThisSoftware" Width="120" Margin="6,0,0,0" Content="{local:NameToResourceBinding AboutThisSoftware_}"
                 Click="btnAboutThisSoftware_Click"/>

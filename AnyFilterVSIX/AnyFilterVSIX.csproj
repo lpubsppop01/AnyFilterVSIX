@@ -207,8 +207,8 @@
     <Compile Include="_MyLib\Serialization\WritableSettingsStoreAdapter.cs" />
     <Compile Include="_MyLib\Serialization\WritableSettingsStoreExtension.cs" />
     <Compile Include="Filter\Filter.cs" />
-    <Compile Include="Settings\Filters\FilterSettingsControl.xaml.cs">
-      <DependentUpon>FilterSettingsControl.xaml</DependentUpon>
+    <Compile Include="Settings\Filters\FilterListEditControl.xaml.cs">
+      <DependentUpon>FilterListEditControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Guids.cs" />
     <Compile Include="Filter\FilterRunner.cs" />
@@ -282,7 +282,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings\Filters\FilterSettingsControl.xaml">
+    <Page Include="Settings\Filters\FilterListEditControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

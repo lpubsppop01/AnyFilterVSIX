@@ -9,7 +9,7 @@ namespace lpubsppop01.AnyFilterVSIX
 {
     static class FilterExporter
     {
-        #region Template Item
+        #region Template
 
         public class TemplateFileItem
         {

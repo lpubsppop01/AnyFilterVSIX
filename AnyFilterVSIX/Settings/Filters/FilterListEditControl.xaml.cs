@@ -19,13 +19,13 @@ using System.Windows.Shapes;
 namespace lpubsppop01.AnyFilterVSIX
 {
     /// <summary>
-    /// Interaction logic for FilterSettingsControl.xaml
+    /// Interaction logic for FilterListEditControl.xaml
     /// </summary>
-    partial class FilterSettingsControl : UserControl
+    partial class FilterListEditControl : UserControl
     {
         #region Constructor
 
-        public FilterSettingsControl()
+        public FilterListEditControl()
         {
             InitializeComponent();
 
@@ -72,7 +72,7 @@ namespace lpubsppop01.AnyFilterVSIX
         }
 
         public static readonly DependencyProperty HasSelectionProperty = DependencyProperty.Register(
-            "HasSelection", typeof(bool), typeof(FilterSettingsControl), new PropertyMetadata(false));
+            "HasSelection", typeof(bool), typeof(FilterListEditControl), new PropertyMetadata(false));
 
         #endregion
 
