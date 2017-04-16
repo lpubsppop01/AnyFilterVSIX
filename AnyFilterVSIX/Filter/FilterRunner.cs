@@ -4,15 +4,41 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace lpubsppop01.AnyFilterVSIX
 {
+    enum FilterResultKind
+    {
+        Done, Cancelled, ExceptionThrown
+    }
+
+    sealed class FilterResult
+    {
+        #region Constructor
+
+        public FilterResult(string outputText, FilterResultKind kind)
+        {
+            OutputText = outputText;
+            Kind = kind;
+        }
+
+        #endregion
+
+        #region Properties
+
+        public string OutputText { get; private set; }
+        public FilterResultKind Kind { get; private set; }
+
+        #endregion
+    }
+
     class FilterRunner
     {
         #region Run
 
-        public static string Run(Filter filter, string inputText, string userInputText)
+        public static FilterResult Run(Filter filter, string inputText, string userInputText)
         {
             try
             {
@@ -24,35 +50,57 @@ namespace lpubsppop01.AnyFilterVSIX
                 proc.WaitForExit();
                 proc.Close();
                 if (userInputTempFilePath != null) DeleteTempFile(userInputTempFilePath);
-                return PostProcess(outputBuf.ToString(), inputText);
+                string outputText = PostProcess(outputBuf.ToString(), inputText);
+                return new FilterResult(outputText, FilterResultKind.Done);
             }
             catch (Exception e)
             {
-                return e.ToString();
+                return new FilterResult(e.ToString(), FilterResultKind.ExceptionThrown);
             }
         }
 
-        public static Task<string> RunAsync(Filter filter, string inputText, string userInputText)
+        public static Task<FilterResult> RunAsync(Filter filter, string inputText, string userInputText, RepeatedAsyncTaskSupport support)
         {
-            var tcs = new TaskCompletionSource<string>();
+            var tcs = new TaskCompletionSource<FilterResult>();
             try
             {
                 string actualInputText, actualUserInputText, userInputTempFilePath;
                 Prepare(filter, inputText, userInputText, out actualInputText, out actualUserInputText, out userInputTempFilePath);
                 var outputBuf = new StringBuilder();
                 var proc = CreateProcess(filter, actualInputText, userInputText, userInputTempFilePath, outputBuf);
+
+                EventHandler cancelReqHandler = null;
+                cancelReqHandler = (sender, e) =>
+                {
+                    try
+                    {
+                        proc.Kill();
+                        proc.Close();
+                    }
+                    catch { }
+                    finally
+                    {
+                        tcs.TrySetResult(new FilterResult("", FilterResultKind.Cancelled));
+                        if (userInputTempFilePath != null) DeleteTempFile(userInputTempFilePath);
+                        support.CancelRequested -= cancelReqHandler;
+                    }
+                };
+                support.CancelRequested += cancelReqHandler;
+
                 proc.EnableRaisingEvents = true;
                 proc.Exited += (sender, e) =>
                 {
                     proc.Close();
-                    tcs.TrySetResult(PostProcess(outputBuf.ToString(), inputText));
+                    string outputText = PostProcess(outputBuf.ToString(), inputText);
+                    tcs.TrySetResult(new FilterResult(outputText, FilterResultKind.Done));
                     if (userInputTempFilePath != null) DeleteTempFile(userInputTempFilePath);
+                    support.CancelRequested -= cancelReqHandler;
                 };
                 StartProcess(proc, filter, actualInputText);
             }
             catch (Exception e)
             {
-                tcs.TrySetResult(e.ToString());
+                tcs.TrySetResult(new FilterResult(e.ToString(), FilterResultKind.ExceptionThrown));
             }
             return tcs.Task;
         }

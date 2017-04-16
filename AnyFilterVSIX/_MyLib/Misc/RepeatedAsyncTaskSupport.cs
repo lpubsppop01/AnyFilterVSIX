@@ -6,8 +6,24 @@ using System.Threading.Tasks;
 
 namespace lpubsppop01.AnyFilterVSIX
 {
-    class RepeatedAsyncTaskSupport
+    sealed class RepeatedAsyncTaskSupport
     {
+        #region Events
+
+        public event EventHandler CancelRequested;
+
+        void OnCancelRequested()
+        {
+            if (CancelRequested != null)
+            {
+                CancelRequested(this, new EventArgs());
+            }
+        }
+
+        #endregion
+
+        #region Actions
+
         object myLock = new object();
         bool isRunning;
         bool rerunsAfterCurr;
@@ -18,7 +34,11 @@ namespace lpubsppop01.AnyFilterVSIX
             {
                 if (isRunning)
                 {
-                    rerunsAfterCurr = true;
+                    if (!rerunsAfterCurr)
+                    {
+                        rerunsAfterCurr = true;
+                        OnCancelRequested();
+                    }
                     return false;
                 }
                 isRunning = true;
@@ -47,5 +67,7 @@ namespace lpubsppop01.AnyFilterVSIX
                 isRunning = false;
             }
         }
+
+        #endregion
     }
 }

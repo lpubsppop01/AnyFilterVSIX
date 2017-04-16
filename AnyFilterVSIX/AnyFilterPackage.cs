@@ -224,11 +224,19 @@ namespace lpubsppop01.AnyFilterVSIX
                             do
                             {
                                 var previewTextBuf = new StringBuilder();
+                                bool cancelled = false;
                                 foreach (var span in targetSpans)
                                 {
                                     string envNLSpanText = span.GetText().ConvertNewLine(srcNewLineKind, envNewLineKind);
-                                    previewTextBuf.Append(await FilterRunner.RunAsync(filter, envNLSpanText, buffer.UserInputText));
+                                    var filterResult = await FilterRunner.RunAsync(filter, envNLSpanText, buffer.UserInputText, support);
+                                    if (filterResult.Kind == FilterResultKind.Cancelled)
+                                    {
+                                        cancelled = true;
+                                        break;
+                                    }
+                                    previewTextBuf.Append(filterResult.OutputText);
                                 }
+                                if (cancelled) continue;
                                 buffer.PreviewDocument = new UserInputPreviewDocument(previewTextBuf.ToString(), tabSize, buffer.ShowsDifference ? envNLInputText : null);
                             } while (support.TryContinue());
                             support.End();
@@ -275,7 +283,7 @@ namespace lpubsppop01.AnyFilterVSIX
                 foreach (var span in targetSpans)
                 {
                     string envNLSpanText = span.GetText().ConvertNewLine(srcNewLineKind, envNewLineKind);
-                    string envNLResultText = FilterRunner.Run(filter, envNLSpanText, userInputText);
+                    string envNLResultText = FilterRunner.Run(filter, envNLSpanText, userInputText).OutputText;
                     string resultText = envNLResultText.ConvertNewLine(envNewLineKind, srcNewLineKind);
                     if (filter.InsertsAfterTargetSpan)
                     {
