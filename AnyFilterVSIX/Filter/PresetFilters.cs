@@ -8,12 +8,12 @@ using System.Windows;
 
 namespace lpubsppop01.AnyFilterVSIX
 {
-    public enum PresetFilterID
+    enum PresetFilterID
     {
         Empty, Sed, Awk, MonoCSharpScript, CygwinBash, CygwinSed, CygwinGawk
     }
 
-    public class PresetFilters
+    class PresetFilters
     {
         public static Filter Get(PresetFilterID presetID)
         {

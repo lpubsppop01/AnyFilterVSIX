@@ -119,18 +119,20 @@ namespace lpubsppop01.AnyFilterVSIX
                 settingsStore.CreateCollection(CollectionPath);
             }
 
-            Current.Filters.SaveCollection(settingsStore, Path.Combine(CollectionPath, "Filters"), (e, s, p) => e.Save(s, p));
-            settingsStore.SetBoolean(CollectionPath, "UsesEmacsLikeKeybindings", Current.UsesEmacsLikeKeybindings);
-            settingsStore.SetString(CollectionPath, "Culture", Current.Culture.Name);
+            var adapter = new WritableSettingsStoreAdapter(settingsStore);
+            adapter.SetList(CollectionPath, "Filters", Current.Filters, (e, p) => e.Save(adapter, p));
+            adapter.SetBoolean(CollectionPath, "UsesEmacsLikeKeybindings", Current.UsesEmacsLikeKeybindings);
+            adapter.SetString(CollectionPath, "Culture", Current.Culture.Name);
         }
 
         public static void LoadCurrent()
         {
             if (!settingsStore.CollectionExists(CollectionPath)) return;
 
-            Current.Filters = new ObservableCollection<Filter>(WritableSettingsStoreExtension.LoadCollection(settingsStore, Path.Combine(CollectionPath, "Filters"), Filter.Load));
-            Current.UsesEmacsLikeKeybindings = settingsStore.GetBoolean(CollectionPath, "UsesEmacsLikeKeybindings", false);
-            Current.Culture = MyCultureInfo.GetCultureInfo(settingsStore.GetString(CollectionPath, "Culture", ""));
+            var adapter = new WritableSettingsStoreAdapter(settingsStore);
+            Current.Filters = new ObservableCollection<Filter>(adapter.GetList(CollectionPath, "Filters", new Filter[0], (itemPath) => Filter.Load(adapter, itemPath)));
+            Current.UsesEmacsLikeKeybindings = adapter.GetBoolean(CollectionPath, "UsesEmacsLikeKeybindings", false);
+            Current.Culture = MyCultureInfo.GetCultureInfo(adapter.GetString(CollectionPath, "Culture", ""));
         }
 
         #endregion

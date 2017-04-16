@@ -21,7 +21,7 @@ namespace lpubsppop01.AnyFilterVSIX
     /// <summary>
     /// Interaction logic for FilterSettingsControl.xaml
     /// </summary>
-    public partial class FilterSettingsControl : UserControl
+    partial class FilterSettingsControl : UserControl
     {
         #region Constructor
 

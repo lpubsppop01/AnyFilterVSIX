@@ -17,7 +17,7 @@ namespace lpubsppop01.AnyFilterVSIX
     /// <summary>
     /// Interaction logic for FilterAdditionWindow.xaml
     /// </summary>
-    public partial class FilterAdditionWindow : Window
+    partial class FilterAdditionWindow : Window
     {
         #region Constructor
 

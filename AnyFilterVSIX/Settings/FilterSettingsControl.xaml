@@ -1,4 +1,5 @@
 ﻿<UserControl x:Class="lpubsppop01.AnyFilterVSIX.FilterSettingsControl"
+             x:ClassModifier="internal"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -106,11 +107,11 @@
             <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
                 <Label Grid.Row="0" Content="{local:NameToResourceBinding TargetSpanForNoSelection}"/>
                 <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedValue.TargetSpanForNoSelection, ConverterParameter=CaretPosition, ElementName=lstMaster}"
-                             Margin="6,0,0,0" Content="{local:NameToResourceBinding CaretPosition}"/>
+                             GroupName="497F23AE-8AA9-4CEA-826B-74D649280B6C" Margin="6,0,0,0" Content="{local:NameToResourceBinding CaretPosition}"/>
                 <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedValue.TargetSpanForNoSelection, ConverterParameter=CurrentLine, ElementName=lstMaster}"
-                             Margin="6,0,0,0" Content="{local:NameToResourceBinding CurrentLine}" />
+                             GroupName="BAB29707-19EE-4B41-995E-2D18F4CCECB9" Margin="6,0,0,0" Content="{local:NameToResourceBinding CurrentLine}" />
                 <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedValue.TargetSpanForNoSelection, ConverterParameter=WholeDocument, ElementName=lstMaster}"
-                             Margin="6,0,0,0" Content="{local:NameToResourceBinding WholeDocument}"/>
+                             GroupName="5606C9EA-659A-4BFC-B52D-A6C15C9D1D71" Margin="6,0,0,0" Content="{local:NameToResourceBinding WholeDocument}"/>
             </StackPanel>
             <CheckBox Grid.Row="2" IsChecked="{Binding SelectedValue.InsertsAfterTargetSpan, ElementName=lstMaster}" Content="{local:NameToResourceBinding InsertOutputTextAfterTargetSpan}"/>
             <CheckBox Grid.Row="3" IsChecked="{Binding SelectedValue.PassesInputTextToStandardInput, ElementName=lstMaster}" Content="{local:NameToResourceBinding PassInputTextToStandardInput}"/>

@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.Settings;
 
 namespace lpubsppop01.AnyFilterVSIX
 {
-    public class Filter : ICloneable, INotifyPropertyChanged
+    class Filter : ICloneable, INotifyPropertyChanged
     {
         #region Constructors
 
@@ -182,7 +182,7 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #region Serialization
 
-        public void Save(WritableSettingsStore settingsStore, string collectionPath)
+        public void Save(ISettingsStoreAdapter settingsStore, string collectionPath)
         {
             settingsStore.SetInt32(collectionPath, "Number", Number);
             settingsStore.SetString(collectionPath, "Title", Title);
@@ -199,7 +199,7 @@ namespace lpubsppop01.AnyFilterVSIX
             settingsStore.SetBoolean(collectionPath, "UserInputWindow_ShowsDifference", UserInputWindow_ShowsDifference);
         }
 
-        public static Filter Load(WritableSettingsStore settingsStore, string collectionPath)
+        public static Filter Load(ISettingsStoreAdapter settingsStore, string collectionPath)
         {
             return new Filter
             {
