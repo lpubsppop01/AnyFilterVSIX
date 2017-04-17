@@ -88,6 +88,33 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         }
         
         /// <summary>
+        ///   Add Filter に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string AddFilter {
+            get {
+                return ResourceManager.GetString("AddFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   AnyFilter Settings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string AnyFilterSettings {
+            get {
+                return ResourceManager.GetString("AnyFilterSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   AnyFilter Settings... に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string AnyFilterSettings_ {
+            get {
+                return ResourceManager.GetString("AnyFilterSettings_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Arguments に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Arguments {
@@ -237,6 +264,24 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         public static string Remove {
             get {
                 return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Select Filters to Export に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SelectFiltersToExport {
+            get {
+                return ResourceManager.GetString("SelectFiltersToExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Select Filters to Import に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SelectFiltersToImport {
+            get {
+                return ResourceManager.GetString("SelectFiltersToImport", resourceCulture);
             }
         }
         

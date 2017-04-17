@@ -20,6 +20,7 @@
     <Buttons>
       <Button guid="guidAnyFilterCmdSet" id="cmdidSettings" priority="0x0100" type="Button">
         <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+        <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidSettings</CommandName>
           <ButtonText>AnyFilter Settings...</ButtonText>

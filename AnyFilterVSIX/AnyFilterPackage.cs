@@ -117,7 +117,8 @@ namespace lpubsppop01.AnyFilterVSIX
         void AddSettingsMenuItem()
         {
             var menuCommandID = new CommandID(GuidList.guidAnyFilterCmdSet, (int)PkgCmdIDList.cmdidSettings);
-            var menuItem = new MenuCommand((sender, e) =>
+            OleMenuCommand menuItem = null;
+            menuItem = new OleMenuCommand((sender, e) =>
             {
                 var backup = AnyFilterSettings.Current.Clone();
                 var dialog = new AnyFilterSettingsWindow
@@ -128,13 +129,17 @@ namespace lpubsppop01.AnyFilterVSIX
                 if (dialog.ShowDialog() ?? false)
                 {
                     AnyFilterSettings.SaveCurrent();
+                    menuItem.Text = Properties.Resources.AnyFilterSettings_;
                     UpdateRunFilterMenuItems();
                 }
                 else
                 {
                     AnyFilterSettings.Current.Copy(backup);
                 }
-            }, menuCommandID);
+            }, menuCommandID)
+            {
+                Text = Properties.Resources.AnyFilterSettings_
+            };
             menuCommandService.AddCommand(menuItem);
         }
 

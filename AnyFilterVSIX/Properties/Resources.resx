@@ -126,6 +126,15 @@
   <data name="Add" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="AddFilter" xml:space="preserve">
+    <value>Add Filter</value>
+  </data>
+  <data name="AnyFilterSettings" xml:space="preserve">
+    <value>AnyFilter Settings</value>
+  </data>
+  <data name="AnyFilterSettings_" xml:space="preserve">
+    <value>AnyFilter Settings...</value>
+  </data>
   <data name="Arguments" xml:space="preserve">
     <value>Arguments</value>
   </data>
@@ -176,6 +185,12 @@
   </data>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>
+  </data>
+  <data name="SelectFiltersToExport" xml:space="preserve">
+    <value>Select Filters to Export</value>
+  </data>
+  <data name="SelectFiltersToImport" xml:space="preserve">
+    <value>Select Filters to Import</value>
   </data>
   <data name="Settings_ArgumentsHint" xml:space="preserve">
     <value>$(InputText), $(InputTempFilePath), $(UserInput), $(UserInputTempFilePath) is available.</value>

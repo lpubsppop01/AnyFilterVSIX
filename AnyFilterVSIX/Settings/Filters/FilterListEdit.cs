@@ -134,6 +134,7 @@ namespace lpubsppop01.AnyFilterVSIX
             {
                 Owner = ownerWindow,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Title = Properties.Resources.SelectFiltersToExport,
                 Filters = ItemsSource
             };
             if (!(selectionDialog.ShowDialog() ?? false)) return false;
@@ -173,6 +174,7 @@ namespace lpubsppop01.AnyFilterVSIX
             {
                 Owner = ownerWindow,
                 WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Title = Properties.Resources.SelectFiltersToImport,
                 Filters = filters
             };
             if (!(selectionDialog.ShowDialog() ?? false)) return false;

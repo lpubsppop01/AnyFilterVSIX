@@ -3,7 +3,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:lpubsppop01.AnyFilterVSIX"
-        Title="Add Filter" SizeToContent="WidthAndHeight" ResizeMode="NoResize" Name="this">
+        Title="{local:NameToResourceBinding AddFilter}" SizeToContent="WidthAndHeight" ResizeMode="NoResize" Name="this">
     <Window.Resources>
         <Style TargetType="RadioButton">
             <Setter Property="VerticalAlignment" Value="Center"/>
