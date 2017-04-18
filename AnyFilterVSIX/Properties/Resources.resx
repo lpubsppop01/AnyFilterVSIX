@@ -201,6 +201,9 @@
   <data name="TargetSpanForNoSelection" xml:space="preserve">
     <value>Target Span for No Selection</value>
   </data>
+  <data name="TempFileExtension" xml:space="preserve">
+    <value>Temp File Extension</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Title</value>
   </data>

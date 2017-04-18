@@ -10,7 +10,7 @@ namespace lpubsppop01.AnyFilterVSIX
 {
     enum PresetFilterID
     {
-        Empty, Sed, Awk, MonoCSharpScript, CygwinBash, CygwinSed, CygwinGawk
+        Empty, Sed, Awk, MonoCSharpScript, CygwinBash, CygwinSed, CygwinGawk, CMigemo
     }
 
     class PresetFilters
@@ -31,6 +31,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
+                    filter.TempFileExtension = ".sed";
                     filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
                     filter.PassesInputTextToStandardInput = true;
                     break;
@@ -41,6 +42,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
+                    filter.TempFileExtension = ".awk";
                     filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
                     filter.PassesInputTextToStandardInput = true;
                     break;
@@ -48,6 +50,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.Title = "Mono C# Script";
                     filter.Command = "cmd";
                     filter.Arguments = string.Format(@"/c ""C:\Program Files (x86)\Mono\bin\csharp.bat"" {0}", FilterRunner.VariableName_InputTempFilePath);
+                    filter.TempFileExtension = ".cs";
                     filter.TargetSpanForNoSelection = TargetSpanForNoSelection.CurrentLine;
                     filter.InsertsAfterTargetSpan = true;
                     break;
@@ -58,6 +61,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
+                    filter.TempFileExtension = ".bash";
                     filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
                     filter.TemplateFilePath = Path.Combine(GetTemplateDirectoryPath(), "CygwinBashTemplate.txt");
                     filter.UsesTemplateFile = true;
@@ -70,6 +74,7 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
+                    filter.TempFileExtension = ".sed";
                     filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
                     filter.PassesInputTextToStandardInput = true;
                     break;
@@ -81,8 +86,18 @@ namespace lpubsppop01.AnyFilterVSIX
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
+                    filter.TempFileExtension = ".awk";
                     filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
                     filter.PassesInputTextToStandardInput = true;
+                    break;
+                case PresetFilterID.CMigemo:
+                    filter.Title = "C/Migemo";
+                    filter.Command = "powershell";
+                    filter.Arguments = "-f $(InputTempFilePath)";
+                    filter.TempFileExtension = ".ps1";
+                    filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
+                    filter.TemplateFilePath = Path.Combine(GetTemplateDirectoryPath(), "CMigemoTemplate.txt");
+                    filter.UsesTemplateFile = true;
                     break;
             }
             return filter;
@@ -115,6 +130,31 @@ namespace lpubsppop01.AnyFilterVSIX
                             writer.WriteLine(@"EOS");
                             writer.WriteLine(@")");
                             writer.WriteLine(@"echo ""$INPUT_TEXT"" | $(UserInput)");
+                        }
+                        return true;
+                    case PresetFilterID.CMigemo:
+                        using (var writer = new StreamWriter(filePath, /* append */ false, MyEncoding.GetEncoding(encodingName))
+                        {
+                            NewLine = newLineKind.ToNewLineString()
+                        })
+                        {
+                            writer.WriteLine(@"$userInputText = '$(UserInput)'");
+                            writer.WriteLine(@"$inputText = @'");
+                            writer.WriteLine(@"$(InputText)");
+                            writer.WriteLine(@"'@");
+                            writer.WriteLine(@"");
+                            writer.WriteLine(@"if ($userInputText -eq """") {");
+                            writer.WriteLine(@"    echo $inputText");
+                            writer.WriteLine(@"    exit");
+                            writer.WriteLine(@"}");
+                            writer.WriteLine(@"");
+                            writer.WriteLine(@"$myDocuments = [Environment]::GetFolderPath('MyDocuments')");
+                            writer.WriteLine(@"$migemo = Join-Path $myDocuments ""AnyFilterVSIX\cmigemo-default-win64\cmigemo.exe""");
+                            writer.WriteLine(@"$migemoDict = Join-Path $myDocuments ""AnyFilterVSIX\cmigemo-default-win64\dict\cp932\migemo-dict""");
+                            writer.WriteLine(@"");
+                            writer.WriteLine(@"$pattern = (echo $userInputText | &$migemo -d $migemoDict -q)");
+                            writer.WriteLine(@"$outputText = $inputText -replace $pattern, ""<$&>""");
+                            writer.WriteLine(@"echo $outputText");
                         }
                         return true;
                 }

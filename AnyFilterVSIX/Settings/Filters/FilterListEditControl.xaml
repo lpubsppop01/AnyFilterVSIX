@@ -97,6 +97,9 @@
             <ComboBox Grid.Row="0" Grid.Column="2" Width="60" Margin="3,3,0,3" Name="cmbInputNewLineKind"/>
             <Label Grid.Row="1" Grid.Column="0" Content="{local:NameToResourceBinding OutputEncoding}"/>
             <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,3,0,3" Name="cmbOutputEncoding"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="{local:NameToResourceBinding TempFileExtension}"/>
+            <TextBox Grid.Row="2" Grid.Column="1"
+                     Text="{Binding SelectedValue.TempFileExtension, ElementName=lstMaster, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
         <Grid Grid.Row="3" IsEnabled="{Binding HasSelection, ElementName=this}">
             <Grid.RowDefinitions>
@@ -104,10 +107,9 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal">
-                <Label Grid.Row="0" Content="{local:NameToResourceBinding TargetSpanForNoSelection}"/>
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <Label Content="{local:NameToResourceBinding TargetSpanForNoSelection}"/>
                 <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedValue.TargetSpanForNoSelection, ConverterParameter=CaretPosition, ElementName=lstMaster}"
                              GroupName="497F23AE-8AA9-4CEA-826B-74D649280B6C" Margin="6,0,0,0" Content="{local:NameToResourceBinding CaretPosition}"/>
                 <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedValue.TargetSpanForNoSelection, ConverterParameter=CurrentLine, ElementName=lstMaster}"
@@ -115,9 +117,9 @@
                 <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedValue.TargetSpanForNoSelection, ConverterParameter=WholeDocument, ElementName=lstMaster}"
                              GroupName="5606C9EA-659A-4BFC-B52D-A6C15C9D1D71" Margin="6,0,0,0" Content="{local:NameToResourceBinding WholeDocument}"/>
             </StackPanel>
-            <CheckBox Grid.Row="2" IsChecked="{Binding SelectedValue.InsertsAfterTargetSpan, ElementName=lstMaster}" Content="{local:NameToResourceBinding InsertOutputTextAfterTargetSpan}"/>
-            <CheckBox Grid.Row="3" IsChecked="{Binding SelectedValue.PassesInputTextToStandardInput, ElementName=lstMaster}" Content="{local:NameToResourceBinding PassInputTextToStandardInput}"/>
-            <DockPanel Grid.Row="4">
+            <CheckBox Grid.Row="1" IsChecked="{Binding SelectedValue.InsertsAfterTargetSpan, ElementName=lstMaster}" Content="{local:NameToResourceBinding InsertOutputTextAfterTargetSpan}"/>
+            <CheckBox Grid.Row="2" IsChecked="{Binding SelectedValue.PassesInputTextToStandardInput, ElementName=lstMaster}" Content="{local:NameToResourceBinding PassInputTextToStandardInput}"/>
+            <DockPanel Grid.Row="3">
                 <CheckBox DockPanel.Dock="Left" IsChecked="{Binding SelectedValue.UsesTemplateFile, ElementName=lstMaster}" Content="{local:NameToResourceBinding UseInputTemplateFile}"/>
                 <Button DockPanel.Dock="Right" Width="20" Margin="6,0,0,0" Height="{Binding ActualHeight, ElementName=txtTemplate}" Click="btnTemplate_Click"
                         IsEnabled="{Binding SelectedValue.UsesTemplateFile, ElementName=lstMaster}">...</Button>

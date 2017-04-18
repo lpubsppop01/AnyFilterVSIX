@@ -125,7 +125,7 @@ namespace lpubsppop01.AnyFilterVSIX
 
         static string CreateUserInputTempFile(Filter filter, string actualUserInputText)
         {
-            string userInputTempFilePath = CreateTempFile();
+            string userInputTempFilePath = CreateTempFile(filter.TempFileExtension);
             var inputEncoding = MyEncoding.GetEncoding(filter.InputEncodingName);
             using (var writer = new StreamWriter(userInputTempFilePath, /* append: */ false, inputEncoding))
             {
@@ -139,7 +139,7 @@ namespace lpubsppop01.AnyFilterVSIX
             string inputTempFilePath = null;
             if (filter.Arguments.Contains(VariableName_InputTempFilePath))
             {
-                inputTempFilePath = CreateTempFile();
+                inputTempFilePath = CreateTempFile(filter.TempFileExtension);
                 var inputEncoding = MyEncoding.GetEncoding(filter.InputEncodingName);
                 using (var writer = new StreamWriter(inputTempFilePath, /* append: */ false, inputEncoding))
                 {
@@ -184,10 +184,10 @@ namespace lpubsppop01.AnyFilterVSIX
             }
         }
 
-        static string PostProcess(string rawOuputText, string rawInputText)
+        static string PostProcess(string rawOutputText, string rawInputText)
         {
-            if (rawInputText.EndsWith(Environment.NewLine)) return rawOuputText;
-            return TrimLastNewLine(rawOuputText);
+            if (rawInputText.EndsWith(Environment.NewLine)) return rawOutputText;
+            return TrimLastNewLine(rawOutputText);
         }
 
         #endregion
@@ -246,15 +246,17 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #region Temp File
 
-#if DEBUG
         static DateTime lastDateTime;
         static int lastNumber;
-#endif
 
-        static string CreateTempFile()
+        static string CreateTempFile(string fileNameSuffix)
         {
+            string dirPath = "";
 #if DEBUG
-            string dirPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"AnyFilterVSIX\Debug");
+            dirPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"AnyFilterVSIX\Debug");
+#else
+            dirPath = Path.Combine(Path.GetTempPath(), "AnyFilterVSIX");
+#endif
             if (!Directory.Exists(dirPath))
             {
                 Directory.CreateDirectory(dirPath);
@@ -270,11 +272,8 @@ namespace lpubsppop01.AnyFilterVSIX
                 lastDateTime = now;
                 lastNumber = 0;
             }
-            string filename = now.ToString("yyyyMMdd_hhmmss_fff_") + number.ToString() + ".txt";
+            string filename = now.ToString("yyyyMMdd_hhmmss_fff_") + number.ToString() + fileNameSuffix;
             return Path.Combine(dirPath, filename);
-#else
-            return Path.GetTempFileName();
-#endif
         }
 
         static void DeleteTempFile(string path)

@@ -313,6 +313,15 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         }
         
         /// <summary>
+        ///   Temp File Extension に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TempFileExtension {
+            get {
+                return ResourceManager.GetString("TempFileExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Title に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Title {

@@ -33,6 +33,7 @@ namespace lpubsppop01.AnyFilterVSIX
             InputNewLineKind = NewLineKind.CRLF;
             InputEncodingName = Encoding.Default.WebName;
             OutputEncodingName = Encoding.Default.WebName;
+            TempFileExtension = ".tmp";
             TargetSpanForNoSelection = TargetSpanForNoSelection.CaretPosition;
             InsertsAfterTargetSpan = false;
             PassesInputTextToStandardInput = false;
@@ -50,6 +51,7 @@ namespace lpubsppop01.AnyFilterVSIX
             InputNewLineKind = src.InputNewLineKind;
             InputEncodingName = src.InputEncodingName;
             OutputEncodingName = src.OutputEncodingName;
+            TempFileExtension = src.TempFileExtension;
             TargetSpanForNoSelection = src.TargetSpanForNoSelection;
             InsertsAfterTargetSpan = src.InsertsAfterTargetSpan;
             PassesInputTextToStandardInput = src.PassesInputTextToStandardInput;
@@ -109,6 +111,13 @@ namespace lpubsppop01.AnyFilterVSIX
         {
             get { return outputEncodingName; }
             set { outputEncodingName = value; OnPropertyChanged(); }
+        }
+
+        string tempFileExtension;
+        public string TempFileExtension
+        {
+            get { return tempFileExtension; }
+            set { tempFileExtension = value; OnPropertyChanged(); }
         }
 
         TargetSpanForNoSelection targetSpanForNoSelection;
@@ -191,6 +200,7 @@ namespace lpubsppop01.AnyFilterVSIX
             settingsStore.SetEnum(collectionPath, "InputNewLineKind", InputNewLineKind);
             settingsStore.SetString(collectionPath, "InputEncodingName", InputEncodingName);
             settingsStore.SetString(collectionPath, "OutputEncodingName", OutputEncodingName);
+            settingsStore.SetString(collectionPath, "TempFileExtension", TempFileExtension);
             settingsStore.SetEnum<TargetSpanForNoSelection>(collectionPath, "TargetSpanForNoSelection", TargetSpanForNoSelection);
             settingsStore.SetBoolean(collectionPath, "InsertsAfterTargetSpan", InsertsAfterTargetSpan);
             settingsStore.SetBoolean(collectionPath, "PassesInputTextToStandardInput", PassesInputTextToStandardInput);
@@ -210,6 +220,7 @@ namespace lpubsppop01.AnyFilterVSIX
                 InputNewLineKind = settingsStore.GetEnum(collectionPath, "InputNewLineKind", default(NewLineKind)),
                 InputEncodingName = settingsStore.GetString(collectionPath, "InputEncodingName", Encoding.Default.WebName),
                 OutputEncodingName = settingsStore.GetString(collectionPath, "OutputEncodingName", Encoding.Default.WebName),
+                TempFileExtension = settingsStore.GetString(collectionPath, "TempFileExtension", ".tmp"),
                 TargetSpanForNoSelection = settingsStore.GetEnum<TargetSpanForNoSelection>(collectionPath, "TargetSpanForNoSelection", TargetSpanForNoSelection.CaretPosition),
                 InsertsAfterTargetSpan = settingsStore.GetBoolean(collectionPath, "InsertsAfterTargetSpan", false),
                 PassesInputTextToStandardInput = settingsStore.GetBoolean(collectionPath, "PassesInputTextToStandardInput", false),

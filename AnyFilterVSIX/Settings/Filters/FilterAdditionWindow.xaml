@@ -29,6 +29,7 @@
         <RadioButton Grid.Row="0" Grid.Column="1" IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=CygwinBash, ElementName=this}">Cygwin bash</RadioButton>
         <RadioButton Grid.Row="1" Grid.Column="1" IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=CygwinSed, ElementName=this}">Cygwin sed</RadioButton>
         <RadioButton Grid.Row="2" Grid.Column="1" IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=CygwinGawk, ElementName=this}">Cygwin Gawk</RadioButton>
+        <RadioButton Grid.Row="3" Grid.Column="1" IsChecked="{local:EnumToBooleanBinding SelectedID, ConverterParameter=CMigemo, ElementName=this}">C/Migemo</RadioButton>
         <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="3">
             <Button Name="btnOK" IsDefault="True" Click="btnOK_Click" Width="70" Content="{local:NameToResourceBinding OK}"/>
             <Button Name="btnCancel" IsCancel="True" Click="btnCancel_Click" Width="70" Margin="6,0,0,0" Content="{local:NameToResourceBinding Cancel}"/>

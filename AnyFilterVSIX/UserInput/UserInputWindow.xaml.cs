@@ -105,8 +105,9 @@ namespace lpubsppop01.AnyFilterVSIX
             if (e.PropertyName != "PreviewDocument") return;
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                txtPreview.Document = buffer.PreviewDocument.ToFlowDocument(txtPreview.FontSize);
-                ResetCurrentLine();
+                var prevDoc = buffer.PreviewDocument.ToFlowDocument(txtPreview.FontSize);
+                prevDoc.Loaded += (sender_, e_) => ResetCurrentLine();
+                txtPreview.Document = prevDoc;
             }));
         }
 
@@ -230,7 +231,15 @@ namespace lpubsppop01.AnyFilterVSIX
         void ResetCurrentLine()
         {
             currPara = txtPreview.Document.Blocks.OfType<Paragraph>().FirstOrDefault();
-            if (currPara != null) currPara.BringIntoView();
+            if (currPara == null) return;
+            if (buffer.ShowsDifference)
+            {
+                MoveToNextPreviousDifference(toPrev: false);
+            }
+            else
+            {
+                currPara.BringIntoView();
+            }
         }
 
         void MoveToNextPreviousDifference(bool toPrev)
@@ -242,6 +251,7 @@ namespace lpubsppop01.AnyFilterVSIX
             {
                 var tag = para.Tag as UserInputPreviewDocument.LineTag;
                 if (tag == null) return false;
+                if (tag.IsPartOfLastNewLines) return false;
                 return tag.HasDifference;
             };
             var paraQuery = toPrev

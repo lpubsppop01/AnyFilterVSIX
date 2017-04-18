@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -36,10 +34,9 @@ namespace lpubsppop01.AnyFilterVSIX
         {
             #region Constructor
 
-            public LineTag(int lineIndex, bool hasDifferecne)
+            public LineTag(int lineIndex)
             {
                 LineIndex = lineIndex;
-                HasDifference = hasDifferecne;
             }
 
             #endregion
@@ -47,7 +44,8 @@ namespace lpubsppop01.AnyFilterVSIX
             #region Properties
 
             public int LineIndex { get; private set; }
-            public bool HasDifference { get; private set; }
+            public bool HasDifference { get; set; }
+            public bool IsPartOfLastNewLines { get; set; }
 
             #endregion
         }
@@ -73,7 +71,7 @@ namespace lpubsppop01.AnyFilterVSIX
                         }
                         else
                         {
-                            para.Tag = new LineTag(iLine++, lineHasDiff);
+                            para.Tag = new LineTag(iLine++) { HasDifference = lineHasDiff };
                             previewDoc.Blocks.Add(para);
                             lineHasDiff = false;
                             para = new Paragraph();
@@ -94,19 +92,24 @@ namespace lpubsppop01.AnyFilterVSIX
                         para.Inlines.Add(run);
                     }
                 }
-                para.Tag = new LineTag(iLine, lineHasDiff);
+                para.Tag = new LineTag(iLine) { HasDifference = lineHasDiff };
                 previewDoc.Blocks.Add(para);
             }
             else
             {
-                int iLine = 0;
-                foreach (var line in previewText.Split(new[] { Environment.NewLine }, StringSplitOptions.None))
+                var splitLines = previewText.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                for(int iLine = 0; iLine < splitLines.Length; ++iLine)
                 {
-                    string untabified = line.Replace("\t", tabSizeSpaces);
-                    previewDoc.Blocks.Add(new Paragraph(new Run(untabified)) { Tag = new LineTag(iLine++, false) });
+                    string untabified = splitLines[iLine].Replace("\t", tabSizeSpaces);
+                    previewDoc.Blocks.Add(new Paragraph(new Run(untabified)) { Tag = new LineTag(iLine) });
                 }
             }
             previewDoc.PageWidth = previewDoc.Blocks.OfType<Paragraph>().Max(p => GetParagraphLengthPx(p, fontSizePx));
+            foreach (var para in previewDoc.Blocks.OfType<Paragraph>().Reverse())
+            {
+                if (para.Inlines.OfType<Run>().Any(r => r.Text != "")) break;
+                (para.Tag as LineTag).IsPartOfLastNewLines = true;
+            }
             return previewDoc;
         }
 
