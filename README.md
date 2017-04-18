@@ -1,6 +1,6 @@
 # AnyFilter Visual Studio Extension
-This Visual Studio Extension provides external filter commands for selected texts,
-which passes a selected text to an arbitrary external program and replace the text by the output of the external program.
+This Visual Studio Extension provides external text filter commands for target ranges,
+that passes target text to an arbitrary external program and replace the text by the output of the external program.
 
 ## Features
 * Settings by "AnyFilter Settings..." in Tools menu.
