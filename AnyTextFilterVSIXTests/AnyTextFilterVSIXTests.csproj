@@ -55,7 +55,7 @@
     <Compile Include="_MyLib\Serialization\JSONSettingsStoreAdapterTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AnyFilterVSIX\AnyTextFilterVSIX.csproj">
+    <ProjectReference Include="..\AnyTextFilterVSIX\AnyTextFilterVSIX.csproj">
       <Project>{08557801-b580-40e3-bfa2-ca6fa15e4d9a}</Project>
       <Name>AnyTextFilterVSIX</Name>
     </ProjectReference>
