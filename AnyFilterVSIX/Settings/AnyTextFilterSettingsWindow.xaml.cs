@@ -13,16 +13,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace lpubsppop01.AnyFilterVSIX
+namespace lpubsppop01.AnyTextFilterVSIX
 {
     /// <summary>
-    /// Interaction logic for AnyFilterSettingsWindow.xaml
+    /// Interaction logic for AnyTextFilterSettingsWindow.xaml
     /// </summary>
-    public partial class AnyFilterSettingsWindow : Window
+    public partial class AnyTextFilterSettingsWindow : Window
     {
         #region Constructor
 
-        public AnyFilterSettingsWindow()
+        public AnyTextFilterSettingsWindow()
         {
             InitializeComponent();
 

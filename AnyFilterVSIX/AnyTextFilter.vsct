@@ -10,24 +10,24 @@
   <!--Definition of some VSCT specific constants. In this sample we use it for the IDs inside the guidOfficeIcon group. -->
   <!--<Extern href="msobtnid.h" xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable" />-->
 
-  <Commands package="guidAnyFilterPkg">
+  <Commands package="guidAnyTextFilterPkg">
     <Groups>
-      <Group guid="guidAnyFilterCmdSet" id="AnyFilterGroup" priority="0x0600">
+      <Group guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" priority="0x0600">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
       </Group>
     </Groups>
 
     <Buttons>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidSettings" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidSettings" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <Strings>
           <CommandName>cmdidSettings</CommandName>
-          <ButtonText>AnyFilter Settings...</ButtonText>
+          <ButtonText>AnyTextFilter Settings...</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter01" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter01" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -36,8 +36,8 @@
           <ButtonText>RunFilter01</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter02" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter02" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -46,8 +46,8 @@
           <ButtonText>RunFilter02</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter03" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter03" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -56,8 +56,8 @@
           <ButtonText>RunFilter03</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter04" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter04" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -66,8 +66,8 @@
           <ButtonText>RunFilter04</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter05" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter05" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -76,8 +76,8 @@
           <ButtonText>RunFilter05</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter06" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter06" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -86,8 +86,8 @@
           <ButtonText>RunFilter06</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter07" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter07" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -96,8 +96,8 @@
           <ButtonText>RunFilter07</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter08" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter08" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -106,8 +106,8 @@
           <ButtonText>RunFilter08</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter09" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter09" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -116,8 +116,8 @@
           <ButtonText>RunFilter09</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter10" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter10" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -126,8 +126,8 @@
           <ButtonText>RunFilter10</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter11" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter11" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -136,8 +136,8 @@
           <ButtonText>RunFilter11</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter12" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter12" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -146,8 +146,8 @@
           <ButtonText>RunFilter12</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter13" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter13" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -156,8 +156,8 @@
           <ButtonText>RunFilter13</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter14" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter14" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -166,8 +166,8 @@
           <ButtonText>RunFilter14</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter15" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter15" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -176,8 +176,8 @@
           <ButtonText>RunFilter15</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter16" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter16" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -186,8 +186,8 @@
           <ButtonText>RunFilter16</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter17" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter17" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -196,8 +196,8 @@
           <ButtonText>RunFilter17</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter18" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter18" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -206,8 +206,8 @@
           <ButtonText>RunFilter18</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter19" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter19" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -216,8 +216,8 @@
           <ButtonText>RunFilter19</ButtonText>
         </Strings>
       </Button>
-      <Button guid="guidAnyFilterCmdSet" id="cmdidRunFilter20" priority="0x0100" type="Button">
-        <Parent guid="guidAnyFilterCmdSet" id="AnyFilterGroup" />
+      <Button guid="guidAnyTextFilterCmdSet" id="cmdidRunFilter20" priority="0x0100" type="Button">
+        <Parent guid="guidAnyTextFilterCmdSet" id="AnyTextFilterGroup" />
         <CommandFlag>TextChanges</CommandFlag>
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
@@ -230,9 +230,9 @@
   </Commands>
 
   <Symbols>
-    <GuidSymbol name="guidAnyFilterPkg" value="{79bb93d0-029a-465a-a38c-f19398220f8a}" />
-    <GuidSymbol name="guidAnyFilterCmdSet" value="{b9c0649d-bc1d-410e-8ddc-3b50a500af50}">
-      <IDSymbol name="AnyFilterGroup" value="0x1020" />
+    <GuidSymbol name="guidAnyTextFilterPkg" value="{79bb93d0-029a-465a-a38c-f19398220f8a}" />
+    <GuidSymbol name="guidAnyTextFilterCmdSet" value="{b9c0649d-bc1d-410e-8ddc-3b50a500af50}">
+      <IDSymbol name="AnyTextFilterGroup" value="0x1020" />
       <IDSymbol name="cmdidSettings" value="0x0100" />
       <IDSymbol name="cmdidRunFilter01" value="0x0110" />
       <IDSymbol name="cmdidRunFilter02" value="0x0120" />

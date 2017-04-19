@@ -11,21 +11,21 @@ using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Settings;
 
-namespace lpubsppop01.AnyFilterVSIX
+namespace lpubsppop01.AnyTextFilterVSIX
 {
     // ref. https://github.com/omsharp/BetterComments/blob/master/BetterComments/Options/FontSettingsManager.cs
 
-    sealed class AnyFilterSettings : ICloneable, INotifyPropertyChanged
+    sealed class AnyTextFilterSettings : ICloneable, INotifyPropertyChanged
     {
         #region Constructor
 
-        public AnyFilterSettings()
+        public AnyTextFilterSettings()
         {
             Filters = new ObservableCollection<Filter>();
             Culture = MyCultureInfo.Auto;
         }
 
-        AnyFilterSettings(AnyFilterSettings src)
+        AnyTextFilterSettings(AnyTextFilterSettings src)
         {
             Copy(src);
         }
@@ -59,7 +59,7 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #region Copy
 
-        public void Copy(AnyFilterSettings src)
+        public void Copy(AnyTextFilterSettings src)
         {
             Filters = new ObservableCollection<Filter>(src.Filters.Select(f => f.Clone()));
             UsesEmacsLikeKeybindings = src.UsesEmacsLikeKeybindings;
@@ -75,9 +75,9 @@ namespace lpubsppop01.AnyFilterVSIX
             return Clone();
         }
 
-        public AnyFilterSettings Clone()
+        public AnyTextFilterSettings Clone()
         {
-            return new AnyFilterSettings(this);
+            return new AnyTextFilterSettings(this);
         }
 
         #endregion
@@ -98,17 +98,17 @@ namespace lpubsppop01.AnyFilterVSIX
 
         #region Static Members
 
-        const string CollectionPath = "AnyFilter";
+        const string CollectionPath = "AnyTextFilter";
 
         static readonly WritableSettingsStore settingsStore;
 
-        public static AnyFilterSettings Current { get; private set; }
+        public static AnyTextFilterSettings Current { get; private set; }
 
-        static AnyFilterSettings()
+        static AnyTextFilterSettings()
         {
             var settingsManager = new ShellSettingsManager(ServiceProvider.GlobalProvider);
             settingsStore = settingsManager.GetWritableSettingsStore(SettingsScope.UserSettings);
-            Current = new AnyFilterSettings();
+            Current = new AnyTextFilterSettings();
             LoadCurrent();
         }
 

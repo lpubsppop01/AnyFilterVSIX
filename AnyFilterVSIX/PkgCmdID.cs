@@ -2,7 +2,7 @@
 // MUST match PkgCmdID.h
 using System;
 
-namespace lpubsppop01.AnyFilterVSIX
+namespace lpubsppop01.AnyTextFilterVSIX
 {
     static class PkgCmdIDList
     {

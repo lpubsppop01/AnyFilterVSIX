@@ -7,11 +7,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AnyFilterVSIX")]
+[assembly: AssemblyTitle("AnyTextFilterVSIX")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("lpubsppop01")]
-[assembly: AssemblyProduct("AnyFilterVSIX")]
+[assembly: AssemblyProduct("AnyTextFilterVSIX")]
 [assembly: AssemblyCopyright("Copyright (c) 2017- lpubsppop01")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -32,4 +32,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-[assembly: InternalsVisibleTo("AnyFilterVSIXTests")]
+[assembly: InternalsVisibleTo("lpubsppop01.AnyTextFilterVSIXTests")]

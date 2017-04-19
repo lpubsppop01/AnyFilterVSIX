@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace lpubsppop01.AnyFilterVSIX
+namespace lpubsppop01.AnyTextFilterVSIX
 {
     /// <summary>
     /// Interaction logic for FilterAdditionWindow.xaml

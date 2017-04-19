@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace lpubsppop01.AnyFilterVSIX
+namespace lpubsppop01.AnyTextFilterVSIX
 {
     /// <summary>
     /// Interaction logic for FilterListEditControl.xaml
@@ -87,7 +87,7 @@ namespace lpubsppop01.AnyFilterVSIX
 
         void this_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var settings = DataContext as AnyFilterSettings;
+            var settings = DataContext as AnyTextFilterSettings;
             ItemsSource = (settings != null) ? settings.Filters : null;
         }
 

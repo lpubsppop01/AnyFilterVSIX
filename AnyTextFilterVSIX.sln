@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnyFilterVSIX", "AnyFilterVSIX\AnyFilterVSIX.csproj", "{08557801-B580-40E3-BFA2-CA6FA15E4D9A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnyTextFilterVSIX", "AnyFilterVSIX\AnyTextFilterVSIX.csproj", "{08557801-B580-40E3-BFA2-CA6FA15E4D9A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6B0E9209-1E2A-4401-ADC3-E2BB371E5929}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnyFilterVSIXTests", "AnyFilterVSIXTests\AnyFilterVSIXTests.csproj", "{6DC6953C-5922-43DF-92BD-086E41CDBE55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnyTextFilterVSIXTests", "AnyFilterVSIXTests\AnyTextFilterVSIXTests.csproj", "{6DC6953C-5922-43DF-92BD-086E41CDBE55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

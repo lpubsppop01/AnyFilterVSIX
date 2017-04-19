@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace lpubsppop01.AnyFilterVSIX.Properties {
+namespace lpubsppop01.AnyTextFilterVSIX.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("lpubsppop01.AnyFilterVSIX.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("lpubsppop01.AnyTextFilterVSIX.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         }
         
         /// <summary>
-        ///   About AnyFilter に類似しているローカライズされた文字列を検索します。
+        ///   About AnyTextFilter に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string AboutThisSoftware {
             get {
@@ -70,7 +70,7 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         }
         
         /// <summary>
-        ///   About AnyFilter... に類似しているローカライズされた文字列を検索します。
+        ///   About AnyTextFilter... に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string AboutThisSoftware_ {
             get {
@@ -97,20 +97,20 @@ namespace lpubsppop01.AnyFilterVSIX.Properties {
         }
         
         /// <summary>
-        ///   AnyFilter Settings に類似しているローカライズされた文字列を検索します。
+        ///   AnyTextFilter Settings に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string AnyFilterSettings {
+        public static string AnyTextFilterSettings {
             get {
-                return ResourceManager.GetString("AnyFilterSettings", resourceCulture);
+                return ResourceManager.GetString("AnyTextFilterSettings", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   AnyFilter Settings... に類似しているローカライズされた文字列を検索します。
+        ///   AnyTextFilter Settings... に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string AnyFilterSettings_ {
+        public static string AnyTextFilterSettings_ {
             get {
-                return ResourceManager.GetString("AnyFilterSettings_", resourceCulture);
+                return ResourceManager.GetString("AnyTextFilterSettings_", resourceCulture);
             }
         }
         

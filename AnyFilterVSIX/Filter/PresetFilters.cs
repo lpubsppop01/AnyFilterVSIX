@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace lpubsppop01.AnyFilterVSIX
+namespace lpubsppop01.AnyTextFilterVSIX
 {
     enum PresetFilterID
     {
@@ -105,7 +105,7 @@ namespace lpubsppop01.AnyFilterVSIX
 
         static string GetTemplateDirectoryPath()
         {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "AnyFilterVSIX");
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "AnyTextFilterVSIX");
         }
 
         public static bool TryCreateTemplateFile(PresetFilterID presetID, string filePath, string encodingName, NewLineKind newLineKind)
@@ -149,8 +149,8 @@ namespace lpubsppop01.AnyFilterVSIX
                             writer.WriteLine(@"}");
                             writer.WriteLine(@"");
                             writer.WriteLine(@"$myDocuments = [Environment]::GetFolderPath('MyDocuments')");
-                            writer.WriteLine(@"$migemo = Join-Path $myDocuments ""AnyFilterVSIX\cmigemo-default-win64\cmigemo.exe""");
-                            writer.WriteLine(@"$migemoDict = Join-Path $myDocuments ""AnyFilterVSIX\cmigemo-default-win64\dict\cp932\migemo-dict""");
+                            writer.WriteLine(@"$migemo = Join-Path $myDocuments ""AnyTextFilterVSIX\cmigemo-default-win64\cmigemo.exe""");
+                            writer.WriteLine(@"$migemoDict = Join-Path $myDocuments ""AnyTextFilterVSIX\cmigemo-default-win64\dict\cp932\migemo-dict""");
                             writer.WriteLine(@"");
                             writer.WriteLine(@"$pattern = (echo $userInputText | &$migemo -d $migemoDict -q)");
                             writer.WriteLine(@"$outputText = $inputText -replace $pattern, ""<$&>""");

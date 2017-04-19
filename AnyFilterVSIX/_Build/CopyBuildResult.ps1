@@ -6,6 +6,6 @@
 }
 
 $scriptDirPath = Split-Path $MyInvocation.MyCommand.Path -Parent
-$srcFilePath = Join-Path $scriptDirPath "..\bin\Publish\AnyFilterVSIX.vsix"
-$destFilePath = Join-Path $scriptDirPath "..\..\AnyFilterVSIX.vsix"
+$srcFilePath = Join-Path $scriptDirPath "..\bin\Publish\AnyTextFilterVSIX.vsix"
+$destFilePath = Join-Path $scriptDirPath "..\..\AnyTextFilterVSIX.vsix"
 copy $srcFilePath $destFilePath

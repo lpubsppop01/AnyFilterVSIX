@@ -1,15 +1,14 @@
-# AnyFilter Visual Studio Extension
+# AnyTextFilter Visual Studio Extension
 This Visual Studio Extension provides external text filter commands for target ranges,
 that passes target text to an arbitrary external program and replace the text by the output of the external program.
 
 ## Features
-* Settings by "AnyFilter Settings..." in Tools menu.
+* Settings by "AnyTextFilter Settings..." in Tools menu.
 * Registered filter commands will show following the Settings command.
-* Some samples are available on filter registration: Mono C# Script, Cygwin bash, sed
-    + Attention: the Cygwin bash filter is useful (at least for me), but it might be dangerous because of its powerful and simple name commands.
+* Some samples are available on filter registration: sed, AWK, Cygwin bash, Mono C# Script
 
 ## Download
-[AnyFilterVSIX.vsix](https://github.com/lpubsppop01/AnyFilterVSIX/raw/master/AnyFilterVSIX.vsix)
+[AnyTextFilterVSIX.vsix](https://github.com/lpubsppop01/AnyTextFilterVSIX/raw/master/AnyTextFilterVSIX.vsix)
 
 ## Requirements
 Visual Studio 2013 or later
@@ -18,7 +17,7 @@ Visual Studio 2013 or later
 [lpubsppop01](https://github.com/lpubsppop01)
 
 ## License
-[MIT License](https://github.com/lpubsppop01/AnyFilterVSIX/raw/master/LICENSE.txt)
+[MIT License](https://github.com/lpubsppop01/AnyTextFilterVSIX/raw/master/LICENSE.txt)
 
 This software uses the following Nuget packages:
 * [Diff.Match.Patch 2.0.1](https://www.nuget.org/packages/Diff.Match.Patch/)  

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace lpubsppop01.AnyFilterVSIX
+namespace lpubsppop01.AnyTextFilterVSIX
 {
     // ref. http://stackoverflow.com/questions/717299/wpf-setting-the-width-and-height-as-a-percentage-value
 

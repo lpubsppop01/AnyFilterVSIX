@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AboutThisSoftware" xml:space="preserve">
-    <value>About AnyFilter</value>
+    <value>About AnyTextFilter</value>
   </data>
   <data name="AboutThisSoftware_" xml:space="preserve">
-    <value>About AnyFilter...</value>
+    <value>About AnyTextFilter...</value>
   </data>
   <data name="Add" xml:space="preserve">
     <value>Add</value>
@@ -129,11 +129,11 @@
   <data name="AddFilter" xml:space="preserve">
     <value>Add Filter</value>
   </data>
-  <data name="AnyFilterSettings" xml:space="preserve">
-    <value>AnyFilter Settings</value>
+  <data name="AnyTextFilterSettings" xml:space="preserve">
+    <value>AnyTextFilter Settings</value>
   </data>
-  <data name="AnyFilterSettings_" xml:space="preserve">
-    <value>AnyFilter Settings...</value>
+  <data name="AnyTextFilterSettings_" xml:space="preserve">
+    <value>AnyTextFilter Settings...</value>
   </data>
   <data name="Arguments" xml:space="preserve">
     <value>Arguments</value>

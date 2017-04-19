@@ -23,14 +23,14 @@ using Microsoft.VisualStudio.Text.Formatting;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Microsoft.Win32;
 
-namespace lpubsppop01.AnyFilterVSIX
+namespace lpubsppop01.AnyTextFilterVSIX
 {
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideAutoLoad("ADFC4E64-0397-11D1-9F4E-00A0C911004F")] // Microsoft.VisualStudio.VSConstants.UICONTEXT_NoSolution
-    [Guid(GuidList.guidAnyFilterPkgString)]
-    public sealed class AnyFilterPackage : Package
+    [Guid(GuidList.guidAnyTextFilterPkgString)]
+    public sealed class AnyTextFilterPackage : Package
     {
         #region Overrides
 
@@ -40,11 +40,11 @@ namespace lpubsppop01.AnyFilterVSIX
 
             if (!TryCacheRequiredServices()) return;
 
-            NameToResourceBinding.Culture = AnyFilterSettings.Current.Culture;
-            AnyFilterSettings.Current.PropertyChanged += (sender, e) =>
+            NameToResourceBinding.Culture = AnyTextFilterSettings.Current.Culture;
+            AnyTextFilterSettings.Current.PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName != "Culture") return;
-                NameToResourceBinding.Culture = AnyFilterSettings.Current.Culture;
+                NameToResourceBinding.Culture = AnyTextFilterSettings.Current.Culture;
             };
 
             AddSettingsMenuItem();
@@ -116,36 +116,36 @@ namespace lpubsppop01.AnyFilterVSIX
 
         void AddSettingsMenuItem()
         {
-            var menuCommandID = new CommandID(GuidList.guidAnyFilterCmdSet, (int)PkgCmdIDList.cmdidSettings);
+            var menuCommandID = new CommandID(GuidList.guidAnyTextFilterCmdSet, (int)PkgCmdIDList.cmdidSettings);
             OleMenuCommand menuItem = null;
             menuItem = new OleMenuCommand((sender, e) =>
             {
-                var backup = AnyFilterSettings.Current.Clone();
-                var dialog = new AnyFilterSettingsWindow
+                var backup = AnyTextFilterSettings.Current.Clone();
+                var dialog = new AnyTextFilterSettingsWindow
                 {
-                    DataContext = AnyFilterSettings.Current,
+                    DataContext = AnyTextFilterSettings.Current,
                     WindowStartupLocation = WindowStartupLocation.CenterScreen
                 };
                 if (dialog.ShowDialog() ?? false)
                 {
-                    AnyFilterSettings.SaveCurrent();
-                    menuItem.Text = Properties.Resources.AnyFilterSettings_;
+                    AnyTextFilterSettings.SaveCurrent();
+                    menuItem.Text = Properties.Resources.AnyTextFilterSettings_;
                     UpdateRunFilterMenuItems();
                 }
                 else
                 {
-                    AnyFilterSettings.Current.Copy(backup);
+                    AnyTextFilterSettings.Current.Copy(backup);
                 }
             }, menuCommandID)
             {
-                Text = Properties.Resources.AnyFilterSettings_
+                Text = Properties.Resources.AnyTextFilterSettings_
             };
             menuCommandService.AddCommand(menuItem);
         }
 
         void UpdateRunFilterMenuItems()
         {
-            int filterCount = AnyFilterSettings.Current.Filters.Count;
+            int filterCount = AnyTextFilterSettings.Current.Filters.Count;
             for (int iFilter = 0; iFilter < filterCount; ++iFilter)
             {
                 RemoveRunFilterMenuItem(iFilter);
@@ -159,7 +159,7 @@ namespace lpubsppop01.AnyFilterVSIX
 
         void RemoveRunFilterMenuItem(int iFilter)
         {
-            var menuCommandID = new CommandID(GuidList.guidAnyFilterCmdSet, (int)PkgCmdIDList.GetCmdidRunFilter(iFilter));
+            var menuCommandID = new CommandID(GuidList.guidAnyTextFilterCmdSet, (int)PkgCmdIDList.GetCmdidRunFilter(iFilter));
             var menuItem = menuCommandService.FindCommand(menuCommandID);
             if (menuItem == null) return;
             menuCommandService.RemoveCommand(menuItem);
@@ -167,10 +167,10 @@ namespace lpubsppop01.AnyFilterVSIX
 
         void AddRunFilterMenuItem(int iFilter)
         {
-            var filter = AnyFilterSettings.Current.Filters[iFilter];
+            var filter = AnyTextFilterSettings.Current.Filters[iFilter];
             if (filter == null) return;
 
-            var menuCommandID = new CommandID(GuidList.guidAnyFilterCmdSet, (int)PkgCmdIDList.GetCmdidRunFilter(iFilter));
+            var menuCommandID = new CommandID(GuidList.guidAnyTextFilterCmdSet, (int)PkgCmdIDList.GetCmdidRunFilter(iFilter));
             var menuItem = new OleMenuCommand((sender, e) =>
             {
                 IWpfTextView wpfTextView;
@@ -253,7 +253,7 @@ namespace lpubsppop01.AnyFilterVSIX
                         DataContext = buffer,
                         Owner = Window.GetWindow(wpfTextView.VisualElement),
                         WindowStartupLocation = WindowStartupLocation.Manual,
-                        UsesEmacsLikeKeybindings = AnyFilterSettings.Current.UsesEmacsLikeKeybindings,
+                        UsesEmacsLikeKeybindings = AnyTextFilterSettings.Current.UsesEmacsLikeKeybindings,
                     };
                     dialog.MoveToNextPreviousDifferenceDone += (sender_, e_) =>
                     {
@@ -268,7 +268,7 @@ namespace lpubsppop01.AnyFilterVSIX
                         wpfTextView.ViewScroller.EnsureSpanVisible(snapshotSpan, EnsureSpanVisibleOptions.AlwaysCenter);
                         wpfTextView.Caret.MoveTo(snapshotSpan.Start);
                     };
-                    dialog.Title = "AnyFilter " + filter.Title;
+                    dialog.Title = "AnyTextFilter " + filter.Title;
                     dialog.SetPosition(wpfTextView.VisualElement);
                     dialog.SetFont(textEditorFontName, textEditorFontSizePt);
                     if (snapshotSpanToVisible.HasValue)
@@ -277,8 +277,8 @@ namespace lpubsppop01.AnyFilterVSIX
                     }
                     bool dialogResultIsOK = dialog.ShowDialog() ?? false;
                     filter.UserInputWindow_ShowsDifference = buffer.ShowsDifference;
-                    AnyFilterSettings.Current.UsesEmacsLikeKeybindings = dialog.UsesEmacsLikeKeybindings;
-                    AnyFilterSettings.SaveCurrent();
+                    AnyTextFilterSettings.Current.UsesEmacsLikeKeybindings = dialog.UsesEmacsLikeKeybindings;
+                    AnyTextFilterSettings.SaveCurrent();
                     if (!dialogResultIsOK) return;
                     userInputText = buffer.UserInputText;
                 }

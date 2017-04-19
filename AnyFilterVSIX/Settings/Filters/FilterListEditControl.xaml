@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="lpubsppop01.AnyFilterVSIX.FilterListEditControl"
+﻿<UserControl x:Class="lpubsppop01.AnyTextFilterVSIX.FilterListEditControl"
              x:ClassModifier="internal"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:local="clr-namespace:lpubsppop01.AnyFilterVSIX"
+             xmlns:local="clr-namespace:lpubsppop01.AnyTextFilterVSIX"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" d:DesignHeight="350" d:DesignWidth="600"
              Name="this" Loaded="this_Loaded" DataContextChanged="this_DataContextChanged">

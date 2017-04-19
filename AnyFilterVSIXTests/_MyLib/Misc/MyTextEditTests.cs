@@ -1,8 +1,8 @@
 ﻿using System;
-using lpubsppop01.AnyFilterVSIX;
+using lpubsppop01.AnyTextFilterVSIX;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace AnyFilterVSIXTests
+namespace lpubsppop01.AnyTextFilterVSIXTests
 {
     [TestClass]
     public class MyTextEditTests

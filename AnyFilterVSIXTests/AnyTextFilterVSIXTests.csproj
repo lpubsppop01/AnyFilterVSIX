@@ -6,8 +6,8 @@
     <ProjectGuid>{6DC6953C-5922-43DF-92BD-086E41CDBE55}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AnyFilterVSIXTests</RootNamespace>
-    <AssemblyName>AnyFilterVSIXTests</AssemblyName>
+    <RootNamespace>lpubsppop01.AnyTextFilterVSIXTests</RootNamespace>
+    <AssemblyName>lpubsppop01.AnyTextFilterVSIXTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -55,9 +55,9 @@
     <Compile Include="_MyLib\Serialization\JSONSettingsStoreAdapterTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AnyFilterVSIX\AnyFilterVSIX.csproj">
+    <ProjectReference Include="..\AnyFilterVSIX\AnyTextFilterVSIX.csproj">
       <Project>{08557801-b580-40e3-bfa2-ca6fa15e4d9a}</Project>
-      <Name>AnyFilterVSIX</Name>
+      <Name>AnyTextFilterVSIX</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

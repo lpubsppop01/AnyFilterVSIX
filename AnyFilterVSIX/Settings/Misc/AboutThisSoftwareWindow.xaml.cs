@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 
-namespace lpubsppop01.AnyFilterVSIX
+namespace lpubsppop01.AnyTextFilterVSIX
 {
     /// <summary>
     /// Interaction logic for AboutThisSoftwareWindow.xaml

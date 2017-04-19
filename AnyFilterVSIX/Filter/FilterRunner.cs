@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace lpubsppop01.AnyFilterVSIX
+namespace lpubsppop01.AnyTextFilterVSIX
 {
     enum FilterResultKind
     {
@@ -253,9 +253,9 @@ namespace lpubsppop01.AnyFilterVSIX
         {
             string dirPath = "";
 #if DEBUG
-            dirPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"AnyFilterVSIX\Debug");
+            dirPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"AnyTextFilterVSIX\Debug");
 #else
-            dirPath = Path.Combine(Path.GetTempPath(), "AnyFilterVSIX");
+            dirPath = Path.Combine(Path.GetTempPath(), "AnyTextFilterVSIX");
 #endif
             if (!Directory.Exists(dirPath))
             {
