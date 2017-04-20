@@ -191,7 +191,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 {
                     if (filter.TargetSpanForNoSelection == TargetSpanForNoSelection.CaretPosition)
                     {
-                        targetSpans.Add(new SnapshotSpan(wpfTextView.VisualSnapshot, new Span(wpfTextView.Caret.Position.BufferPosition, 0)));
+                        targetSpans.Add(new SnapshotSpan(wpfTextView.TextSnapshot, new Span(wpfTextView.Caret.Position.BufferPosition, 0)));
                         var currLine = wpfTextView.TextViewLines.GetTextViewLineContainingBufferPosition(wpfTextView.Caret.Position.BufferPosition);
                         snapshotSpanToVisible = currLine.Extent;
                     }
@@ -203,7 +203,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                     }
                     else if (filter.TargetSpanForNoSelection == TargetSpanForNoSelection.WholeDocument)
                     {
-                        targetSpans.Add(new SnapshotSpan(wpfTextView.VisualSnapshot, new Span(0, wpfTextView.VisualSnapshot.Length)));
+                        targetSpans.Add(new SnapshotSpan(wpfTextView.TextSnapshot, new Span(0, wpfTextView.TextSnapshot.Length)));
                     }
                 }
 
@@ -258,10 +258,10 @@ namespace lpubsppop01.AnyTextFilterVSIX
                     dialog.MoveToNextPreviousDifferenceDone += (sender_, e_) =>
                     {
                         // ref. http://stackoverflow.com/questions/6186925/visual-studio-extensibility-move-to-line-in-a-textdocument
-                        var startLine = wpfTextView.VisualSnapshot.GetLineFromPosition(targetSpans.First().Start.Position);
+                        var startLine = wpfTextView.TextSnapshot.GetLineFromPosition(targetSpans.First().Start.Position);
                         if (startLine == null) return;
                         int lineNumber = e_.LineIndex + startLine.LineNumber;
-                        var targetLine = wpfTextView.VisualSnapshot.Lines.FirstOrDefault(l => l.LineNumber == lineNumber);
+                        var targetLine = wpfTextView.TextSnapshot.Lines.FirstOrDefault(l => l.LineNumber == lineNumber);
                         if (targetLine == null) return;
                         var span = Span.FromBounds(targetLine.Start.Position, targetLine.End.Position);
                         var snapshotSpan = new SnapshotSpan(wpfTextView.TextSnapshot, span);
