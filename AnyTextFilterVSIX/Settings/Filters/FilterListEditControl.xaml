@@ -39,7 +39,8 @@
                 <Button DockPanel.Dock="Top" Margin="0,6,0,0" Click="btnRemove_Click"
                         IsEnabled="{Binding HasSelection, ElementName=this}" Content="{local:NameToResourceBinding Remove}"/>
                 <Button DockPanel.Dock="Bottom" Margin="0,6,0,0" Click="btnImport_Click" Content="{local:NameToResourceBinding Import}"/>
-                <Button DockPanel.Dock="Bottom" Margin="0" Click="btnExport_Click" Content="{local:NameToResourceBinding Export}"/>
+                <Button DockPanel.Dock="Bottom" Margin="0" Click="btnExport_Click" Content="{local:NameToResourceBinding Export}"
+                        IsEnabled="{Binding HasItems, ElementName=this}"/>
             </DockPanel>
             <ListBox x:Name="lstMaster">
                 <ListBox.ItemTemplate>

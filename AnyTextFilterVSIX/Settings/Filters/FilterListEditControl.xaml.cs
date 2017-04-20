@@ -61,6 +61,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 {
                     lstMaster.SelectedValue = value.FirstOrDefault();
                     HasSelection = (lstMaster.SelectedIndex != -1);
+                    HasItems = ItemsSource.Any();
                 }));
             }
         }
@@ -73,6 +74,15 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         public static readonly DependencyProperty HasSelectionProperty = DependencyProperty.Register(
             "HasSelection", typeof(bool), typeof(FilterListEditControl), new PropertyMetadata(false));
+
+        public bool HasItems
+        {
+            get { return (bool)GetValue(HasItemsProperty); }
+            set { SetValue(HasItemsProperty, value); }
+        }
+
+        public static readonly DependencyProperty HasItemsProperty = DependencyProperty.Register(
+            "HasItems", typeof(bool), typeof(FilterListEditControl), new PropertyMetadata(false));
 
         #endregion
 
@@ -95,12 +105,14 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             if (!edit.Add()) return;
             HasSelection = (lstMaster.SelectedIndex != -1);
+            HasItems = ItemsSource.Any();
         }
 
         void btnRemove_Click(object sender, RoutedEventArgs e)
         {
             if (!edit.Remove()) return;
             HasSelection = (lstMaster.SelectedIndex != -1);
+            HasItems = ItemsSource.Any();
         }
 
         void btnExport_Click(object sender, RoutedEventArgs e)
@@ -112,6 +124,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             if (!edit.Import()) return;
             HasSelection = (lstMaster.SelectedIndex != -1);
+            HasItems = ItemsSource.Any();
         }
 
         void btnCommand_Click(object sender, RoutedEventArgs e)
