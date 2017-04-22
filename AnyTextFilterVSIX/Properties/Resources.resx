@@ -168,6 +168,9 @@
   <data name="JSONFileFilter" xml:space="preserve">
     <value>JSON Files (*.json)|*.json</value>
   </data>
+  <data name="Memo" xml:space="preserve">
+    <value>Memo</value>
+  </data>
   <data name="Next" xml:space="preserve">
     <value>Next</value>
   </data>

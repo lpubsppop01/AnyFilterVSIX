@@ -214,6 +214,15 @@ namespace lpubsppop01.AnyTextFilterVSIX.Properties {
         }
         
         /// <summary>
+        ///   Memo に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Memo {
+            get {
+                return ResourceManager.GetString("Memo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Next に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Next {

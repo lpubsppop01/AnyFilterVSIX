@@ -39,6 +39,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             PassesInputTextToStandardInput = false;
             UsesTemplateFile = false;
             TemplateFilePath = "";
+            Memo = "";
             UserInputWindow_ShowsDifference = false;
         }
 
@@ -57,6 +58,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             PassesInputTextToStandardInput = src.PassesInputTextToStandardInput;
             UsesTemplateFile = src.UsesTemplateFile;
             TemplateFilePath = src.TemplateFilePath;
+            Memo = src.Memo;
             UserInputWindow_ShowsDifference = src.UserInputWindow_ShowsDifference;
         }
 
@@ -155,6 +157,13 @@ namespace lpubsppop01.AnyTextFilterVSIX
             set { templateFilePath = value; OnPropertyChanged(); }
         }
 
+        string memo;
+        public string Memo
+        {
+            get { return memo; }
+            set { memo = value; OnPropertyChanged(); }
+        }
+
         bool userInputWindow_ShowsDifference;
         public bool UserInputWindow_ShowsDifference
         {
@@ -206,6 +215,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             settingsStore.SetBoolean(collectionPath, "PassesInputTextToStandardInput", PassesInputTextToStandardInput);
             settingsStore.SetBoolean(collectionPath, "UsesTemplateFile", UsesTemplateFile);
             settingsStore.SetString(collectionPath, "TemplateFilePath", TemplateFilePath);
+            settingsStore.SetString(collectionPath, "Memo", Memo);
             settingsStore.SetBoolean(collectionPath, "UserInputWindow_ShowsDifference", UserInputWindow_ShowsDifference);
         }
 
@@ -226,6 +236,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 PassesInputTextToStandardInput = settingsStore.GetBoolean(collectionPath, "PassesInputTextToStandardInput", false),
                 UsesTemplateFile = settingsStore.GetBoolean(collectionPath, "UsesTemplateFile", false),
                 TemplateFilePath = settingsStore.GetString(collectionPath, "TemplateFilePath", ""),
+                Memo = settingsStore.GetString(collectionPath, "Memo", ""),
                 UserInputWindow_ShowsDifference = settingsStore.GetBoolean(collectionPath, "UserInputWindow_ShowsDifference", false),
             };
         }

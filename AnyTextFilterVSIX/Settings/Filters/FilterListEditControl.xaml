@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:lpubsppop01.AnyTextFilterVSIX"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             mc:Ignorable="d" d:DesignHeight="350" d:DesignWidth="600"
+             mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="600"
              Name="this" Loaded="this_Loaded" DataContextChanged="this_DataContextChanged">
     <UserControl.Resources>
         <Style TargetType="Label">
@@ -108,6 +108,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <Label Content="{local:NameToResourceBinding TargetSpanForNoSelection}"/>
@@ -118,9 +119,12 @@
                 <RadioButton IsChecked="{local:EnumToBooleanBinding SelectedValue.TargetSpanForNoSelection, ConverterParameter=WholeDocument, ElementName=lstMaster}"
                              GroupName="5606C9EA-659A-4BFC-B52D-A6C15C9D1D71" Margin="6,0,0,0" Content="{local:NameToResourceBinding WholeDocument}"/>
             </StackPanel>
-            <CheckBox Grid.Row="1" IsChecked="{Binding SelectedValue.InsertsAfterTargetSpan, ElementName=lstMaster}" Content="{local:NameToResourceBinding InsertOutputTextAfterTargetSpan}"/>
-            <CheckBox Grid.Row="2" IsChecked="{Binding SelectedValue.PassesInputTextToStandardInput, ElementName=lstMaster}" Content="{local:NameToResourceBinding PassInputTextToStandardInput}"/>
-            <DockPanel Grid.Row="3">
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding SelectedValue.InsertsAfterTargetSpan, ElementName=lstMaster}" Content="{local:NameToResourceBinding InsertOutputTextAfterTargetSpan}"/>
+                <CheckBox IsChecked="{Binding SelectedValue.PassesInputTextToStandardInput, ElementName=lstMaster}" Content="{local:NameToResourceBinding PassInputTextToStandardInput}"
+                          Margin="12,0,0,0"/>
+            </StackPanel>
+            <DockPanel Grid.Row="2">
                 <CheckBox DockPanel.Dock="Left" IsChecked="{Binding SelectedValue.UsesTemplateFile, ElementName=lstMaster}" Content="{local:NameToResourceBinding UseInputTemplateFile}"/>
                 <Button DockPanel.Dock="Right" Width="20" Margin="6,0,0,0" Height="{Binding ActualHeight, ElementName=txtTemplate}" Click="btnTemplate_Click"
                         IsEnabled="{Binding SelectedValue.UsesTemplateFile, ElementName=lstMaster}">...</Button>
@@ -133,6 +137,10 @@
                     <TextBlock Text="{local:NameToResourceBinding Settings_TemplateFilePathHint}"/>
                 </Border>
             </Popup>
+            <Label Grid.Row="3" Content="{local:NameToResourceBinding Memo}"/>
+            <TextBox Grid.Row="4" Height="90" AcceptsReturn="True"
+                     HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                     Text="{Binding SelectedValue.Memo, ElementName=lstMaster}"/>
         </Grid>
     </Grid>
 </UserControl>

@@ -29,11 +29,11 @@ namespace lpubsppop01.AnyTextFilterVSIX
                     filter.Command = Path.Combine(GetProgramDirectoryPath(), @"sed-4.2.1-bin\bin\sed.exe");
                     filter.Arguments = string.Format(@"-f ""{0}""", FilterRunner.VariableName_UserInputTempFilePath);
                     filter.InputNewLineKind = NewLineKind.LF;
-                    filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
-                    filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.TempFileExtension = ".sed";
                     filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
                     filter.PassesInputTextToStandardInput = true;
+                    filter.Memo = @"I use the following sed-4.2+alpha (Japanese site):
+http://ac206223.ppp.asahi-net.or.jp/adiary/memo/adiary.cgi/hirosugu/GNU%20sed%20%E3%82%92Windows%E3%81%A7%E4%BD%BF%E3%81%86";
                     break;
                 case PresetFilterID.Awk:
                     filter.Title = "AWK";
@@ -45,6 +45,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
                     filter.TempFileExtension = ".awk";
                     filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
                     filter.PassesInputTextToStandardInput = true;
+                    filter.Memo = @"I use the following gawk-4.1.2:
+http://www.klabaster.com/freeware.htm";
                     break;
                 case PresetFilterID.MonoCSharpScript:
                     filter.Title = "Mono C# Script";
