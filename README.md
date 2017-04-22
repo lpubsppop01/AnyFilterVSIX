@@ -11,7 +11,7 @@ that passes target text to an arbitrary external program and replace the text by
 * Some samples are available on filter registration: sed, AWK, Cygwin bash, Mono C# Script and so on
 
 ## Download
-[AnyTextFilterVSIX Latest Build - AppVeyor](https://ci.appveyor.com/project/lpubsppop01/anytextfiltervsix-2772p/build/artifacts)
+[AnyTextFilterVSIX Latest Build - AppVeyor](https://ci.appveyor.com/api/projects/lpubsppop01/anytextfiltervsix-2772p/artifacts/AnyTextFilterVSIX%2Fbin%2FRelease%2Flpubsppop01.AnyTextFilterVSIX.vsix)
 
 ## Requirements
 Visual Studio 2013 or later
