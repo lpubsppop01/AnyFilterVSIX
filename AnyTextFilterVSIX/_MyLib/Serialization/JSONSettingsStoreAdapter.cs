@@ -126,6 +126,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             string listPath = Path.Combine(collectionPath, propertyName);
             GetNode(listPath).Clear();
+            pathToNode.Clear();
             int iItem = 0;
             foreach (var item in value)
             {
