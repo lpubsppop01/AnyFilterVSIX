@@ -10,6 +10,10 @@ that passes target text to an arbitrary external program and replace the text by
 ## Download
 [AnyTextFilterVSIX.vsix](https://github.com/lpubsppop01/AnyTextFilterVSIX/raw/master/AnyTextFilterVSIX.vsix)
 
+## Download from AppVeyor
+[![Build status](https://ci.appveyor.com/api/projects/status/2s5llj82xo2p83c9?svg=true)](https://ci.appveyor.com/project/lpubsppop01/anytextfiltervsix-2772p)
+[AnyTextFilterVSIX - AppVeyor](https://ci.appveyor.com/project/lpubsppop01/anytextfiltervsix-2772p/history)
+
 ## Requirements
 Visual Studio 2013 or later
 
