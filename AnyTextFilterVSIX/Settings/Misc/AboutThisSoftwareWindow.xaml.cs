@@ -18,6 +18,13 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             InitializeComponent();
 
+            var htmlStr = GetReadmeHTMLString();
+            ctrlMain.NavigateToString(htmlStr);
+        }
+
+        static string GetReadmeHTMLString()
+        {
+            string readmeText = "";
             var currAssem = Assembly.GetExecutingAssembly();
             string dirPath = Path.GetDirectoryName(currAssem.Location);
             string readmeFilePath = Path.Combine(dirPath, "README.md");
@@ -25,14 +32,31 @@ namespace lpubsppop01.AnyTextFilterVSIX
             {
                 using (var reader = new StreamReader(readmeFilePath))
                 {
-                    txtMain.Text = reader.ReadToEnd();
+                    readmeText = reader.ReadToEnd();
                 }
             }
             else
             {
-                txtMain.Text = "README.md does not exists.";
+                readmeText = "README.md does not exists.";
             }
+
+            var htmlBodyStr = Markdig.Markdown.ToHtml(readmeText);
+            return string.Format(HtmlFormatString, htmlBodyStr.Replace("<a ", "<a target=\"_blank\" "));
         }
+
+        const string HtmlFormatString = @"
+<!DOCTYPE html>
+<head>
+<style type=""text/css"">
+<!--
+body {{ font-family: sans-serif; }}
+-->
+</style>
+</head>
+<body>
+{0}
+</body>
+";
 
         #endregion
 

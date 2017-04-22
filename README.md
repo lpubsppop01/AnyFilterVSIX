@@ -5,7 +5,7 @@ that passes target text to an arbitrary external program and replace the text by
 ## Features
 * Settings by "AnyTextFilter Settings..." in Tools menu.
 * Registered filter commands will show following the Settings command.
-* Some samples are available on filter registration: sed, AWK, Cygwin bash, Mono C# Script
+* Some samples are available on filter registration: sed, AWK, Cygwin bash, Mono C# Script and so on
 
 ## Download
 [AnyTextFilterVSIX.vsix](https://github.com/lpubsppop01/AnyTextFilterVSIX/raw/master/AnyTextFilterVSIX.vsix)
@@ -26,3 +26,6 @@ This software uses the following Nuget packages:
 * [FSharp.Core 4.0.0.1](https://www.nuget.org/packages/FSharp.Core/)  
   (c) Microsoft Corporation. All rights reserved.  
   Released under the [Apache License 2.0](https://github.com/fsharp/fsharp/blob/master/LICENSE)
+* [Markdig 0.10.7](https://www.nuget.org/packages/Markdig/)  
+  Copyright (c) 2016, Alexandre Mutel  
+  Released under the [BSD-Clause 2 license](https://github.com/lunet-io/markdig/blob/master/license.txt)
