@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="79bb93d0-029a-465a-a38c-f19398220f8a" Version="0.1.65" Language="en-US" Publisher="lpubsppop01" />
+    <Identity Id="79bb93d0-029a-465a-a38c-f19398220f8a" Version="0.1.66" Language="en-US" Publisher="lpubsppop01" />
     <DisplayName>AnyTextFilter</DisplayName>
     <Description xml:space="preserve">Provides external text filters for target ranges.</Description>
     <MoreInfo>https://github.com/lpubsppop01/AnyTextFilterVSIX</MoreInfo>

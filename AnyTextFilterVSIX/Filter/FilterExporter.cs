@@ -89,11 +89,26 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         #region Actions
 
+        const string VariableName_MyDocuments = "$(MyDocuments)";
+
         public static void Export(IList<Filter> filters, string filePath)
         {
+            // Replace personal folder path to variable name
+            var myDocPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            var variableFilters = filters.Select(f =>
+            {
+                var v = f.Clone();
+                if (v.TemplateFilePath.StartsWith(myDocPath, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    v.TemplateFilePath = VariableName_MyDocuments + v.TemplateFilePath.Substring(myDocPath.Length);
+                }
+                return v;
+            }).ToArray();
+
+            // Write to JSON file
             var settingsStore = new JSONSettingsStoreAdapter();
-            settingsStore.SetList("Exported", "Filters", filters, (item, itemPath) => item.Save(settingsStore, itemPath));
-            var templateFilePaths = filters.Select(f => CreateTemplateFileItem(f)).Where(i => i != null).ToArray();
+            settingsStore.SetList("Exported", "Filters", variableFilters, (item, itemPath) => item.Save(settingsStore, itemPath));
+            var templateFilePaths = variableFilters.Select(f => CreateTemplateFileItem(f)).Where(i => i != null).ToArray();
             settingsStore.SetList("Exported", "TemplateFiles", templateFilePaths, (item, itemPath) => item.Save(settingsStore, itemPath));
             string serialized = settingsStore.Serialize();
             using (var writer = new StreamWriter(filePath))
@@ -104,6 +119,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         public static IList<Filter> Import(string filePath, out IList<TemplateFileItem> templateFileItems)
         {
+            // Read from JSON file
             string serialized;
             using (var reader = new StreamReader(filePath))
             {
@@ -111,8 +127,20 @@ namespace lpubsppop01.AnyTextFilterVSIX
             }
             var settingsStore = new JSONSettingsStoreAdapter();
             settingsStore.Deserialize(serialized);
-            var filters = settingsStore.GetList("Exported", "Filters", new Filter[0], (itemPath) => Filter.Load(settingsStore, itemPath));
+            var variableFilters = settingsStore.GetList("Exported", "Filters", new Filter[0], (itemPath) => Filter.Load(settingsStore, itemPath));
             templateFileItems = settingsStore.GetList("Exported", "TemplateFiles", new TemplateFileItem[0], (itemPath) => TemplateFileItem.Load(settingsStore, itemPath));
+
+            // Replace variable name to personal folder path
+            var myDocPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); 
+            var filters = variableFilters.Select(v =>
+            {
+                var f = v.Clone();
+                if (f.TemplateFilePath.StartsWith(VariableName_MyDocuments))
+                {
+                    f.TemplateFilePath = myDocPath + f.TemplateFilePath.Substring(VariableName_MyDocuments.Length);
+                }
+                return f;
+            }).ToArray();
             return filters;
         }
 
