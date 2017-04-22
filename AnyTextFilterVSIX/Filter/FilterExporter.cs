@@ -51,8 +51,9 @@ namespace lpubsppop01.AnyTextFilterVSIX
         static TemplateFileItem CreateTemplateFileItem(Filter filter)
         {
             if (!filter.UsesTemplateFile) return null;
-            if (!File.Exists(filter.TemplateFilePath)) return null;
-            using (var reader = new StreamReader(filter.TemplateFilePath, MyEncoding.GetEncoding(filter.InputEncodingName)))
+            string rawTemplateFilePath = GetRawPath(filter.TemplateFilePath);
+            if (!File.Exists(rawTemplateFilePath)) return null;
+            using (var reader = new StreamReader(rawTemplateFilePath, MyEncoding.GetEncoding(filter.InputEncodingName)))
             {
                 string rawContent = reader.ReadToEnd();
                 var newLineKind = rawContent.DetectNewLineKind() ?? Environment.NewLine.ToNewLineKind();
@@ -66,7 +67,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
             try
             {
                 string inputNLContent = item.Content.ConvertNewLineFromEnvironment(filter.InputNewLineKind);
-                using (var writer = new StreamWriter(filter.TemplateFilePath, /* append: */false, MyEncoding.GetEncoding(filter.InputEncodingName)))
+                string rawTemplateFilePath = GetRawPath(filter.TemplateFilePath);
+                using (var writer = new StreamWriter(rawTemplateFilePath, /* append: */false, MyEncoding.GetEncoding(filter.InputEncodingName)))
                 {
                     writer.Write(inputNLContent);
                 }
@@ -85,11 +87,31 @@ namespace lpubsppop01.AnyTextFilterVSIX
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"AnyTextFilterVSIX\Exported");
         }
 
+        const string VariableName_MyDocuments = "$(MyDocuments)";
+
+        static string GetVariablePath(string path)
+        {
+            var myDocPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (path.StartsWith(myDocPath, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return VariableName_MyDocuments + path.Substring(myDocPath.Length);
+            }
+            return path;
+        }
+
+        static string GetRawPath(string path)
+        {
+            var myDocPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            if (path.StartsWith(VariableName_MyDocuments))
+            {
+                return myDocPath + path.Substring(VariableName_MyDocuments.Length);
+            }
+            return path;
+        }
+
         #endregion
 
         #region Actions
-
-        const string VariableName_MyDocuments = "$(MyDocuments)";
 
         public static void Export(IList<Filter> filters, string filePath)
         {
@@ -98,18 +120,15 @@ namespace lpubsppop01.AnyTextFilterVSIX
             var variableFilters = filters.Select(f =>
             {
                 var v = f.Clone();
-                if (v.TemplateFilePath.StartsWith(myDocPath, StringComparison.CurrentCultureIgnoreCase))
-                {
-                    v.TemplateFilePath = VariableName_MyDocuments + v.TemplateFilePath.Substring(myDocPath.Length);
-                }
+                v.TemplateFilePath = GetVariablePath(v.TemplateFilePath);
                 return v;
             }).ToArray();
 
             // Write to JSON file
             var settingsStore = new JSONSettingsStoreAdapter();
             settingsStore.SetList("Exported", "Filters", variableFilters, (item, itemPath) => item.Save(settingsStore, itemPath));
-            var templateFilePaths = variableFilters.Select(f => CreateTemplateFileItem(f)).Where(i => i != null).ToArray();
-            settingsStore.SetList("Exported", "TemplateFiles", templateFilePaths, (item, itemPath) => item.Save(settingsStore, itemPath));
+            var templateFiles = variableFilters.Select(f => CreateTemplateFileItem(f)).Where(i => i != null).ToArray();
+            settingsStore.SetList("Exported", "TemplateFiles", templateFiles, (item, itemPath) => item.Save(settingsStore, itemPath));
             string serialized = settingsStore.Serialize();
             using (var writer = new StreamWriter(filePath))
             {
@@ -135,10 +154,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             var filters = variableFilters.Select(v =>
             {
                 var f = v.Clone();
-                if (f.TemplateFilePath.StartsWith(VariableName_MyDocuments))
-                {
-                    f.TemplateFilePath = myDocPath + f.TemplateFilePath.Substring(VariableName_MyDocuments.Length);
-                }
+                f.TemplateFilePath = GetRawPath(f.TemplateFilePath);
                 return f;
             }).ToArray();
             return filters;
