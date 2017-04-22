@@ -1,4 +1,7 @@
 # AnyTextFilter Visual Studio Extension
+
+[![Build status](https://ci.appveyor.com/api/projects/status/2s5llj82xo2p83c9?svg=true)](https://ci.appveyor.com/project/lpubsppop01/anytextfiltervsix-2772p)
+
 This Visual Studio Extension provides external text filter commands for target ranges,
 that passes target text to an arbitrary external program and replace the text by the output of the external program.
 
@@ -8,11 +11,7 @@ that passes target text to an arbitrary external program and replace the text by
 * Some samples are available on filter registration: sed, AWK, Cygwin bash, Mono C# Script and so on
 
 ## Download
-[AnyTextFilterVSIX.vsix](https://github.com/lpubsppop01/AnyTextFilterVSIX/raw/master/AnyTextFilterVSIX.vsix)
-
-## Download from AppVeyor
-[![Build status](https://ci.appveyor.com/api/projects/status/2s5llj82xo2p83c9?svg=true)](https://ci.appveyor.com/project/lpubsppop01/anytextfiltervsix-2772p)
-[AnyTextFilterVSIX - AppVeyor](https://ci.appveyor.com/project/lpubsppop01/anytextfiltervsix-2772p/history)
+[AnyTextFilterVSIX Latest Build - AppVeyor](https://ci.appveyor.com/project/lpubsppop01/anytextfiltervsix-2772p/build/artifacts)
 
 ## Requirements
 Visual Studio 2013 or later
