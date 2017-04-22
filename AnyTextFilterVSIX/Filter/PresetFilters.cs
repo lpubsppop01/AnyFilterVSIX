@@ -26,7 +26,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                     break;
                 case PresetFilterID.Sed:
                     filter.Title = "sed";
-                    filter.Command = "sed.exe";
+                    filter.Command = Path.Combine(GetProgramDirectoryPath(), @"sed-4.2.1-bin\bin\sed.exe");
                     filter.Arguments = string.Format(@"-f ""{0}""", FilterRunner.VariableName_UserInputTempFilePath);
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
@@ -37,7 +37,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                     break;
                 case PresetFilterID.Awk:
                     filter.Title = "AWK";
-                    filter.Command = "awk.exe";
+                    filter.Command = Path.Combine(GetProgramDirectoryPath(), @"gawk4\gawk.exe");
                     filter.Arguments = string.Format(@"-f ""{0}""", FilterRunner.VariableName_UserInputTempFilePath);
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
@@ -63,7 +63,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.TempFileExtension = ".bash";
                     filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
-                    filter.TemplateFilePath = Path.Combine(GetTemplateDirectoryPath(), "CygwinBashTemplate.txt");
+                    filter.TemplateFilePath = Path.Combine(GetTemplateDirectoryPath(), "CygwinBash.txt");
                     filter.UsesTemplateFile = true;
                     break;
                 case PresetFilterID.CygwinSed:
@@ -96,16 +96,21 @@ namespace lpubsppop01.AnyTextFilterVSIX
                     filter.Arguments = "-f $(InputTempFilePath)";
                     filter.TempFileExtension = ".ps1";
                     filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
-                    filter.TemplateFilePath = Path.Combine(GetTemplateDirectoryPath(), "CMigemoTemplate.txt");
+                    filter.TemplateFilePath = Path.Combine(GetTemplateDirectoryPath(), "CMigemo.txt");
                     filter.UsesTemplateFile = true;
                     break;
             }
             return filter;
         }
 
+        static string GetProgramDirectoryPath()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"AnyTextFilterVSIX\Programs");
+        }
+
         static string GetTemplateDirectoryPath()
         {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "AnyTextFilterVSIX");
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"AnyTextFilterVSIX\Templates");
         }
 
         public static bool TryCreateTemplateFile(PresetFilterID presetID, string filePath, string encodingName, NewLineKind newLineKind)
@@ -149,8 +154,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
                             writer.WriteLine(@"}");
                             writer.WriteLine(@"");
                             writer.WriteLine(@"$myDocuments = [Environment]::GetFolderPath('MyDocuments')");
-                            writer.WriteLine(@"$migemo = Join-Path $myDocuments ""AnyTextFilterVSIX\cmigemo-default-win64\cmigemo.exe""");
-                            writer.WriteLine(@"$migemoDict = Join-Path $myDocuments ""AnyTextFilterVSIX\cmigemo-default-win64\dict\cp932\migemo-dict""");
+                            writer.WriteLine(@"$migemo = Join-Path $myDocuments ""AnyTextFilterVSIX\Programs\cmigemo-default-win64\cmigemo.exe""");
+                            writer.WriteLine(@"$migemoDict = Join-Path $myDocuments ""AnyTextFilterVSIX\Programs\cmigemo-default-win64\dict\cp932\migemo-dict""");
                             writer.WriteLine(@"");
                             writer.WriteLine(@"$pattern = (echo $userInputText | &$migemo -d $migemoDict -q)");
                             writer.WriteLine(@"$outputText = $inputText -replace $pattern, ""<$&>""");

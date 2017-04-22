@@ -9,7 +9,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
 {
     static class FilterExporter
     {
-        #region Template
+        #region Template File Item
 
         public class TemplateFileItem
         {
@@ -74,6 +74,15 @@ namespace lpubsppop01.AnyTextFilterVSIX
             }
             catch { }
             return false;
+        }
+
+        #endregion
+
+        #region Path
+
+        public static string GetExportedDirectoryPath()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"AnyTextFilterVSIX\Exported");
         }
 
         #endregion

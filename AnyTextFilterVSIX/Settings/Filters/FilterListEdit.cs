@@ -141,8 +141,16 @@ namespace lpubsppop01.AnyTextFilterVSIX
             var targetFilters = selectionDialog.CheckedFilters;
             if (!targetFilters.Any()) return false;
 
+            // Create default export directory
+            string dirPath = FilterExporter.GetExportedDirectoryPath();
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
+
             // Get file path
             var saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+            saveFileDialog.InitialDirectory = dirPath;
             saveFileDialog.DefaultExt = "*.json";
             saveFileDialog.AddExtension = true;
             saveFileDialog.Filter = Properties.Resources.JSONFileFilter;
@@ -158,6 +166,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             // Get file path
             var openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            string dirPath = FilterExporter.GetExportedDirectoryPath();
+            if (Directory.Exists(dirPath)) openFileDialog.InitialDirectory = dirPath;
             openFileDialog.FileName = "";
             openFileDialog.DefaultExt = "*.json";
             openFileDialog.AddExtension = true;
