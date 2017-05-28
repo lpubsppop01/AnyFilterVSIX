@@ -90,9 +90,10 @@ namespace lpubsppop01.AnyTextFilterVSIX
             {
                 var logFont = new LOGFONTW[1];
                 var fontInfo = new FontInfo[1];
-                store.GetFont(logFont, fontInfo);
-                fontName = fontInfo[0].bstrFaceName;
-                fontSize = fontInfo[0].wPointSize;
+                if (store.GetFont(logFont, fontInfo) == VSConstants.S_OK) {
+                    fontName = fontInfo[0].bstrFaceName;
+                    fontSize = fontInfo[0].wPointSize;
+                }
             }
             finally
             {
