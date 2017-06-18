@@ -129,11 +129,17 @@
   <data name="AddFilter" xml:space="preserve">
     <value>フィルタの追加</value>
   </data>
+  <data name="AnyTextFilter" xml:space="preserve">
+    <value>AnyTextFilter</value>
+  </data>
   <data name="AnyTextFilterSettings" xml:space="preserve">
     <value>AnyTextFilter の設定</value>
   </data>
   <data name="AnyTextFilterSettings_" xml:space="preserve">
     <value>AnyTextFilter の設定...</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>適用</value>
   </data>
   <data name="Arguments" xml:space="preserve">
     <value>引数</value>

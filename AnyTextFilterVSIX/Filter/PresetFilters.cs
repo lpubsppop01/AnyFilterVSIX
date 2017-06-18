@@ -27,7 +27,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 case PresetFilterID.Sed:
                     filter.Title = "sed";
                     filter.Command = Path.Combine(GetProgramDirectoryPath(), @"sed-4.2.1-bin\bin\sed.exe");
-                    filter.Arguments = string.Format(@"-f ""{0}""", FilterRunner.VariableName_UserInputTempFilePath);
+                    filter.Arguments = string.Format(@"-f ""{0}""", FilterProcess.VariableName_UserInputTempFilePath);
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.TempFileExtension = ".sed";
                     filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
@@ -38,7 +38,7 @@ http://ac206223.ppp.asahi-net.or.jp/adiary/memo/adiary.cgi/hirosugu/GNU%20sed%20
                 case PresetFilterID.Awk:
                     filter.Title = "AWK";
                     filter.Command = Path.Combine(GetProgramDirectoryPath(), @"gawk4\gawk.exe");
-                    filter.Arguments = string.Format(@"-f ""{0}""", FilterRunner.VariableName_UserInputTempFilePath);
+                    filter.Arguments = string.Format(@"-f ""{0}""", FilterProcess.VariableName_UserInputTempFilePath);
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
@@ -51,7 +51,7 @@ http://www.klabaster.com/freeware.htm";
                 case PresetFilterID.MonoCSharpScript:
                     filter.Title = "Mono C# Script";
                     filter.Command = "cmd";
-                    filter.Arguments = string.Format(@"/c ""C:\Program Files (x86)\Mono\bin\csharp.bat"" {0}", FilterRunner.VariableName_InputTempFilePath);
+                    filter.Arguments = string.Format(@"/c ""C:\Program Files (x86)\Mono\bin\csharp.bat"" {0}", FilterProcess.VariableName_InputTempFilePath);
                     filter.TempFileExtension = ".cs";
                     filter.TargetSpanForNoSelection = TargetSpanForNoSelection.CurrentLine;
                     filter.InsertsAfterTargetSpan = true;
@@ -59,7 +59,7 @@ http://www.klabaster.com/freeware.htm";
                 case PresetFilterID.CygwinBash:
                     filter.Title = "Cygwin bash";
                     filter.Command = @"C:\cygwin64\bin\bash.exe";
-                    filter.Arguments = string.Format(@"-lc ""$(cygpath -u '{0}')""", FilterRunner.VariableName_InputTempFilePath);
+                    filter.Arguments = string.Format(@"-lc ""$(cygpath -u '{0}')""", FilterProcess.VariableName_InputTempFilePath);
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
@@ -72,7 +72,7 @@ http://www.klabaster.com/freeware.htm";
                     filter.Title = "Cygwin sed";
                     filter.Command = @"C:\cygwin64\bin\bash.exe";
                     // unescaped: -lc "sed -f \"$(cygpath -u '$(UserInputTempFilePath)')\""
-                    filter.Arguments = string.Format(@"-lc ""sed -f \""$(cygpath -u '{0}')\""""", FilterRunner.VariableName_UserInputTempFilePath);
+                    filter.Arguments = string.Format(@"-lc ""sed -f \""$(cygpath -u '{0}')\""""", FilterProcess.VariableName_UserInputTempFilePath);
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
@@ -84,7 +84,7 @@ http://www.klabaster.com/freeware.htm";
                     filter.Title = "Cygwin Gawk";
                     filter.Command = @"C:\cygwin64\bin\bash.exe";
                     // unescaped: -lc "awk -f \"$(cygpath -u '$(UserInputTempFilePath)')\""
-                    filter.Arguments = string.Format(@"-lc ""awk -f \""$(cygpath -u '{0}')\""""", FilterRunner.VariableName_UserInputTempFilePath);
+                    filter.Arguments = string.Format(@"-lc ""awk -f \""$(cygpath -u '{0}')\""""", FilterProcess.VariableName_UserInputTempFilePath);
                     filter.InputNewLineKind = NewLineKind.LF;
                     filter.InputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;
                     filter.OutputEncodingName = MyEncodingInfo.UTF8_WithoutBOM.Name;

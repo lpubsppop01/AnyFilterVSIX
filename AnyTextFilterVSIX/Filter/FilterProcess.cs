@@ -34,7 +34,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
         #endregion
     }
 
-    class FilterRunner
+    class FilterProcess
     {
         #region Run
 

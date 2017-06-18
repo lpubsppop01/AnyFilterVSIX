@@ -29,6 +29,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideAutoLoad("ADFC4E64-0397-11D1-9F4E-00A0C911004F")] // Microsoft.VisualStudio.VSConstants.UICONTEXT_NoSolution
+    [ProvideToolWindow(typeof(FilterRunnerWindowPane), Style = VsDockStyle.Tabbed, Orientation = ToolWindowOrientation.Bottom)]
     [Guid(GuidList.guidAnyTextFilterPkgString)]
     public sealed class AnyTextFilterPackage : Package
     {
@@ -101,14 +102,35 @@ namespace lpubsppop01.AnyTextFilterVSIX
             }
         }
 
-        bool TryGetWpfTextView(out IWpfTextView wpfTextView)
+        IWpfTextView GetWpfTextView()
         {
-            wpfTextView = null;
             IVsTextView textView;
             textManager.GetActiveView(1, null, out textView);
-            if (textView == null) return false;
-            wpfTextView = editorAdapterFactory.GetWpfTextView(textView);
-            return true;
+            if (textView == null) return null;
+            return editorAdapterFactory.GetWpfTextView(textView);
+        }
+
+        FilterRunnerWindowPane GetToolWindow()
+        {
+            return FindToolWindow(typeof(FilterRunnerWindowPane), id: 0, create: false) as FilterRunnerWindowPane;
+        }
+
+        void ActivateToolWindow(Filter filter)
+        {
+            var window = GetToolWindow();
+            if (window == null)
+            {
+                window = FindToolWindow(typeof(FilterRunnerWindowPane), id: 0, create: true) as FilterRunnerWindowPane;
+                if (window == null || window.Frame == null) return;
+                window.Content.SetFont(textEditorFontName, textEditorFontSizePt);
+                window.Content.Applied += (sender, e) =>
+                {
+                    ErrorHandler.ThrowOnFailure(window.Frame.Hide());
+                };
+                window.Content.FilterRunner = new FilterRunner(GetWpfTextView);
+            }
+            window.Content.SelectedFilter = filter;
+            ErrorHandler.ThrowOnFailure(window.Frame.Show());
         }
 
         #endregion
@@ -174,135 +196,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             var menuCommandID = new CommandID(GuidList.guidAnyTextFilterCmdSet, (int)PkgCmdIDList.GetCmdidRunFilter(iFilter));
             var menuItem = new OleMenuCommand((sender, e) =>
             {
-                IWpfTextView wpfTextView;
-                if (!TryGetWpfTextView(out wpfTextView)) return;
-
-                // Get target spans
-                var targetSpans = new List<SnapshotSpan>();
-                SnapshotSpan? snapshotSpanToVisible = null;
-                foreach (var span in wpfTextView.Selection.SelectedSpans.Where(s => s.Length > 0))
-                {
-                    targetSpans.Add(span);
-                }
-                if (targetSpans.Any())
-                {
-                    snapshotSpanToVisible = targetSpans.First();
-                }
-                else
-                {
-                    if (filter.TargetSpanForNoSelection == TargetSpanForNoSelection.CaretPosition)
-                    {
-                        targetSpans.Add(new SnapshotSpan(wpfTextView.TextSnapshot, new Span(wpfTextView.Caret.Position.BufferPosition, 0)));
-                        var currLine = wpfTextView.TextViewLines.GetTextViewLineContainingBufferPosition(wpfTextView.Caret.Position.BufferPosition);
-                        snapshotSpanToVisible = currLine.Extent;
-                    }
-                    else if (filter.TargetSpanForNoSelection == TargetSpanForNoSelection.CurrentLine)
-                    {
-                        var currLine = wpfTextView.TextViewLines.GetTextViewLineContainingBufferPosition(wpfTextView.Caret.Position.BufferPosition);
-                        targetSpans.Add(currLine.Extent);
-                        snapshotSpanToVisible = currLine.Extent;
-                    }
-                    else if (filter.TargetSpanForNoSelection == TargetSpanForNoSelection.WholeDocument)
-                    {
-                        targetSpans.Add(new SnapshotSpan(wpfTextView.TextSnapshot, new Span(0, wpfTextView.TextSnapshot.Length)));
-                    }
-                }
-
-                // Get connected input text
-                string rawInputText = string.Join("", targetSpans.Select(s => s.GetText()));
-                var envNewLineKind = Environment.NewLine.ToNewLineKind();
-                var srcNewLineKind = rawInputText.DetectNewLineKind() ?? envNewLineKind;
-
-                // Get user input
-                string userInputText = "";
-                if (filter.ContainsVariable(FilterRunner.VariableName_UserInput, FilterRunner.VariableName_UserInputTempFilePath))
-                {
-                    var support = new RepeatedAsyncTaskSupport();
-                    int tabSize = wpfTextView.Options.GetOptionValue(DefaultOptions.TabSizeOptionId);
-                    string envNLInputText = rawInputText.ConvertNewLine(srcNewLineKind, envNewLineKind);
-                    var buffer = new UserInputBuffer { ShowsDifference = filter.UserInputWindow_ShowsDifference };
-                    buffer.PropertyChanged += (sender_, e_) =>
-                    {
-                        if (e_.PropertyName != "UserInputText" && e_.PropertyName != "ShowsDifference") return;
-                        if (!support.TryBegin()) return;
-                        System.Threading.Tasks.Task.Factory.StartNew(async () =>
-                        {
-                            do
-                            {
-                                var previewTextBuf = new StringBuilder();
-                                bool cancelled = false;
-                                foreach (var span in targetSpans)
-                                {
-                                    string envNLSpanText = span.GetText().ConvertNewLine(srcNewLineKind, envNewLineKind);
-                                    var filterResult = await FilterRunner.RunAsync(filter, envNLSpanText, buffer.UserInputText, support);
-                                    if (filterResult.Kind == FilterResultKind.Cancelled)
-                                    {
-                                        cancelled = true;
-                                        break;
-                                    }
-                                    previewTextBuf.Append(filterResult.OutputText);
-                                }
-                                if (cancelled) continue;
-                                buffer.PreviewDocument = new UserInputPreviewDocument(previewTextBuf.ToString(), tabSize, buffer.ShowsDifference ? envNLInputText : null);
-                            } while (support.TryContinue());
-                            support.End();
-                        });
-                    };
-                    buffer.UserInputText = "";
-                    var dialog = new UserInputWindow
-                    {
-                        DataContext = buffer,
-                        Owner = Window.GetWindow(wpfTextView.VisualElement),
-                        WindowStartupLocation = WindowStartupLocation.Manual,
-                        UsesEmacsLikeKeybindings = AnyTextFilterSettings.Current.UsesEmacsLikeKeybindings,
-                    };
-                    dialog.MoveToNextPreviousDifferenceDone += (sender_, e_) =>
-                    {
-                        // ref. http://stackoverflow.com/questions/6186925/visual-studio-extensibility-move-to-line-in-a-textdocument
-                        var startLine = wpfTextView.TextSnapshot.GetLineFromPosition(targetSpans.First().Start.Position);
-                        if (startLine == null) return;
-                        int lineNumber = e_.LineIndex + startLine.LineNumber;
-                        var targetLine = wpfTextView.TextSnapshot.Lines.FirstOrDefault(l => l.LineNumber == lineNumber);
-                        if (targetLine == null) return;
-                        var span = Span.FromBounds(targetLine.Start.Position, targetLine.End.Position);
-                        var snapshotSpan = new SnapshotSpan(wpfTextView.TextSnapshot, span);
-                        wpfTextView.ViewScroller.EnsureSpanVisible(snapshotSpan, EnsureSpanVisibleOptions.AlwaysCenter);
-                        wpfTextView.Caret.MoveTo(snapshotSpan.Start);
-                    };
-                    dialog.Title = "AnyTextFilter " + filter.Title;
-                    dialog.SetPosition(wpfTextView.VisualElement);
-                    dialog.SetFont(textEditorFontName, textEditorFontSizePt);
-                    if (snapshotSpanToVisible.HasValue)
-                    {
-                        wpfTextView.ViewScroller.EnsureSpanVisible(snapshotSpanToVisible.Value, EnsureSpanVisibleOptions.AlwaysCenter);
-                    }
-                    bool dialogResultIsOK = dialog.ShowDialog() ?? false;
-                    filter.UserInputWindow_ShowsDifference = buffer.ShowsDifference;
-                    AnyTextFilterSettings.Current.UsesEmacsLikeKeybindings = dialog.UsesEmacsLikeKeybindings;
-                    AnyTextFilterSettings.SaveCurrent();
-                    if (!dialogResultIsOK) return;
-                    userInputText = buffer.UserInputText;
-                }
-
-                // Edit text buffer
-                var textEdit = wpfTextView.TextBuffer.CreateEdit();
-                foreach (var span in targetSpans)
-                {
-                    string envNLSpanText = span.GetText().ConvertNewLine(srcNewLineKind, envNewLineKind);
-                    string envNLResultText = FilterRunner.Run(filter, envNLSpanText, userInputText).OutputText;
-                    string resultText = envNLResultText.ConvertNewLine(envNewLineKind, srcNewLineKind);
-                    if (filter.InsertsAfterTargetSpan)
-                    {
-                        var currLine = wpfTextView.TextViewLines.GetTextViewLineContainingBufferPosition(span.End);
-                        textEdit.Insert(currLine.End, Environment.NewLine + resultText);
-                    }
-                    else
-                    {
-                        textEdit.Delete(span);
-                        textEdit.Insert(span.Start, resultText);
-                    }
-                }
-                textEdit.Apply();
+                ActivateToolWindow(filter);
             }, menuCommandID)
             {
                 Text = filter.Title

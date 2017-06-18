@@ -129,11 +129,17 @@
   <data name="AddFilter" xml:space="preserve">
     <value>Add Filter</value>
   </data>
+  <data name="AnyTextFilter" xml:space="preserve">
+    <value>AnyTextFilter</value>
+  </data>
   <data name="AnyTextFilterSettings" xml:space="preserve">
     <value>AnyTextFilter Settings</value>
   </data>
   <data name="AnyTextFilterSettings_" xml:space="preserve">
     <value>AnyTextFilter Settings...</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
   </data>
   <data name="Arguments" xml:space="preserve">
     <value>Arguments</value>

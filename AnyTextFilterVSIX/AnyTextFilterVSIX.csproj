@@ -243,7 +243,9 @@
     <Compile Include="Settings\Filters\FilterSelectionWindow.xaml.cs">
       <DependentUpon>FilterSelectionWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserInput\FilterRunner.cs" />
     <Compile Include="UserInput\UserInputPreviewDocument.cs" />
+    <Compile Include="UserInput\FilterRunnerWindowPane.cs" />
     <Compile Include="_MyLib\Converters\EnumToStringConverter.cs" />
     <Compile Include="_MyLib\Converters\NameToMyEncodingInfoConverter.cs" />
     <Compile Include="_MyLib\Converters\DoubleToMultipliedConverter.cs" />
@@ -267,9 +269,8 @@
     </Compile>
     <Compile Include="_MyLib\Misc\MyTextEdit.cs" />
     <Compile Include="_MyLib\Misc\RepeatedAsyncTaskSupport.cs" />
-    <Compile Include="UserInput\UserInputBuffer.cs" />
-    <Compile Include="UserInput\UserInputWindow.xaml.cs">
-      <DependentUpon>UserInputWindow.xaml</DependentUpon>
+    <Compile Include="UserInput\FilterRunnerControl.xaml.cs">
+      <DependentUpon>FilterRunnerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="_MyLib\Serialization\ISettingsStoreAdapter.cs" />
     <Compile Include="_MyLib\Serialization\JSONSettingsStoreAdapter.cs" />
@@ -280,7 +281,7 @@
       <DependentUpon>FilterListEditControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Guids.cs" />
-    <Compile Include="Filter\FilterRunner.cs" />
+    <Compile Include="Filter\FilterProcess.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="AnyTextFilterPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -364,7 +365,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserInput\UserInputWindow.xaml">
+    <Page Include="UserInput\FilterRunnerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

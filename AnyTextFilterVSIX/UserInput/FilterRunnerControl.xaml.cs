@@ -16,63 +16,63 @@ using System.Windows.Shapes;
 namespace lpubsppop01.AnyTextFilterVSIX
 {
     /// <summary>
-    /// Interaction logic for UserInputWindow.xaml
+    /// Interaction logic for FilterRunnerControl.xaml
     /// </summary>
-    partial class UserInputWindow : Window
+    partial class FilterRunnerControl : UserControl
     {
         #region Constructor
 
-        public UserInputWindow()
+        public FilterRunnerControl()
         {
             InitializeComponent();
+
+            cmbFilter.ItemsSource = AnyTextFilterSettings.Current.Filters;
+            cmbFilter.DisplayMemberPath = "Title";
+            cmbFilter.SetBinding(ComboBox.SelectedValueProperty, new Binding("SelectedFilter")
+            {
+                Source = this
+            });
+            chkUsesEmacsKeybindings.SetBinding(CheckBox.IsCheckedProperty, new Binding("UsesEmacsLikeKeybindings")
+            {
+                Source= AnyTextFilterSettings.Current
+            });
         }
 
         #endregion
 
         #region Properties
 
-        public bool UsesEmacsLikeKeybindings
+        public FilterRunner FilterRunner
         {
-            get { return (bool)GetValue(UsesEmacsLikeKeybindingsProperty); }
-            set { SetValue(UsesEmacsLikeKeybindingsProperty, value); }
+            get { return DataContext as FilterRunner; }
+            set
+            {
+                var oldValue = FilterRunner;
+                if (oldValue != null) oldValue.PropertyChanged -= FilterRunner_PropertyChanged;
+                DataContext = value;
+                var newValue = FilterRunner;
+                if (newValue != null) newValue.PropertyChanged += FilterRunner_PropertyChanged;
+            }
         }
 
-        public static readonly DependencyProperty UsesEmacsLikeKeybindingsProperty = DependencyProperty.Register(
-            "UsesEmacsLikeKeybindings", typeof(bool), typeof(UserInputWindow), new PropertyMetadata(false));
+        public Filter SelectedFilter
+        {
+            get { return (Filter)GetValue(SelectedFilterProperty); }
+            set { SetValue(SelectedFilterProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectedFilterProperty = DependencyProperty.Register(
+            "SelectedFilter", typeof(Filter), typeof(FilterRunnerControl), new PropertyMetadata(null));
 
         #endregion
 
         #region Events
 
-        public class MoveToNextPreviousDoneDifferenceEventArgs : EventArgs
+        public event EventHandler Applied;
+
+        protected void OnApplied()
         {
-            #region Constructor
-
-            public MoveToNextPreviousDoneDifferenceEventArgs(int lineIndex)
-            {
-                LineIndex = lineIndex;
-            }
-
-            #endregion
-
-            #region Properties
-
-            public int LineIndex { get; private set; }
-
-            #endregion
-        }
-
-        public event EventHandler<MoveToNextPreviousDoneDifferenceEventArgs> MoveToNextPreviousDifferenceDone;
-
-        protected void OnMoveToNextPreviousDifferenceDone()
-        {
-            if (MoveToNextPreviousDifferenceDone != null)
-            {
-                if (currPara == null) return;
-                var currTag = currPara.Tag as UserInputPreviewDocument.LineTag;
-                if (currTag == null) return;
-                MoveToNextPreviousDifferenceDone(this, new MoveToNextPreviousDoneDifferenceEventArgs(currTag.LineIndex));
-            }
+            Applied?.Invoke(this, new EventArgs());
         }
 
         #endregion
@@ -84,28 +84,12 @@ namespace lpubsppop01.AnyTextFilterVSIX
             Keyboard.Focus(txtInput);
         }
 
-        UserInputBuffer buffer;
-
-        void this_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            if (buffer != null)
-            {
-                buffer.PropertyChanged -= buffer_PropertyChanged;
-                buffer = null;
-            }
-            buffer = DataContext as UserInputBuffer;
-            if (buffer != null)
-            {
-                buffer.PropertyChanged += buffer_PropertyChanged;
-            }
-        }
-
-        void buffer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        void FilterRunner_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "PreviewDocument") return;
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                var prevDoc = buffer.PreviewDocument.ToFlowDocument(txtPreview.FontSize);
+                var prevDoc = FilterRunner.PreviewDocument.ToFlowDocument(txtPreview.FontSize);
                 prevDoc.Loaded += (sender_, e_) => ResetCurrentLine();
                 txtPreview.Document = prevDoc;
             }));
@@ -116,8 +100,9 @@ namespace lpubsppop01.AnyTextFilterVSIX
             if (e.Key == Key.Enter && !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
             {
                 e.Handled = true;
-                DialogResult = true;
-                Close();
+                if (FilterRunner == null) return;
+                FilterRunner.ApplyLastResult();
+                OnApplied();
             }
         }
 
@@ -136,15 +121,12 @@ namespace lpubsppop01.AnyTextFilterVSIX
             MoveToNextPreviousDifference(toPrev: true);
         }
 
-        void btnOK_Click(object sender, RoutedEventArgs e)
+        void btnApply_Click(object sender, RoutedEventArgs e)
         {
-            DialogResult = true;
-            Close();
-        }
-        
-        void btnCancel_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
+            e.Handled = true;
+            if (FilterRunner == null) return;
+            FilterRunner.ApplyLastResult();
+            OnApplied();
         }
 
         #endregion
@@ -156,7 +138,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
-            if (UsesEmacsLikeKeybindings && Keyboard.Modifiers == ModifierKeys.Control)
+            if (AnyTextFilterSettings.Current.UsesEmacsLikeKeybindings && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 if (textEdit == null)
                 {
@@ -189,20 +171,20 @@ namespace lpubsppop01.AnyTextFilterVSIX
             base.OnPreviewKeyDown(e);
         }
 
-        #endregion
-
-        #region Position Setting
-
-        public void SetPosition(FrameworkElement ctrlTextView)
+        protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
-            var mainWindow = Window.GetWindow(ctrlTextView);
-            Height = (mainWindow != null) ? mainWindow.ActualHeight / 4 : 300;
-            Width = ctrlTextView.ActualWidth;
-            var viewTopLeftOnScreen = ctrlTextView.PointToScreen(new Point());
-            Left = viewTopLeftOnScreen.X;
-            Top = (viewTopLeftOnScreen.Y < ctrlTextView.ActualHeight)
-                ? viewTopLeftOnScreen.Y + ctrlTextView.ActualHeight - Height
-                : viewTopLeftOnScreen.Y - Height;
+            base.OnGotKeyboardFocus(e);
+
+            if (FilterRunner == null || SelectedFilter == null) return;
+            FilterRunner.Start(SelectedFilter);
+        }
+
+        protected override void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
+        {
+            base.OnLostKeyboardFocus(e);
+
+            if (FilterRunner == null) return;
+            FilterRunner.Stop();
         }
 
         #endregion
@@ -232,7 +214,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             currPara = txtPreview.Document.Blocks.OfType<Paragraph>().FirstOrDefault();
             if (currPara == null) return;
-            if (buffer.ShowsDifference)
+            if (FilterRunner.ShowsDifference)
             {
                 MoveToNextPreviousDifference(toPrev: false);
             }
@@ -285,6 +267,15 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 new TextRange(currPara.ElementStart, currPara.ElementEnd).ApplyPropertyValue(TextElement.BackgroundProperty, Brushes.Yellow);
                 OnMoveToNextPreviousDifferenceDone();
             }
+        }
+
+        void OnMoveToNextPreviousDifferenceDone()
+        {
+            if (currPara == null) return;
+            var currTag = currPara.Tag as UserInputPreviewDocument.LineTag;
+            if (currTag == null) return;
+            if (FilterRunner == null) return;
+            FilterRunner.EnsureMainViewLineVisible(currTag.LineIndex);
         }
 
         #endregion

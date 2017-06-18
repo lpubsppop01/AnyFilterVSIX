@@ -97,6 +97,15 @@ namespace lpubsppop01.AnyTextFilterVSIX.Properties {
         }
         
         /// <summary>
+        ///   AnyTextFilter に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string AnyTextFilter {
+            get {
+                return ResourceManager.GetString("AnyTextFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   AnyTextFilter Settings に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string AnyTextFilterSettings {
@@ -111,6 +120,15 @@ namespace lpubsppop01.AnyTextFilterVSIX.Properties {
         public static string AnyTextFilterSettings_ {
             get {
                 return ResourceManager.GetString("AnyTextFilterSettings_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Apply に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
             }
         }
         
