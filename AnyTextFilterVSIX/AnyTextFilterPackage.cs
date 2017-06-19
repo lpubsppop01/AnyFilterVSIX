@@ -110,24 +110,21 @@ namespace lpubsppop01.AnyTextFilterVSIX
             return editorAdapterFactory.GetWpfTextView(textView);
         }
 
-        FilterRunnerWindowPane GetToolWindow()
-        {
-            return FindToolWindow(typeof(FilterRunnerWindowPane), id: 0, create: false) as FilterRunnerWindowPane;
-        }
-
         void ActivateToolWindow(Filter filter)
         {
-            var window = GetToolWindow();
+            var window = FindToolWindow(typeof(FilterRunnerWindowPane), id: 0, create: false) as FilterRunnerWindowPane;
             if (window == null)
             {
                 window = FindToolWindow(typeof(FilterRunnerWindowPane), id: 0, create: true) as FilterRunnerWindowPane;
                 if (window == null || window.Frame == null) return;
+                window.Content.FilterRunner = new FilterRunner(GetWpfTextView);
                 window.Content.SetFont(textEditorFontName, textEditorFontSizePt);
                 window.Content.Applied += (sender, e) =>
                 {
-                    ErrorHandler.ThrowOnFailure(window.Frame.Hide());
+                    var wpfTextView = GetWpfTextView();
+                    if (wpfTextView == null) return;
+                    wpfTextView.VisualElement.Focus();
                 };
-                window.Content.FilterRunner = new FilterRunner(GetWpfTextView);
             }
             window.Content.SelectedFilter = filter;
             ErrorHandler.ThrowOnFailure(window.Frame.Show());
