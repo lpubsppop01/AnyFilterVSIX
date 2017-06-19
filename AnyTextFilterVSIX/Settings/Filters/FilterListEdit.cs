@@ -107,7 +107,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 if (!TryCreateTemplateFile(dialog.SelectedID, filter)) return false;
             }
             ItemsSource.Add(filter);
-            filter.Number = ItemsSource.Count;
+            filter.DisplayNumber = ItemsSource.Count;
             SelectedIndex = ItemsSource.Count - 1;
             return true;
         }
@@ -119,7 +119,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             ItemsSource.RemoveAt(iRemove);
             foreach (var filter in ItemsSource.Skip(iRemove))
             {
-                filter.Number -= 1;
+                filter.DisplayNumber -= 1;
             }
             SelectedIndex = Math.Max(Math.Min(iRemove, ItemsSource.Count - 1), 0);
             return true;
@@ -212,7 +212,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                     }
                 }
                 ItemsSource.Add(filter);
-                filter.Number = ItemsSource.Count;
+                filter.DisplayNumber = ItemsSource.Count;
             }
             SelectedIndex = ItemsSource.Count - 1;
             return true;

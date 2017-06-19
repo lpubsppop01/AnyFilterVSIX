@@ -131,6 +131,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
             var adapter = new WritableSettingsStoreAdapter(settingsStore);
             Current.Filters = new ObservableCollection<Filter>(adapter.GetList(CollectionPath, "Filters", new Filter[0], (itemPath) => Filter.Load(adapter, itemPath)));
+            int displayNumber = 0;
+            foreach (var f in Current.Filters) f.DisplayNumber = ++displayNumber;
             Current.UsesEmacsLikeKeybindings = adapter.GetBoolean(CollectionPath, "UsesEmacsLikeKeybindings", false);
             Current.Culture = MyCultureInfo.GetCultureInfo(adapter.GetString(CollectionPath, "Culture", ""));
         }

@@ -57,7 +57,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
             public string DisplayTitle
             {
-                get { return string.Format("{0:00}. {1}", Filter.Number, Filter.Title); }
+                get { return string.Format("{0:00}. {1}", Filter.DisplayNumber, Filter.Title); }
             }
 
             #endregion

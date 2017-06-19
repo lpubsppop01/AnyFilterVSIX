@@ -47,6 +47,11 @@ namespace lpubsppop01.AnyTextFilterVSIX
             return settingsStore.GetNullableDouble(collectionPath, propertyName, defaultValue);
         }
 
+        public Guid GetGuid(string collectionPath, string propertyName, Guid? defaultValue = null)
+        {
+            return settingsStore.GetGuid(collectionPath, propertyName, (defaultValue ?? Guid.Empty));
+        }
+
         public IList<T> GetList<T>(string collectionPath, string propertyName, IList<T> defaultValue, Func<string, T> loadItem)
         {
             return WritableSettingsStoreExtension.GetList<T>(settingsStore, collectionPath, propertyName, (itemPath) => loadItem(itemPath)).ToList();
@@ -75,6 +80,11 @@ namespace lpubsppop01.AnyTextFilterVSIX
         public void SetNullableDouble(string collectionPath, string propertyName, double? value)
         {
             settingsStore.SetNullableDouble(collectionPath, propertyName, value);
+        }
+
+        public void SetGuid(string collectionPath, string propertyName, Guid value)
+        {
+            settingsStore.SetGuid(collectionPath, propertyName, value);
         }
 
         public void SetList<T>(string collectionPath, string propertyName, IList<T> value, Action<T, string> saveItem)

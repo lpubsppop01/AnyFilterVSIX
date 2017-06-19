@@ -26,7 +26,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         public void Clear()
         {
-            Number = 0;
+            ID = Guid.Empty;
+            DisplayNumber = 0;
             Title = "";
             Command = "";
             Arguments = "";
@@ -45,7 +46,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         public void Copy(Filter src)
         {
-            Number = src.Number;
+            ID = src.ID;
+            DisplayNumber = src.DisplayNumber;
             Title = src.Title;
             Command = src.Command;
             Arguments = src.Arguments;
@@ -66,109 +68,116 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         #region Properties
 
-        int number;
-        public int Number
+        Guid m_ID;
+        public Guid ID
         {
-            get { return number; }
-            set { number = value; OnPropertyChanged(); }
+            get { return m_ID; }
+            set { m_ID = value; OnPropertyChanged(); }
         }
 
-        string title;
+        int m_DisplayNumber;
+        public int DisplayNumber
+        {
+            get { return m_DisplayNumber; }
+            set { m_DisplayNumber = value; OnPropertyChanged(); }
+        }
+
+        string m_Title;
         public string Title
         {
-            get { return title; }
-            set { title = value; OnPropertyChanged(); }
+            get { return m_Title; }
+            set { m_Title = value; OnPropertyChanged(); }
         }
 
-        string command;
+        string m_Command;
         public string Command
         {
-            get { return command; }
-            set { command = value; OnPropertyChanged(); }
+            get { return m_Command; }
+            set { m_Command = value; OnPropertyChanged(); }
         }
 
-        string arguments;
+        string m_Arguments;
         public string Arguments
         {
-            get { return arguments; }
-            set { arguments = value; OnPropertyChanged(); }
+            get { return m_Arguments; }
+            set { m_Arguments = value; OnPropertyChanged(); }
         }
 
-        NewLineKind inputNewLineKind;
+        NewLineKind m_InputNewLineKind;
         public NewLineKind InputNewLineKind
         {
-            get { return inputNewLineKind; }
-            set { inputNewLineKind = value; OnPropertyChanged(); }
+            get { return m_InputNewLineKind; }
+            set { m_InputNewLineKind = value; OnPropertyChanged(); }
         }
 
-        string inputEncodingName;
+        string m_InputEncodingName;
         public string InputEncodingName
         {
-            get { return inputEncodingName; }
-            set { inputEncodingName = value; OnPropertyChanged(); }
+            get { return m_InputEncodingName; }
+            set { m_InputEncodingName = value; OnPropertyChanged(); }
         }
 
-        string outputEncodingName;
+        string m_OutputEncodingName;
         public string OutputEncodingName
         {
-            get { return outputEncodingName; }
-            set { outputEncodingName = value; OnPropertyChanged(); }
+            get { return m_OutputEncodingName; }
+            set { m_OutputEncodingName = value; OnPropertyChanged(); }
         }
 
-        string tempFileExtension;
+        string m_TempFileExtension;
         public string TempFileExtension
         {
-            get { return tempFileExtension; }
-            set { tempFileExtension = value; OnPropertyChanged(); }
+            get { return m_TempFileExtension; }
+            set { m_TempFileExtension = value; OnPropertyChanged(); }
         }
 
-        TargetSpanForNoSelection targetSpanForNoSelection;
+        TargetSpanForNoSelection m_TargetSpanForNoSelection;
         public TargetSpanForNoSelection TargetSpanForNoSelection
         {
-            get { return targetSpanForNoSelection; }
-            set { targetSpanForNoSelection = value; OnPropertyChanged(); }
+            get { return m_TargetSpanForNoSelection; }
+            set { m_TargetSpanForNoSelection = value; OnPropertyChanged(); }
         }
 
-        bool insertsAfterTargetSpan;
+        bool m_InsertsAfterTargetSpan;
         public bool InsertsAfterTargetSpan
         {
-            get { return insertsAfterTargetSpan; }
-            set { insertsAfterTargetSpan = value; OnPropertyChanged(); }
+            get { return m_InsertsAfterTargetSpan; }
+            set { m_InsertsAfterTargetSpan = value; OnPropertyChanged(); }
         }
 
-        bool passesInputTextToStandardInput;
+        bool m_PassesInputTextToStandardInput;
         public bool PassesInputTextToStandardInput
         {
-            get { return passesInputTextToStandardInput; }
-            set { passesInputTextToStandardInput = value; OnPropertyChanged(); }
+            get { return m_PassesInputTextToStandardInput; }
+            set { m_PassesInputTextToStandardInput = value; OnPropertyChanged(); }
         }
 
-        bool usesTemplateFile;
+        bool m_UsesTemplateFile;
         public bool UsesTemplateFile
         {
-            get { return usesTemplateFile; }
-            set { usesTemplateFile = value; OnPropertyChanged(); }
+            get { return m_UsesTemplateFile; }
+            set { m_UsesTemplateFile = value; OnPropertyChanged(); }
         }
 
-        string templateFilePath;
+        string m_TemplateFilePath;
         public string TemplateFilePath
         {
-            get { return templateFilePath; }
-            set { templateFilePath = value; OnPropertyChanged(); }
+            get { return m_TemplateFilePath; }
+            set { m_TemplateFilePath = value; OnPropertyChanged(); }
         }
 
-        string memo;
+        string m_Memo;
         public string Memo
         {
-            get { return memo; }
-            set { memo = value; OnPropertyChanged(); }
+            get { return m_Memo; }
+            set { m_Memo = value; OnPropertyChanged(); }
         }
 
-        bool userInputWindow_ShowsDifference;
+        bool m_UserInputWindow_ShowsDifference;
         public bool UserInputWindow_ShowsDifference
         {
-            get { return userInputWindow_ShowsDifference; }
-            set { userInputWindow_ShowsDifference = value; OnPropertyChanged(); }
+            get { return m_UserInputWindow_ShowsDifference; }
+            set { m_UserInputWindow_ShowsDifference = value; OnPropertyChanged(); }
         }
 
         #endregion
@@ -185,7 +194,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             if (!UsesTemplateFile) return false;
             try
             {
-                using (var reader = new StreamReader(templateFilePath, MyEncoding.GetEncoding(InputEncodingName)))
+                using (var reader = new StreamReader(m_TemplateFilePath, MyEncoding.GetEncoding(InputEncodingName)))
                 {
                     return reader.ReadToEnd().Contains(str);
                 }
@@ -202,7 +211,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         public void Save(ISettingsStoreAdapter settingsStore, string collectionPath)
         {
-            settingsStore.SetInt32(collectionPath, "Number", Number);
+            settingsStore.SetGuid(collectionPath, "ID", ID);
             settingsStore.SetString(collectionPath, "Title", Title);
             settingsStore.SetString(collectionPath, "Command", Command);
             settingsStore.SetString(collectionPath, "Arguments", Arguments);
@@ -223,7 +232,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             return new Filter
             {
-                Number = settingsStore.GetInt32(collectionPath, "Number", 0),
+                ID = settingsStore.GetGuid(collectionPath, "ID", Guid.Empty),
                 Title = settingsStore.GetString(collectionPath, "Title", ""),
                 Command = settingsStore.GetString(collectionPath, "Command", ""),
                 Arguments = settingsStore.GetString(collectionPath, "Arguments", ""),

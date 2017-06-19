@@ -49,10 +49,28 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         static T GetValue<T>(Dictionary<string, object> node, string propetyName, T defaultValue)
         {
+            return GetValue(node, propetyName, null, defaultValue);
+        }
+
+        static T GetValue<T>(Dictionary<string, object> node, string propetyName, TryParse<T> tryParse, T defaultValue)
+        {
             object value;
-            if (node.TryGetValue(propetyName, out value)) return (T)value;
+            if (node.TryGetValue(propetyName, out value))
+            {
+                if (tryParse != null && value is string)
+                {
+                    T tValue;
+                    if (tryParse(value as string, out tValue)) return tValue;
+                }
+                else
+                {
+                    return (T)value;
+                }
+            }
             return defaultValue;
         }
+
+        delegate bool TryParse<T>(string str, out T value);
 
         #endregion
 
@@ -81,6 +99,11 @@ namespace lpubsppop01.AnyTextFilterVSIX
         public double? GetNullableDouble(string collectionPath, string propertyName, double? defaultValue = null)
         {
             return GetValue(GetNode(collectionPath), propertyName, defaultValue);
+        }
+
+        public Guid GetGuid(string collectionPath, string propertyName, Guid? defaultValue = null)
+        {
+            return GetValue(GetNode(collectionPath), propertyName, Guid.TryParse, (defaultValue ?? Guid.Empty));
         }
 
         public IList<T> GetList<T>(string collectionPath, string propertyName, IList<T> defaultValue, Func<string, T> loadItem)
@@ -118,6 +141,11 @@ namespace lpubsppop01.AnyTextFilterVSIX
         }
 
         public void SetNullableDouble(string collectionPath, string propertyName, double? value)
+        {
+            GetNode(collectionPath)[propertyName] = value;
+        }
+
+        public void SetGuid(string collectionPath, string propertyName, Guid value)
         {
             GetNode(collectionPath)[propertyName] = value;
         }

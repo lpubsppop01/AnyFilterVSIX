@@ -46,7 +46,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Number, StringFormat=d2}"/>
+                            <TextBlock Text="{Binding DisplayNumber, StringFormat=d2}"/>
                             <TextBlock Text=". "/>
                             <TextBlock Text="{Binding Title}"/>
                         </StackPanel>

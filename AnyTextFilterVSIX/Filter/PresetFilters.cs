@@ -17,7 +17,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
     {
         public static Filter Get(PresetFilterID presetID)
         {
-            var filter = new Filter();
+            var filter = new Filter { ID = Guid.NewGuid() };
             switch (presetID)
             {
                 default:

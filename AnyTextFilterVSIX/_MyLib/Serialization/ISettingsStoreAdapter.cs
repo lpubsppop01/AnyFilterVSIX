@@ -13,6 +13,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
         T GetEnum<T>(string collectionPath, string propertyName, T defaultValue = default(T)) where T : struct;
         bool GetBoolean(string collectionPath, string propertyName, bool defaultValue = false);
         double? GetNullableDouble(string collectionPath, string propertyName, double? defaultValue = null);
+        Guid GetGuid(string collectionPath, string propertyName, Guid? defaultValue = null);
         IList<T> GetList<T>(string collectionPath, string propertyName, IList<T> defaultValue, Func<string, T> loadItem);
 
         void SetInt32(string collectionPath, string propertyName, Int32 value);
@@ -20,6 +21,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
         void SetEnum<T>(string collectionPath, string propertyName, T value) where T : struct;
         void SetBoolean(string collectionPath, string propertyName, bool value);
         void SetNullableDouble(string collectionPath, string propertyName, double? value);
+        void SetGuid(string collectionPath, string propertyName, Guid value);
         void SetList<T>(string collectionPath, string propertyName, IList<T> value, Action<T, string> saveItem);
     }
 }

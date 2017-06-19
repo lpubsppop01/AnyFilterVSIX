@@ -82,5 +82,23 @@ namespace lpubsppop01.AnyTextFilterVSIX
         }
 
         #endregion
+
+        #region Get/SetGuid
+
+        public static Guid GetGuid(this WritableSettingsStore settingsStore, string collectionPath, string propertyName, Guid defaultValue)
+        {
+            var strValue = settingsStore.GetString(collectionPath, propertyName, "");
+            if (string.IsNullOrEmpty(strValue)) return defaultValue;
+            Guid guidValue;
+            if (!Guid.TryParse(strValue, out guidValue)) return defaultValue;
+            return guidValue;
+        }
+
+        public static void SetGuid(this WritableSettingsStore settingsStore, string collectionPath, string propertyName, Guid value)
+        {
+            settingsStore.SetString(collectionPath, propertyName, value.ToString());
+        }
+
+        #endregion
     }
 }
