@@ -81,6 +81,10 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         void this_Loaded(object sender, RoutedEventArgs e)
         {
+            if (SelectedFilter == null)
+            {
+                SelectedFilter = AnyTextFilterSettings.Current.Filters.FirstOrDefault();
+            }
             Keyboard.Focus(txtInput);
         }
 
