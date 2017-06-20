@@ -232,7 +232,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             return new Filter
             {
-                ID = settingsStore.GetGuid(collectionPath, "ID", Guid.Empty),
+                ID = settingsStore.GetGuid(collectionPath, "ID", Guid.NewGuid()),
                 Title = settingsStore.GetString(collectionPath, "Title", ""),
                 Command = settingsStore.GetString(collectionPath, "Command", ""),
                 Arguments = settingsStore.GetString(collectionPath, "Arguments", ""),
