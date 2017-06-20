@@ -236,6 +236,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Filter\FilterExporter.cs" />
+    <Compile Include="Filter\FilterHistoryItem.cs" />
     <Compile Include="Settings\Filters\FilterListEdit.cs" />
     <Compile Include="Settings\Misc\AboutThisSoftwareWindow.xaml.cs">
       <DependentUpon>AboutThisSoftwareWindow.xaml</DependentUpon>

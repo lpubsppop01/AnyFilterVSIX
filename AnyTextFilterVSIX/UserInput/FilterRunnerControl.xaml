@@ -24,9 +24,11 @@
         </Grid.ColumnDefinitions>
         <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,6">
             <ComboBox MinWidth="100" Name="cmbFilter"/>
-            <CheckBox Margin="6,0,0,0" IsChecked="{Binding ShowsDifference}" Content="{local:NameToResourceBinding Diff}"/>
+            <CheckBox Margin="12,0,0,0" IsChecked="{Binding ShowsDifference}" Content="{local:NameToResourceBinding Diff}"/>
             <Button MinWidth="60" Margin="6,0,0,0" Click="btnPrevious_Click" Content="{local:NameToResourceBinding Previous}"/>
             <Button MinWidth="60" Margin="6,0,0,0" Click="btnNext_Click" Content="{local:NameToResourceBinding Next}"/>
+            <Button MinWidth="80" Margin="12,0,0,0" Click="btnHistoryBack_Click" Content="History Back"/>
+            <Button MinWidth="80" Margin="6,0,0,0" Click="btnHistoryFront_Click" Content="History Front"/>
             <CheckBox HorizontalAlignment="Right" Margin="6,0,0,0" Name="chkUsesEmacsKeybindings" Content="{local:NameToResourceBinding UseEmacsLikeKeybindings}"/>
         </DockPanel>
         <TextBox Grid.Row="1" Grid.Column="0" Name="txtInput" Text="{Binding UserInputText, UpdateSourceTrigger=PropertyChanged}"

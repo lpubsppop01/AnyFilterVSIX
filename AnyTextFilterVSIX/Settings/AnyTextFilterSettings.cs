@@ -23,6 +23,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             Filters = new ObservableCollection<Filter>();
             Culture = MyCultureInfo.Auto;
+            History = new ObservableCollection<FilterHistoryItem>();
         }
 
         AnyTextFilterSettings(AnyTextFilterSettings src)
@@ -34,25 +35,32 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         #region Properties
 
-        ObservableCollection<Filter> filters;
+        ObservableCollection<Filter> m_Filters;
         public ObservableCollection<Filter> Filters
         {
-            get { return filters; }
-            private set { filters = value; OnPropertyChanged(); }
+            get { return m_Filters; }
+            private set { m_Filters = value; OnPropertyChanged(); }
         }
 
-        bool usesEmacsLikeKeybindings;
+        bool m_UsesEmacsLikeKeybindings;
         public bool UsesEmacsLikeKeybindings
         {
-            get { return usesEmacsLikeKeybindings; }
-            set { usesEmacsLikeKeybindings = value; OnPropertyChanged(); }
+            get { return m_UsesEmacsLikeKeybindings; }
+            set { m_UsesEmacsLikeKeybindings = value; OnPropertyChanged(); }
         }
 
-        MyCultureInfo culture;
+        MyCultureInfo m_Culture;
         public MyCultureInfo Culture
         {
-            get { return culture; }
-            set { culture = value; OnPropertyChanged(); }
+            get { return m_Culture; }
+            set { m_Culture = value; OnPropertyChanged(); }
+        }
+
+        ObservableCollection<FilterHistoryItem> m_History;
+        public ObservableCollection<FilterHistoryItem> History
+        {
+            get { return m_History; }
+            private set { m_History = value; OnPropertyChanged(); }
         }
 
         #endregion
@@ -64,6 +72,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             Filters = new ObservableCollection<Filter>(src.Filters.Select(f => f.Clone()));
             UsesEmacsLikeKeybindings = src.UsesEmacsLikeKeybindings;
             Culture = src.Culture;
+            History = new ObservableCollection<FilterHistoryItem>(src.History.Select(h => h.Clone()));
         }
 
         #endregion
@@ -104,6 +113,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         public static AnyTextFilterSettings Current { get; private set; }
 
+        public static readonly int HistoryCountMax = 10;
+
         static AnyTextFilterSettings()
         {
             var settingsManager = new ShellSettingsManager(ServiceProvider.GlobalProvider);
@@ -123,6 +134,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             adapter.SetList(CollectionPath, "Filters", Current.Filters, (e, p) => e.Save(adapter, p));
             adapter.SetBoolean(CollectionPath, "UsesEmacsLikeKeybindings", Current.UsesEmacsLikeKeybindings);
             adapter.SetString(CollectionPath, "Culture", Current.Culture.Name);
+            adapter.SetList(CollectionPath, "History", Current.History, (e, p) => e.Save(adapter, p));
         }
 
         public static void LoadCurrent()
@@ -130,11 +142,15 @@ namespace lpubsppop01.AnyTextFilterVSIX
             if (!settingsStore.CollectionExists(CollectionPath)) return;
 
             var adapter = new WritableSettingsStoreAdapter(settingsStore);
-            Current.Filters = new ObservableCollection<Filter>(adapter.GetList(CollectionPath, "Filters", new Filter[0], (itemPath) => Filter.Load(adapter, itemPath)));
+            Current.Filters = new ObservableCollection<Filter>(
+                adapter.GetList(CollectionPath, "Filters", new Filter[0], (itemPath) => Filter.Load(adapter, itemPath)));
             int displayNumber = 0;
             foreach (var f in Current.Filters) f.DisplayNumber = ++displayNumber;
             Current.UsesEmacsLikeKeybindings = adapter.GetBoolean(CollectionPath, "UsesEmacsLikeKeybindings", false);
             Current.Culture = MyCultureInfo.GetCultureInfo(adapter.GetString(CollectionPath, "Culture", ""));
+            Current.History = new ObservableCollection<FilterHistoryItem>(
+                adapter.GetList(CollectionPath, "History", new FilterHistoryItem[0],
+                    (itemPath) => FilterHistoryItem.Load(adapter, itemPath)));
         }
 
         #endregion

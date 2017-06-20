@@ -223,6 +223,15 @@ namespace lpubsppop01.AnyTextFilterVSIX
             }
             textEdit.Apply();
 
+            AnyTextFilterSettings.Current.History.Add(new FilterHistoryItem
+            {
+                FilterID = filter.ID,
+                UserInputText = UserInputText
+            });
+            while (AnyTextFilterSettings.Current.History.Count > AnyTextFilterSettings.HistoryCountMax)
+            {
+                AnyTextFilterSettings.Current.History.RemoveAt(0);
+            }
             UserInputText = "";
         }
 

@@ -64,6 +64,15 @@ namespace lpubsppop01.AnyTextFilterVSIX
         public static readonly DependencyProperty SelectedFilterProperty = DependencyProperty.Register(
             "SelectedFilter", typeof(Filter), typeof(FilterRunnerControl), new PropertyMetadata(null));
 
+        public int HistoryIndex
+        {
+            get { return (int)GetValue(HistoryIndexProperty); }
+            set { SetValue(HistoryIndexProperty, value); }
+        }
+
+        public static readonly DependencyProperty HistoryIndexProperty = DependencyProperty.Register(
+            "HistoryIndex", typeof(int), typeof(FilterRunnerControl), new PropertyMetadata(-1));
+
         #endregion
 
         #region Events
@@ -123,6 +132,50 @@ namespace lpubsppop01.AnyTextFilterVSIX
         void btnPrevious_Click(object sender, RoutedEventArgs e)
         {
             MoveToNextPreviousDifference(toPrev: true);
+        }
+
+        void btnHistoryBack_Click(object sender, RoutedEventArgs e)
+        {
+            if (FilterRunner == null || !AnyTextFilterSettings.Current.History.Any()) return;
+            if (HistoryIndex == -1)
+            {
+                HistoryIndex = AnyTextFilterSettings.Current.History.Count - 1;
+            }
+            else
+            {
+                --HistoryIndex;
+            }
+            if (HistoryIndex != -1)
+            {
+                var history = AnyTextFilterSettings.Current.History[HistoryIndex];
+                SelectedFilter = AnyTextFilterSettings.Current.Filters.FirstOrDefault(f => f.ID == history.FilterID);
+                FilterRunner.UserInputText = history.UserInputText;
+            } else
+            {
+                FilterRunner.UserInputText = "";
+            }
+        }
+
+        void btnHistoryFront_Click(object sender, RoutedEventArgs e)
+        {
+            if (FilterRunner == null || !AnyTextFilterSettings.Current.History.Any()) return;
+            if (HistoryIndex == AnyTextFilterSettings.Current.History.Count - 1)
+            {
+                HistoryIndex = -1;
+            }
+            else
+            {
+                ++HistoryIndex;
+            }
+            if (HistoryIndex != -1)
+            {
+                var history = AnyTextFilterSettings.Current.History[HistoryIndex];
+                SelectedFilter = AnyTextFilterSettings.Current.Filters.FirstOrDefault(f => f.ID == history.FilterID);
+                FilterRunner.UserInputText = history.UserInputText;
+            } else
+            {
+                FilterRunner.UserInputText = "";
+            }
         }
 
         void btnApply_Click(object sender, RoutedEventArgs e)
