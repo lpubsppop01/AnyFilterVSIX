@@ -104,11 +104,14 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 wpfTextView.ViewScroller.EnsureSpanVisible(spanToVisible.Value, EnsureSpanVisibleOptions.AlwaysCenter);
             }
 
+            // Start first filtering
+            TryStartFilteringTask();
+
             // Start watching
             PropertyChanged += this_PropertyChanged;
         }
 
-        private void UpdateTargetSpans(Filter filter, IWpfTextView wpfTextView, out SnapshotSpan? spanToVisible)
+        void UpdateTargetSpans(Filter filter, IWpfTextView wpfTextView, out SnapshotSpan? spanToVisible)
         {
             spanToVisible = null;
 
@@ -162,7 +165,12 @@ namespace lpubsppop01.AnyTextFilterVSIX
         void this_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "UserInputText" && e.PropertyName != "ShowsDifference") return;
-            if (!taskSupport.TryBegin()) return;
+            TryStartFilteringTask();
+        }
+
+        void TryStartFilteringTask()
+        {
+            if (!taskSupport.TryStart()) return;
             Task.Factory.StartNew(async () =>
             {
                 do
@@ -184,8 +192,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
                     lastResult = resultTextBuf.Select(s => s.ConvertNewLine(envNewLineKind, srcNewLineKind)).ToArray();
                     var previewText = string.Concat(resultTextBuf);
                     PreviewDocument = new UserInputPreviewDocument(previewText, tabSize, ShowsDifference ? envNLInputText : null);
-                } while (taskSupport.TryContinue());
-                taskSupport.End();
+                } while (taskSupport.CheckRepeat());
+                taskSupport.Stop();
             });
         }
 
@@ -246,10 +254,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

@@ -28,7 +28,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
         bool isRunning;
         bool rerunsAfterCurr;
 
-        public bool TryBegin()
+        public bool TryStart()
         {
             lock (myLock)
             {
@@ -47,7 +47,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             return true;
         }
 
-        public bool TryContinue()
+        public bool CheckRepeat()
         {
             lock (myLock)
             {
@@ -60,7 +60,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             return false;
         }
 
-        public void End()
+        public void Stop()
         {
             lock (myLock)
             {
