@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 
@@ -55,21 +53,23 @@ namespace lpubsppop01.AnyTextFilterVSIX
             set { showsDifference = value; OnPropertyChanged(); }
         }
 
-        public int? FirstTargetLineNumber
-        {
-            get
-            {
-                var wpfTextView = getWpfTextView();
-                if (wpfTextView == null) return null;
-                var startLine = wpfTextView.TextSnapshot.GetLineFromPosition(targetSpans.First().Start.Position);
-                if (startLine == null) return null;
-                return startLine.LineNumber;
-            }
-        }
+        //public int? FirstTargetLineNumber
+        //{
+        //    get
+        //    {
+        //        var wpfTextView = getWpfTextView();
+        //        if (wpfTextView == null) return null;
+        //        var startLine = wpfTextView.TextSnapshot.GetLineFromPosition(targetSpans.First().Start.Position);
+        //        if (startLine == null) return null;
+        //        return startLine.LineNumber;
+        //    }
+        //}
 
+        bool m_IsRunning;
         public bool IsRunning
         {
-            get { return filter != null; }
+            get { return m_IsRunning; }
+            private set { m_IsRunning = value; OnPropertyChanged(); }
         }
 
         #endregion
@@ -113,6 +113,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             TryStartFilteringTask();
 
             // Start watching
+            IsRunning = true;
             PropertyChanged += this_PropertyChanged;
         }
 
@@ -154,6 +155,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             // Stop watching
             PropertyChanged -= this_PropertyChanged;
+            IsRunning = false;
 
             // Save settings
             if (filter == null) return;
