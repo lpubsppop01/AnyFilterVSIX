@@ -30,6 +30,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
         public void Copy(FilterHistoryItem src)
         {
             FilterID = src.FilterID;
+            UserInputText = src.UserInputText;
         }
 
         #endregion

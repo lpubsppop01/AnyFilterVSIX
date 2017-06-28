@@ -244,6 +244,7 @@
     <Compile Include="Settings\Filters\FilterSelectionWindow.xaml.cs">
       <DependentUpon>FilterSelectionWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserInput\FilterHistoryManager.cs" />
     <Compile Include="UserInput\FilterRunner.cs" />
     <Compile Include="UserInput\UserInputPreviewDocument.cs" />
     <Compile Include="UserInput\FilterRunnerWindowPane.cs" />

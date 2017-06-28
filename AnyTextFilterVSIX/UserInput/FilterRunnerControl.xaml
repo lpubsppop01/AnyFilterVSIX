@@ -33,8 +33,7 @@
         </DockPanel>
         <TextBox Grid.Row="1" Grid.Column="0" Name="txtInput" Text="{Binding UserInputText, UpdateSourceTrigger=PropertyChanged}"
                  AcceptsReturn="True" PreviewKeyDown="txtInput_PreviewKeyDown" TextChanged="txtInput_TextChanged"
-                 VerticalScrollBarVisibility="Auto" MaxHeight="{local:DoubleToHalfBinding ActualHeight, ElementName=pnlMain}"
-                 IsEnabled="{Binding HasUserInputVariables}"/>
+                 VerticalScrollBarVisibility="Auto" MaxHeight="{local:DoubleToHalfBinding ActualHeight, ElementName=pnlMain}"/>
         <TextBlock Grid.Row="1" Grid.Column="0" Name="txtInputHint" Foreground="Gray" Margin="3,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"
                    Height="{Binding ActualHeight, ElementName=txtInput}" Text="{local:NameToResourceBinding UserInput_UserInputTextHint}"/>
         <Button Grid.Row="1" Grid.Column="1" Margin="6,0,0,0" Name="btnApply"

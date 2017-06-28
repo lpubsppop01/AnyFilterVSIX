@@ -67,6 +67,11 @@ namespace lpubsppop01.AnyTextFilterVSIX
             }
         }
 
+        public bool IsRunning
+        {
+            get { return filter != null; }
+        }
+
         #endregion
 
         #region Start/Stop
@@ -151,6 +156,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             PropertyChanged -= this_PropertyChanged;
 
             // Save settings
+            if (filter == null) return;
             filter.UserInputWindow_ShowsDifference = ShowsDifference;
             AnyTextFilterSettings.SaveCurrent();
         }
@@ -223,15 +229,12 @@ namespace lpubsppop01.AnyTextFilterVSIX
             }
             textEdit.Apply();
 
-            AnyTextFilterSettings.Current.History.Add(new FilterHistoryItem
+            var historyManager = new FilterHistoryManager();
+            historyManager.AddHistoryItem(new FilterHistoryItem
             {
                 FilterID = filter.ID,
                 UserInputText = UserInputText
             });
-            while (AnyTextFilterSettings.Current.History.Count > AnyTextFilterSettings.HistoryCountMax)
-            {
-                AnyTextFilterSettings.Current.History.RemoveAt(0);
-            }
             UserInputText = "";
         }
 

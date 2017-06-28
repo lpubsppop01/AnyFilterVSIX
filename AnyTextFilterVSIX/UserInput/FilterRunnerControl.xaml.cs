@@ -22,9 +22,16 @@ namespace lpubsppop01.AnyTextFilterVSIX
     {
         #region Constructor
 
+        FilterHistoryManager historyManager;
+
         public FilterRunnerControl()
         {
             InitializeComponent();
+
+            AnyTextFilterSettings.Current.Loaded += AnyTextFilterSettings_Current_Loaded;
+
+            historyManager = new FilterHistoryManager();
+            historyManager.PropertyChanged += historyManager_PropertyChanged;
 
             cmbFilter.ItemsSource = AnyTextFilterSettings.Current.Filters;
             cmbFilter.DisplayMemberPath = "Title";
@@ -64,15 +71,6 @@ namespace lpubsppop01.AnyTextFilterVSIX
         public static readonly DependencyProperty SelectedFilterProperty = DependencyProperty.Register(
             "SelectedFilter", typeof(Filter), typeof(FilterRunnerControl), new PropertyMetadata(null));
 
-        public int HistoryIndex
-        {
-            get { return (int)GetValue(HistoryIndexProperty); }
-            set { SetValue(HistoryIndexProperty, value); }
-        }
-
-        public static readonly DependencyProperty HistoryIndexProperty = DependencyProperty.Register(
-            "HistoryIndex", typeof(int), typeof(FilterRunnerControl), new PropertyMetadata(-1));
-
         #endregion
 
         #region Events
@@ -92,9 +90,26 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             if (SelectedFilter == null)
             {
-                SelectedFilter = AnyTextFilterSettings.Current.Filters.FirstOrDefault();
+                SelectedFilter = GetDefaultFilter();
             }
             Keyboard.Focus(txtInput);
+        }
+
+        Filter GetDefaultFilter()
+        {
+            Filter lastUsedFilter = null;
+            foreach (var historyItem in AnyTextFilterSettings.Current.History.Reverse())
+            {
+                lastUsedFilter = AnyTextFilterSettings.Current.Filters.FirstOrDefault(f => f.ID == historyItem.FilterID);
+                if (lastUsedFilter != null) break;
+            }
+            if (lastUsedFilter == null) return lastUsedFilter;
+            return AnyTextFilterSettings.Current.Filters.FirstOrDefault();
+        }
+
+        void AnyTextFilterSettings_Current_Loaded(object sender, EventArgs e)
+        {
+            cmbFilter.ItemsSource = AnyTextFilterSettings.Current.Filters;
         }
 
         void FilterRunner_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -137,41 +152,28 @@ namespace lpubsppop01.AnyTextFilterVSIX
         void btnHistoryBack_Click(object sender, RoutedEventArgs e)
         {
             if (FilterRunner == null || !AnyTextFilterSettings.Current.History.Any()) return;
-            if (HistoryIndex == -1)
-            {
-                HistoryIndex = AnyTextFilterSettings.Current.History.Count - 1;
-            }
-            else
-            {
-                --HistoryIndex;
-            }
-            if (HistoryIndex != -1)
-            {
-                var history = AnyTextFilterSettings.Current.History[HistoryIndex];
-                SelectedFilter = AnyTextFilterSettings.Current.Filters.FirstOrDefault(f => f.ID == history.FilterID);
-                FilterRunner.UserInputText = history.UserInputText;
-            } else
-            {
-                FilterRunner.UserInputText = "";
-            }
+            FilterRunner.Stop();
+            historyManager.DecrementIndex();
+            FilterRunner.Start(SelectedFilter);
         }
 
         void btnHistoryFront_Click(object sender, RoutedEventArgs e)
         {
             if (FilterRunner == null || !AnyTextFilterSettings.Current.History.Any()) return;
-            if (HistoryIndex == AnyTextFilterSettings.Current.History.Count - 1)
+            FilterRunner.Stop();
+            historyManager.IncrementIndex();
+            FilterRunner.Start(SelectedFilter);
+        }
+
+        void historyManager_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "CurrentItem") return;
+            var currHistoryItem = historyManager.CurrentItem;
+            if (currHistoryItem == null) return;
+            if (currHistoryItem.FilterID != Guid.Empty)
             {
-                HistoryIndex = -1;
-            }
-            else
-            {
-                ++HistoryIndex;
-            }
-            if (HistoryIndex != -1)
-            {
-                var history = AnyTextFilterSettings.Current.History[HistoryIndex];
-                SelectedFilter = AnyTextFilterSettings.Current.Filters.FirstOrDefault(f => f.ID == history.FilterID);
-                FilterRunner.UserInputText = history.UserInputText;
+                SelectedFilter = AnyTextFilterSettings.Current.Filters.FirstOrDefault(f => f.ID == currHistoryItem.FilterID);
+                FilterRunner.UserInputText = currHistoryItem.UserInputText;
             } else
             {
                 FilterRunner.UserInputText = "";
@@ -230,9 +232,12 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
+            // Reach here ahead of this.Loaded
+
             base.OnGotKeyboardFocus(e);
 
             if (FilterRunner == null || SelectedFilter == null) return;
+            if (FilterRunner.IsRunning) return;
             FilterRunner.Start(SelectedFilter);
         }
 
@@ -242,6 +247,16 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
             if (FilterRunner == null) return;
             FilterRunner.Stop();
+        }
+
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+            if (FilterRunner == null) return;
+            if (e.Property == SelectedFilterProperty)
+            {
+                FilterRunner.UserInputText = "";
+            }
         }
 
         #endregion

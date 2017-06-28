@@ -77,6 +77,42 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         #endregion
 
+        #region Begin/EndEdit
+
+        bool m_IsEditing;
+        HashSet<string> m_EditedPropertyNames;
+
+        public bool BeginEdit()
+        {
+            if (m_IsEditing) return false;
+            m_IsEditing = true;
+            m_EditedPropertyNames = new HashSet<string>();
+            return true;
+        }
+
+        public void EndEdit()
+        {
+            m_IsEditing = false;
+            foreach (var name in m_EditedPropertyNames)
+            {
+                OnPropertyChanged(name);
+            }
+            m_EditedPropertyNames = null;
+        }
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler Loaded;
+
+        void OnLoaded()
+        {
+            Loaded?.Invoke(this, new EventArgs());
+        }
+
+        #endregion
+
         #region ICloneable Members
 
         object ICloneable.Clone()
@@ -97,9 +133,13 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            if (PropertyChanged != null)
+            if (m_IsEditing)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                m_EditedPropertyNames.Add(propertyName);
+            }
+            else
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
@@ -134,6 +174,15 @@ namespace lpubsppop01.AnyTextFilterVSIX
             adapter.SetList(CollectionPath, "Filters", Current.Filters, (e, p) => e.Save(adapter, p));
             adapter.SetBoolean(CollectionPath, "UsesEmacsLikeKeybindings", Current.UsesEmacsLikeKeybindings);
             adapter.SetString(CollectionPath, "Culture", Current.Culture.Name);
+            SaveCurrentHistory(adapter);
+        }
+
+        public static void SaveCurrentHistory(ISettingsStoreAdapter adapter = null)
+        {
+            if (adapter == null)
+            {
+                adapter = new WritableSettingsStoreAdapter(settingsStore);
+            }
             adapter.SetList(CollectionPath, "History", Current.History, (e, p) => e.Save(adapter, p));
         }
 
@@ -148,6 +197,16 @@ namespace lpubsppop01.AnyTextFilterVSIX
             foreach (var f in Current.Filters) f.DisplayNumber = ++displayNumber;
             Current.UsesEmacsLikeKeybindings = adapter.GetBoolean(CollectionPath, "UsesEmacsLikeKeybindings", false);
             Current.Culture = MyCultureInfo.GetCultureInfo(adapter.GetString(CollectionPath, "Culture", ""));
+            LoadCurrentHistory(adapter);
+            Current.OnLoaded();
+        }
+
+        public static void LoadCurrentHistory(ISettingsStoreAdapter adapter = null)
+        {
+            if (adapter == null)
+            {
+                adapter = new WritableSettingsStoreAdapter(settingsStore);
+            }
             Current.History = new ObservableCollection<FilterHistoryItem>(
                 adapter.GetList(CollectionPath, "History", new FilterHistoryItem[0],
                     (itemPath) => FilterHistoryItem.Load(adapter, itemPath)));

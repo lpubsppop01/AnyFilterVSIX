@@ -57,75 +57,18 @@ namespace lpubsppop01.AnyTextFilterVSIX
         #region Service Cache
 
         OleMenuCommandService menuCommandService;
-        IVsTextManager textManager;
-        IVsEditorAdaptersFactoryService editorAdapterFactory;
-        string textEditorFontName;
-        int textEditorFontSizePt;
 
         bool TryCacheRequiredServices()
         {
             menuCommandService = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (menuCommandService == null) return false;
-            textManager = GetService(typeof(SVsTextManager)) as IVsTextManager;
-            if (textManager == null) return false;
-            var componentModel = Package.GetGlobalService(typeof(SComponentModel)) as IComponentModel;
-            if (componentModel == null) return false;
-            editorAdapterFactory = componentModel.GetService<IVsEditorAdaptersFactoryService>();
-            if (editorAdapterFactory == null) return false;
-            var store = GetService(typeof(IVsFontAndColorStorage)) as IVsFontAndColorStorage;
-            if (store == null) return false;
-            GetTextEditorFont(store, out textEditorFontName, out textEditorFontSizePt);
             return true;
-        }
-
-        static void GetTextEditorFont(IVsFontAndColorStorage store, out string fontName, out int fontSize)
-        {
-            // ref. https://social.msdn.microsoft.com/Forums/vstudio/en-US/19a2c13d-86ac-4713-9897-88cc585201f1/vsix-how-to-get-colors-in-an-editor-extension?forum=vsx
-
-            fontName = "Consolas";
-            fontSize = 10;
-
-            var textEditorGuid = new Guid("A27B4E24-A735-4D1D-B8E7-9716E1E3D8E0");
-            store.OpenCategory(ref textEditorGuid, (uint)__FCSTORAGEFLAGS.FCSF_READONLY);
-            try
-            {
-                var logFont = new LOGFONTW[1];
-                var fontInfo = new FontInfo[1];
-                if (store.GetFont(logFont, fontInfo) == VSConstants.S_OK) {
-                    fontName = fontInfo[0].bstrFaceName;
-                    fontSize = fontInfo[0].wPointSize;
-                }
-            }
-            finally
-            {
-                store.CloseCategory();
-            }
-        }
-
-        IWpfTextView GetWpfTextView()
-        {
-            IVsTextView textView;
-            textManager.GetActiveView(1, null, out textView);
-            if (textView == null) return null;
-            return editorAdapterFactory.GetWpfTextView(textView);
         }
 
         void ActivateToolWindow(Filter filter)
         {
-            var window = FindToolWindow(typeof(FilterRunnerWindowPane), id: 0, create: false) as FilterRunnerWindowPane;
-            if (window == null)
-            {
-                window = FindToolWindow(typeof(FilterRunnerWindowPane), id: 0, create: true) as FilterRunnerWindowPane;
-                if (window == null || window.Frame == null) return;
-                window.Content.FilterRunner = new FilterRunner(GetWpfTextView);
-                window.Content.SetFont(textEditorFontName, textEditorFontSizePt);
-                window.Content.Applied += (sender, e) =>
-                {
-                    var wpfTextView = GetWpfTextView();
-                    if (wpfTextView == null) return;
-                    wpfTextView.VisualElement.Focus();
-                };
-            }
+            var window = FindToolWindow(typeof(FilterRunnerWindowPane), id: 0, create: true) as FilterRunnerWindowPane;
+            if (window == null) return;
             window.Content.SelectedFilter = filter;
             ErrorHandler.ThrowOnFailure(window.Frame.Show());
         }
