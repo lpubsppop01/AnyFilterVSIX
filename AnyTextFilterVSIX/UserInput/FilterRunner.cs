@@ -53,18 +53,6 @@ namespace lpubsppop01.AnyTextFilterVSIX
             set { showsDifference = value; OnPropertyChanged(); }
         }
 
-        //public int? FirstTargetLineNumber
-        //{
-        //    get
-        //    {
-        //        var wpfTextView = getWpfTextView();
-        //        if (wpfTextView == null) return null;
-        //        var startLine = wpfTextView.TextSnapshot.GetLineFromPosition(targetSpans.First().Start.Position);
-        //        if (startLine == null) return null;
-        //        return startLine.LineNumber;
-        //    }
-        //}
-
         bool m_IsRunning;
         public bool IsRunning
         {
