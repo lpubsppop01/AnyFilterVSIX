@@ -152,13 +152,22 @@ namespace lpubsppop01.AnyTextFilterVSIX
             if (e.PropertyName != "CurrentItem") return;
             var currHistoryItem = historyManager.CurrentItem;
             if (currHistoryItem == null) return;
-            if (currHistoryItem.FilterID != Guid.Empty)
+            BeginEdit();
+            try
             {
-                SelectedFilter = AnyTextFilterSettings.Current.Filters.FirstOrDefault(f => f.ID == currHistoryItem.FilterID);
-                FilterRunner.UserInputText = currHistoryItem.UserInputText;
-            } else
+                if (currHistoryItem.FilterID != Guid.Empty)
+                {
+                    SelectedFilter = AnyTextFilterSettings.Current.Filters.FirstOrDefault(f => f.ID == currHistoryItem.FilterID);
+                    FilterRunner.UserInputText = currHistoryItem.UserInputText;
+                }
+                else
+                {
+                    FilterRunner.UserInputText = "";
+                }
+            }
+            finally
             {
-                FilterRunner.UserInputText = "";
+                EndEdit(quiet: true);
             }
         }
 
@@ -215,11 +224,46 @@ namespace lpubsppop01.AnyTextFilterVSIX
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
             base.OnPropertyChanged(e);
+            if (m_IsEditing)
+            {
+                m_PropertyChangedEventArgsList.Add(e);
+                return;
+            }
             if (FilterRunner == null) return;
             if (e.Property == SelectedFilterProperty)
             {
-                FilterRunner.UserInputText = "";
+                FilterRunner.Stop();
+                if (SelectedFilter == null) return;
+                FilterRunner.Start(SelectedFilter);
             }
+        }
+
+        #endregion
+
+        #region Begin/EndEdit
+
+        bool m_IsEditing;
+        List<DependencyPropertyChangedEventArgs> m_PropertyChangedEventArgsList;
+
+        public bool BeginEdit()
+        {
+            if (m_IsEditing) return false;
+            m_IsEditing = true;
+            m_PropertyChangedEventArgsList = new List<DependencyPropertyChangedEventArgs>();
+            return true;
+        }
+
+        public void EndEdit(bool quiet)
+        {
+            m_IsEditing = false;
+            if (!quiet)
+            {
+                foreach (var e in m_PropertyChangedEventArgsList)
+                {
+                    OnPropertyChanged(e);
+                }
+            }
+            m_PropertyChangedEventArgsList = null;
         }
 
         #endregion
