@@ -25,6 +25,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             Caption = Properties.Resources.AnyTextFilter;
             Content = new FilterRunnerControl();
             Content.Loaded += Content_Loaded;
+            Content.Unloaded += Content_Unloaded;
             Content.Applied += Content_Applied;
         }
 
@@ -123,10 +124,34 @@ namespace lpubsppop01.AnyTextFilterVSIX
             {
                 Content.SetFont(textEditorFontName, textEditorFontSizePt);
                 Content.FilterRunner = new FilterRunner(GetWpfTextView);
-                if (Content.IsKeyboardFocusWithin)
+                if (Content.SelectedFilter == null)
                 {
-                    Content.FilterRunner.Start( Content.SelectedFilter);
+                    Content.SelectedFilter = GetDefaultFilter();
                 }
+            }
+            if (!Content.FilterRunner.IsRunning)
+            {
+                Content.FilterRunner.Start(Content.SelectedFilter);
+            }
+        }
+
+        Filter GetDefaultFilter()
+        {
+            Filter lastUsedFilter = null;
+            foreach (var historyItem in AnyTextFilterSettings.Current.History.Reverse())
+            {
+                lastUsedFilter = AnyTextFilterSettings.Current.Filters.FirstOrDefault(f => f.ID == historyItem.FilterID);
+                if (lastUsedFilter != null) break;
+            }
+            if (lastUsedFilter == null) return lastUsedFilter;
+            return AnyTextFilterSettings.Current.Filters.FirstOrDefault();
+        }
+
+        void Content_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (Content.FilterRunner.IsRunning)
+            {
+                Content.FilterRunner.Stop();
             }
         }
 

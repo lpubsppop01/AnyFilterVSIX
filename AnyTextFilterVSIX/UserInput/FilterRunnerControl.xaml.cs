@@ -2,16 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace lpubsppop01.AnyTextFilterVSIX
 {
@@ -41,7 +37,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             });
             chkUsesEmacsKeybindings.SetBinding(CheckBox.IsCheckedProperty, new Binding("UsesEmacsLikeKeybindings")
             {
-                Source= AnyTextFilterSettings.Current
+                Source = AnyTextFilterSettings.Current
             });
         }
 
@@ -88,23 +84,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         void this_Loaded(object sender, RoutedEventArgs e)
         {
-            if (SelectedFilter == null)
-            {
-                SelectedFilter = GetDefaultFilter();
-            }
             Keyboard.Focus(txtInput);
-        }
-
-        Filter GetDefaultFilter()
-        {
-            Filter lastUsedFilter = null;
-            foreach (var historyItem in AnyTextFilterSettings.Current.History.Reverse())
-            {
-                lastUsedFilter = AnyTextFilterSettings.Current.Filters.FirstOrDefault(f => f.ID == historyItem.FilterID);
-                if (lastUsedFilter != null) break;
-            }
-            if (lastUsedFilter == null) return lastUsedFilter;
-            return AnyTextFilterSettings.Current.Filters.FirstOrDefault();
         }
 
         void AnyTextFilterSettings_Current_Loaded(object sender, EventArgs e)
@@ -154,6 +134,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             if (FilterRunner == null || !AnyTextFilterSettings.Current.History.Any()) return;
             FilterRunner.Stop();
             historyManager.DecrementIndex();
+            if (SelectedFilter == null) return;
             FilterRunner.Start(SelectedFilter);
         }
 
@@ -162,6 +143,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             if (FilterRunner == null || !AnyTextFilterSettings.Current.History.Any()) return;
             FilterRunner.Stop();
             historyManager.IncrementIndex();
+            if (SelectedFilter == null) return;
             FilterRunner.Start(SelectedFilter);
         }
 
@@ -228,25 +210,6 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 }
             }
             base.OnPreviewKeyDown(e);
-        }
-
-        protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
-        {
-            // Reach here ahead of this.Loaded
-
-            base.OnGotKeyboardFocus(e);
-
-            if (FilterRunner == null || SelectedFilter == null) return;
-            if (FilterRunner.IsRunning) return;
-            FilterRunner.Start(SelectedFilter);
-        }
-
-        protected override void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
-        {
-            base.OnLostKeyboardFocus(e);
-
-            if (FilterRunner == null) return;
-            FilterRunner.Stop();
         }
 
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)

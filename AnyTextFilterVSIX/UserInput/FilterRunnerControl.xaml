@@ -6,7 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:lpubsppop01.AnyTextFilterVSIX"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="400"
-             Name="this" Loaded="this_Loaded">
+             Loaded="this_Loaded">
     <UserControl.Resources>
         <Style TargetType="CheckBox">
             <Setter Property="VerticalAlignment" Value="Center"/>
