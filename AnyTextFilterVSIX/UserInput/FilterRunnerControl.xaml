@@ -18,27 +18,26 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,6">
+        <DockPanel Grid.Row="0" Margin="0,0,0,6">
             <ComboBox MinWidth="100" Name="cmbFilter"/>
             <CheckBox Margin="12,0,0,0" IsChecked="{Binding ShowsDifference}" Content="{local:NameToResourceBinding Diff}"/>
             <Button MinWidth="60" Margin="6,0,0,0" Click="btnPrevious_Click" Content="{local:NameToResourceBinding Previous}"/>
             <Button MinWidth="60" Margin="6,0,0,0" Click="btnNext_Click" Content="{local:NameToResourceBinding Next}"/>
             <Button MinWidth="80" Margin="12,0,0,0" Click="btnHistoryBack_Click" Content="History Back"/>
             <Button MinWidth="80" Margin="6,0,0,0" Click="btnHistoryFront_Click" Content="History Front"/>
-            <CheckBox HorizontalAlignment="Right" Margin="6,0,0,0" Name="chkUsesEmacsKeyBindings" Content="{local:NameToResourceBinding UseEmacsLikeKeyBindings}"/>
+            <Button DockPanel.Dock="Right" Margin="6,0,0,0" MinWidth="70"
+                    Name="btnApply" IsDefault="True" Click="btnApply_Click" Content="{local:NameToResourceBinding Apply}"/>
+            <CheckBox DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="6,0,0,0"
+                      Name="chkUsesEmacsKeyBindings" Content="{local:NameToResourceBinding UseEmacsLikeKeyBindings}"/>
         </DockPanel>
-        <TextBox Grid.Row="1" Grid.Column="0" Name="txtInput" Text="{Binding UserInputText, UpdateSourceTrigger=PropertyChanged}"
+        <TextBox Grid.Row="1" Name="txtInput" Text="{Binding UserInputText, UpdateSourceTrigger=PropertyChanged}"
                  AcceptsReturn="True" PreviewKeyDown="txtInput_PreviewKeyDown" TextChanged="txtInput_TextChanged"
-                 VerticalScrollBarVisibility="Auto" MaxHeight="{local:DoubleToHalfBinding ActualHeight, ElementName=pnlMain}"/>
-        <TextBlock Grid.Row="1" Grid.Column="0" Name="txtInputHint" Foreground="Gray" Margin="3,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"
+                 VerticalScrollBarVisibility="Auto" VerticalAlignment="Top"
+                 MaxHeight="{local:DoubleToHalfBinding ActualHeight, ElementName=pnlMain}"/>
+        <TextBlock Grid.Row="1" Name="txtInputHint" Foreground="Gray" Margin="3,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"
                    Height="{Binding ActualHeight, ElementName=txtInput}" Text="{local:NameToResourceBinding UserInput_UserInputTextHint}"/>
-        <Button Grid.Row="1" Grid.Column="1" Margin="6,0,0,0" Name="btnApply"
-                IsDefault="True" Click="btnApply_Click" MinWidth="70" Content="{local:NameToResourceBinding Apply}"/>
-        <RichTextBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Name="txtPreview"
+        
+        <RichTextBox Grid.Row="2" Name="txtPreview"
                      IsReadOnly="True" Margin="0,6,0,0"
                      HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"/>
     </Grid>
