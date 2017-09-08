@@ -14,7 +14,8 @@ that passes target text to an arbitrary external program and replace the text by
 [AnyTextFilterVSIX Latest Build - AppVeyor](https://ci.appveyor.com/api/projects/lpubsppop01/anytextfiltervsix-2772p/artifacts/AnyTextFilterVSIX%2Fbin%2FRelease%2Flpubsppop01.AnyTextFilterVSIX.vsix)
 
 ## Requirements
-Visual Studio 2013 or later
+- Visual Studio 2013-2017 to install and use
+- Visual Studio 2017 to build
 
 ## Author
 [lpubsppop01](https://github.com/lpubsppop01)
