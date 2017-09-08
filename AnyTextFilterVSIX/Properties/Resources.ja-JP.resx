@@ -159,6 +159,9 @@
   <data name="Diff" xml:space="preserve">
     <value>差分</value>
   </data>
+  <data name="EmacsLikeKeyBindings" xml:space="preserve">
+    <value>Emacs ライクなキーバインド</value>
+  </data>
   <data name="Export" xml:space="preserve">
     <value>エクスポート</value>
   </data>
@@ -216,7 +219,7 @@
   <data name="Title" xml:space="preserve">
     <value>タイトル</value>
   </data>
-  <data name="UseEmacsLikeKeybindings" xml:space="preserve">
+  <data name="UseEmacsLikeKeyBindings" xml:space="preserve">
     <value>Emacs ライクなキーバインドを使用する</value>
   </data>
   <data name="UseInputTemplateFile" xml:space="preserve">

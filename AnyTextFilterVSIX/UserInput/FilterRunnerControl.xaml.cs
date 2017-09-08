@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.Shell;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -35,10 +36,11 @@ namespace lpubsppop01.AnyTextFilterVSIX
             {
                 Source = this
             });
-            chkUsesEmacsKeybindings.SetBinding(CheckBox.IsCheckedProperty, new Binding("UsesEmacsLikeKeybindings")
+            chkUsesEmacsKeyBindings.SetBinding(CheckBox.IsCheckedProperty, new Binding("UsesEmacsLikeKeybindings")
             {
                 Source = AnyTextFilterSettings.Current
             });
+            chkUsesEmacsKeyBindings.Checked += chkUsesEmacsKeyBindings_Checked;
         }
 
         #endregion
@@ -171,6 +173,19 @@ namespace lpubsppop01.AnyTextFilterVSIX
             }
         }
 
+        void chkUsesEmacsKeyBindings_Checked(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Remove comflict key bindings?", Properties.Resources.EmacsLikeKeyBindings, MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                var dte = Package.GetGlobalService(typeof(EnvDTE.DTE)) as EnvDTE.DTE;
+                string errorMessage;
+                if (!MyTextEdit.TryRemoveConflictKeyBindings(dte, out errorMessage))
+                {
+                    MessageBox.Show(errorMessage, Properties.Resources.EmacsLikeKeyBindings, MessageBoxButton.OK);
+                }
+            }
+        }
+
         void btnApply_Click(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
@@ -184,7 +199,6 @@ namespace lpubsppop01.AnyTextFilterVSIX
         #region Overrides
 
         MyTextEdit textEdit;
-        Dictionary<Key, Action> keyToAction;
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
@@ -192,29 +206,10 @@ namespace lpubsppop01.AnyTextFilterVSIX
             {
                 if (textEdit == null)
                 {
-                    textEdit = new MyTextEdit(() => txtInput.Text, (t) => txtInput.Text = t, () => txtInput.CaretIndex, (i) => txtInput.CaretIndex = i)
-                    {
-                        GetTextFromClipboard = Clipboard.GetText,
-                        SetTextFromClipboard = (text) => Clipboard.SetText(text)
-                    };
-                    keyToAction = new Dictionary<Key, Action>
-                    {
-                        { Key.F, textEdit.ForwardChar },
-                        { Key.B, textEdit.BackwardChar },
-                        { Key.A, textEdit.MoveBeginningOfLine },
-                        { Key.E, textEdit.MoveEndOfLine },
-                        { Key.N, textEdit.NextLine },
-                        { Key.P, textEdit.PreviousLine },
-                        { Key.D, textEdit.DeleteChar },
-                        { Key.H, textEdit.DeleteBackwardChar },
-                        { Key.K, textEdit.KillLine },
-                        { Key.Y, textEdit.Yank },
-                   };
+                    textEdit = new MyTextEdit(() => txtInput.Text, (t) => txtInput.Text = t, () => txtInput.CaretIndex, (i) => txtInput.CaretIndex = i);
                 }
-                Action action;
-                if (keyToAction.TryGetValue(e.Key, out action))
+                if (textEdit.TryHandleKeyEvent(e))
                 {
-                    action();
                     e.Handled = true;
                 }
             }

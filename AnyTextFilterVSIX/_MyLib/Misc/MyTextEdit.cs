@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace lpubsppop01.AnyTextFilterVSIX
 {
@@ -21,6 +23,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
             this.setText = setText;
             this.getCaretIndex = getCaretIndex;
             this.setCaretIndex = setCaretIndex;
+            GetTextFromClipboard = Clipboard.GetText;
+            SetTextFromClipboard = (text) => Clipboard.SetText(text);
         }
 
         #endregion
@@ -207,6 +211,137 @@ namespace lpubsppop01.AnyTextFilterVSIX
             Text = Text.Insert(CaretIndex, textToInsert);
             CaretIndex = backupCaretIndex + textToInsert.Length;
             UpdateColumnIndex();
+        }
+
+        #endregion
+
+        #region TryHandleKeyEvent
+
+        Dictionary<Key, Action> keyToAction;
+
+        public bool TryHandleKeyEvent(KeyEventArgs e)
+        {
+            if (keyToAction == null)
+            {
+                keyToAction = new Dictionary<Key, Action>
+                {
+                    { Key.F, ForwardChar },
+                    { Key.B, BackwardChar },
+                    { Key.A, MoveBeginningOfLine },
+                    { Key.E, MoveEndOfLine },
+                    { Key.N, NextLine },
+                    { Key.P, PreviousLine },
+                    { Key.D, DeleteChar },
+                    { Key.H, DeleteBackwardChar },
+                    { Key.K, KillLine },
+                    { Key.Y, Yank },
+                };
+            }
+            Action action;
+            if (keyToAction.TryGetValue(e.Key, out action))
+            {
+                action();
+                return true;
+            }
+            return false;
+        }
+
+        #endregion
+
+        #region TryRemoveConflictKeyBindings
+
+        public static bool TryRemoveConflictKeyBindings(EnvDTE.DTE dte, out string errorMessage)
+        {
+            errorMessage = "";
+            bool success = true;
+
+            foreach (EnvDTE.Command command in dte.Commands)
+            {
+                var bindings = command.Bindings as object[];
+                if (bindings == null || !bindings.Any()) continue;
+                var bindingBuf = bindings.OfType<string>().ToList();
+                for (int iBinding = 0; iBinding < bindingBuf.Count;)
+                {
+                    var currBinding = bindingBuf[iBinding];
+                    int iColonX2 = currBinding.IndexOf("::");
+                    if (iColonX2 == -1)
+                    {
+                        ++iBinding;
+                        continue;
+                    }
+                    int iFirstKeyStart = iColonX2 + 2;
+                    int iFirstCamma = currBinding.IndexOf(",", iFirstKeyStart);
+                    int firstKeyLength = (iFirstCamma == -1) ? currBinding.Length - iFirstKeyStart : iFirstCamma - iFirstKeyStart;
+                    if (firstKeyLength <= 0)
+                    {
+                        ++iBinding;
+                        continue;
+                    }
+                    string firstKey = bindingBuf[iBinding].Substring(iFirstKeyStart, firstKeyLength);
+                    if (firstKey == "Ctrl+F" && command.Name != "Edit.EmacsCharRight")
+                    {
+                        bindingBuf.RemoveAt(iBinding);
+                    }
+                    else if (firstKey == "Ctrl+B" && command.Name != "Edit.EmacsCharLeft")
+                    {
+                        bindingBuf.RemoveAt(iBinding);
+                    }
+                    else if (firstKey == "Ctrl+A" && command.Name != "Edit.EmacsLineStart")
+                    {
+                        bindingBuf.RemoveAt(iBinding);
+                    }
+                    else if (firstKey == "Ctrl+E" && command.Name != "Edit.EmacsLineEnd")
+                    {
+                        bindingBuf.RemoveAt(iBinding);
+                    }
+                    else if (firstKey == "Ctrl+N" && command.Name != "Edit.LineDown")
+                    {
+                        bindingBuf.RemoveAt(iBinding);
+                    }
+                    else if (firstKey == "Ctrl+P" && command.Name != "Edit.LineUp")
+                    {
+                        bindingBuf.RemoveAt(iBinding);
+                    }
+                    else if (firstKey == "Ctrl+D" && command.Name != "Edit.Delete")
+                    {
+                        bindingBuf.RemoveAt(iBinding);
+                    }
+                    else if (firstKey == "Ctrl+H" && command.Name != "Edit.DeleteBackwards")
+                    {
+                        bindingBuf.RemoveAt(iBinding);
+                    }
+                    else if (firstKey == "Ctrl+K" && command.Name != "Edit.EmacsDeleteToEOL")
+                    {
+                        bindingBuf.RemoveAt(iBinding);
+                    }
+                    else if (firstKey == "Ctrl+Y" && command.Name != "Edit.Paste")
+                    {
+                        bindingBuf.RemoveAt(iBinding);
+                    }
+                    else
+                    {
+                        ++iBinding;
+                    }
+                }
+                if (bindings.Length != bindingBuf.Count)
+                {
+                    try
+                    {
+                        command.Bindings = bindingBuf.Cast<object>().ToArray();
+                    }
+                    catch
+                    {
+                        if (!string.IsNullOrEmpty(errorMessage))
+                        {
+                            errorMessage += Environment.NewLine;
+                        }
+                        errorMessage += "Failed: " + command.Name;
+                        success = false;
+                    }
+                }
+            }
+
+            return success;
         }
 
         #endregion

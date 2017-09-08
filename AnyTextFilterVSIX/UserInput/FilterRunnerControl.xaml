@@ -29,7 +29,7 @@
             <Button MinWidth="60" Margin="6,0,0,0" Click="btnNext_Click" Content="{local:NameToResourceBinding Next}"/>
             <Button MinWidth="80" Margin="12,0,0,0" Click="btnHistoryBack_Click" Content="History Back"/>
             <Button MinWidth="80" Margin="6,0,0,0" Click="btnHistoryFront_Click" Content="History Front"/>
-            <CheckBox HorizontalAlignment="Right" Margin="6,0,0,0" Name="chkUsesEmacsKeybindings" Content="{local:NameToResourceBinding UseEmacsLikeKeybindings}"/>
+            <CheckBox HorizontalAlignment="Right" Margin="6,0,0,0" Name="chkUsesEmacsKeyBindings" Content="{local:NameToResourceBinding UseEmacsLikeKeyBindings}"/>
         </DockPanel>
         <TextBox Grid.Row="1" Grid.Column="0" Name="txtInput" Text="{Binding UserInputText, UpdateSourceTrigger=PropertyChanged}"
                  AcceptsReturn="True" PreviewKeyDown="txtInput_PreviewKeyDown" TextChanged="txtInput_TextChanged"

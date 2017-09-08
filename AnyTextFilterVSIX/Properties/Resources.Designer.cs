@@ -187,6 +187,15 @@ namespace lpubsppop01.AnyTextFilterVSIX.Properties {
         }
         
         /// <summary>
+        ///   Emacs Like Key Bindings に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string EmacsLikeKeyBindings {
+            get {
+                return ResourceManager.GetString("EmacsLikeKeyBindings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Export に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Export {
@@ -358,11 +367,11 @@ namespace lpubsppop01.AnyTextFilterVSIX.Properties {
         }
         
         /// <summary>
-        ///   Use Emacs like keybindings に類似しているローカライズされた文字列を検索します。
+        ///   Use Emacs like key bindings に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string UseEmacsLikeKeybindings {
+        public static string UseEmacsLikeKeyBindings {
             get {
-                return ResourceManager.GetString("UseEmacsLikeKeybindings", resourceCulture);
+                return ResourceManager.GetString("UseEmacsLikeKeyBindings", resourceCulture);
             }
         }
         
