@@ -335,7 +335,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                         {
                             errorMessage += Environment.NewLine;
                         }
-                        errorMessage += "Failed: " + command.Name;
+                        errorMessage += "Failed: \"" + command.Name + "\", " + string.Join(", ", bindings.OfType<string>().Select(b => "\"" + b + "\""));
                         success = false;
                     }
                 }
