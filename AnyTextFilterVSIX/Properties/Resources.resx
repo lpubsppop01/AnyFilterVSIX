@@ -165,6 +165,9 @@
   <data name="Export" xml:space="preserve">
     <value>Export</value>
   </data>
+  <data name="History" xml:space="preserve">
+    <value>History</value>
+  </data>
   <data name="Import" xml:space="preserve">
     <value>Import</value>
   </data>
@@ -180,9 +183,6 @@
   <data name="Memo" xml:space="preserve">
     <value>Memo</value>
   </data>
-  <data name="Next" xml:space="preserve">
-    <value>Next</value>
-  </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
@@ -191,9 +191,6 @@
   </data>
   <data name="PassInputTextToStandardInput" xml:space="preserve">
     <value>Pass input text to standard input</value>
-  </data>
-  <data name="Previous" xml:space="preserve">
-    <value>Previous</value>
   </data>
   <data name="Remove" xml:space="preserve">
     <value>Remove</value>

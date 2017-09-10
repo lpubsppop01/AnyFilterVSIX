@@ -23,7 +23,7 @@ that passes target text to an arbitrary external program and replace the text by
 ## License
 [MIT License](https://github.com/lpubsppop01/AnyTextFilterVSIX/raw/master/LICENSE.txt)
 
-This software uses the following Nuget packages:
+This software uses the following softwares and images:
 * [Diff.Match.Patch 2.0.1](https://www.nuget.org/packages/Diff.Match.Patch/)  
   Copyright (c) 2016- pocketberserker  
   Released under the [MIT License](https://github.com/pocketberserker/Diff.Match.Patch/blob/master/LICENSE)
@@ -33,3 +33,6 @@ This software uses the following Nuget packages:
 * [Markdig 0.10.7](https://www.nuget.org/packages/Markdig/)  
   Copyright (c) 2016, Alexandre Mutel  
   Released under the [BSD-Clause 2 license](https://github.com/lunet-io/markdig/blob/master/license.txt)
+* [Modern UI Icons](http://modernuiicons.com/)  
+  Created by Austin Andrews of Templarian.com.  
+  Released under the [CC BY-ND 3.0](https://github.com/Templarian/WindowsIcons/blob/master/WindowsRT/license.txt)
