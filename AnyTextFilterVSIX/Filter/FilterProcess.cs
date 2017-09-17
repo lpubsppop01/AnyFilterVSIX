@@ -254,7 +254,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
 #if DEBUG
             dirPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), @"AnyTextFilterVSIX\Debug");
 #else
-            dirPath = Path.Combine(Path.GetTempPath(), "AnyTextFilterVSIX");
+            dirPath = Path.Combine(Path.GetTempPath(), "lpubsppop01.AnyTextFilterVSIX");
 #endif
             if (!Directory.Exists(dirPath))
             {
