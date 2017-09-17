@@ -72,6 +72,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         public void Start(Filter filter)
         {
+            if (filter == null) return;
             var wpfTextView = getWpfTextView();
             if (wpfTextView == null) return;
 

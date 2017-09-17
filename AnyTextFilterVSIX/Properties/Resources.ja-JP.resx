@@ -165,6 +165,9 @@
   <data name="Export" xml:space="preserve">
     <value>エクスポート</value>
   </data>
+  <data name="History" xml:space="preserve">
+    <value>履歴</value>
+  </data>
   <data name="Import" xml:space="preserve">
     <value>インポート</value>
   </data>
@@ -180,9 +183,6 @@
   <data name="Memo" xml:space="preserve">
     <value>メモ</value>
   </data>
-  <data name="Next" xml:space="preserve">
-    <value>次へ</value>
-  </data>
   <data name="OK" xml:space="preserve">
     <value>OK</value>
   </data>
@@ -191,9 +191,6 @@
   </data>
   <data name="PassInputTextToStandardInput" xml:space="preserve">
     <value>入力テキストを標準入力に渡す</value>
-  </data>
-  <data name="Previous" xml:space="preserve">
-    <value>前へ</value>
   </data>
   <data name="Remove" xml:space="preserve">
     <value>削除</value>

@@ -300,6 +300,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         void MoveToNextPreviousDifference(bool toPrev)
         {
+            if (currPara == null) return;
             var currTag = currPara.Tag as UserInputPreviewDocument.LineTag;
             if (currTag == null) return;
 
