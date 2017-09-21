@@ -110,7 +110,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             if (e.Key == Key.Enter && !Keyboard.Modifiers.HasFlag(ModifierKeys.Shift))
             {
                 e.Handled = true;
-                if (FilterRunner == null) return;
+                if (FilterRunner == null || FilterRunner.IsRunning) return;
                 FilterRunner.ApplyLastResult();
                 OnApplied();
             }

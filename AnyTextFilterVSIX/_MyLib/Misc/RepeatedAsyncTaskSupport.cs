@@ -1,13 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace lpubsppop01.AnyTextFilterVSIX
 {
-    sealed class RepeatedAsyncTaskSupport
+    sealed class RepeatedAsyncTaskSupport : INotifyPropertyChanged
     {
+        #region Properties
+
+        bool m_IsRunning;
+        public bool IsRunning
+        {
+            get { return m_IsRunning; }
+            set { m_IsRunning = value; OnPropertyChanged(); }
+        }
+
+        #endregion
+
         #region Events
 
         public event EventHandler CancelRequested;
@@ -25,14 +38,13 @@ namespace lpubsppop01.AnyTextFilterVSIX
         #region Actions
 
         object myLock = new object();
-        bool isRunning;
         bool rerunsAfterCurr;
 
         public bool TryStart()
         {
             lock (myLock)
             {
-                if (isRunning)
+                if (IsRunning)
                 {
                     if (!rerunsAfterCurr)
                     {
@@ -41,7 +53,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                     }
                     return false;
                 }
-                isRunning = true;
+                IsRunning = true;
                 rerunsAfterCurr = false;
             }
             return true;
@@ -64,8 +76,19 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             lock (myLock)
             {
-                isRunning = false;
+                IsRunning = false;
             }
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

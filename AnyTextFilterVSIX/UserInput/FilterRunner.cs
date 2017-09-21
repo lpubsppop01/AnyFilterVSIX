@@ -104,6 +104,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             // Start watching
             IsRunning = true;
             PropertyChanged += this_PropertyChanged;
+            taskSupport.PropertyChanged += taskSupport_PropertyChanged;
         }
 
         void UpdateTargetSpans(Filter filter, IWpfTextView wpfTextView, out SnapshotSpan? spanToVisible)
@@ -144,6 +145,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             // Stop watching
             PropertyChanged -= this_PropertyChanged;
+            taskSupport.PropertyChanged -= taskSupport_PropertyChanged;
             IsRunning = false;
 
             // Save settings
@@ -163,6 +165,12 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             if (e.PropertyName != "UserInputText" && e.PropertyName != "ShowsDifference") return;
             TryStartFilteringTask();
+        }
+
+        void taskSupport_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != "IsRunning") return;
+            IsRunning = taskSupport.IsRunning;
         }
 
         void TryStartFilteringTask()

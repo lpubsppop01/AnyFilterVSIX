@@ -249,6 +249,7 @@
     <Compile Include="UserInput\UserInputPreviewDocument.cs" />
     <Compile Include="UserInput\FilterRunnerWindowPane.cs" />
     <Compile Include="_MyLib\Controls\XamlImageButton.cs" />
+    <Compile Include="_MyLib\Converters\BooleanToInvertedConverter.cs" />
     <Compile Include="_MyLib\Converters\EnumToStringConverter.cs" />
     <Compile Include="_MyLib\Converters\NameToMyEncodingInfoConverter.cs" />
     <Compile Include="_MyLib\Converters\DoubleToMultipliedConverter.cs" />

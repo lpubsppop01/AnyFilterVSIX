@@ -36,7 +36,8 @@
             <local:XamlImageButton Width="22" Margin="3,0,0,0" Click="btnHistoryFront_Click"
                                    ImageSource="pack://application:,,,/lpubsppop01.AnyTextFilterVSIX;component/_Icons/appbar.chevron.down.xaml"/>
             <Button DockPanel.Dock="Right" Margin="6,0,0,0" MinWidth="70"
-                    Name="btnApply" IsDefault="True" Click="btnApply_Click" Content="{local:NameToResourceBinding Apply}"/>
+                    Name="btnApply" IsDefault="True" IsEnabled="{local:BooleanToInvertedBinding IsRunning}"
+                    Click="btnApply_Click" Content="{local:NameToResourceBinding Apply}"/>
             <CheckBox DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="6,0,0,0"
                       Name="chkUsesEmacsKeyBindings" Content="{local:NameToResourceBinding UseEmacsLikeKeyBindings}"/>
         </DockPanel>
