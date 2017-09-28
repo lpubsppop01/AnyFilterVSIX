@@ -30,8 +30,8 @@
             <local:XamlImageButton Width="22" Margin="3,0,0,0" Click="btnNext_Click"
                                    IsEnabled="{Binding ShowsDifference}"
                                    ImageSource="pack://application:,,,/lpubsppop01.AnyTextFilterVSIX;component/_Icons/appbar.chevron.down.xaml"/>
-            <TextBlock Margin="12,0,0,0" Text="{local:NameToResourceBinding History}"/>
-            <local:XamlImageButton Width="22" Margin="6,0,0,0" Click="btnHistoryBack_Click"
+            <Button MinWidth="55" Margin="12,0,0,0" Content="{local:NameToResourceBinding History}" Click="btnHistory_Click"/>
+            <local:XamlImageButton Width="22" Margin="3,0,0,0" Click="btnHistoryBack_Click"
                                    ImageSource="pack://application:,,,/lpubsppop01.AnyTextFilterVSIX;component/_Icons/appbar.chevron.up.xaml"/>
             <local:XamlImageButton Width="22" Margin="3,0,0,0" Click="btnHistoryFront_Click"
                                    ImageSource="pack://application:,,,/lpubsppop01.AnyTextFilterVSIX;component/_Icons/appbar.chevron.down.xaml"/>

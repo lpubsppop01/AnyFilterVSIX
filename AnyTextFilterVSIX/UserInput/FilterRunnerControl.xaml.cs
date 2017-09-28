@@ -131,6 +131,25 @@ namespace lpubsppop01.AnyTextFilterVSIX
             MoveToNextPreviousDifference(toPrev: true);
         }
 
+        void btnHistory_Click(object sender, RoutedEventArgs e)
+        {
+            var items = AnyTextFilterSettings.Current.History.Select(h =>
+            {
+                var filter = AnyTextFilterSettings.Current.Filters.FirstOrDefault(f => f.ID == h.FilterID);
+                return new FilterHistoryWindowListItem
+                {
+                    FilterTitle = (filter != null) ? filter.Title : "Removed",
+                    UserInputText = h.UserInputText
+                };
+            }).ToArray();
+            var dialog = new FilterHistoryListWindow
+            {
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                ItemsSource = new System.Collections.ObjectModel.ObservableCollection<FilterHistoryWindowListItem>(items)
+            };
+            dialog.ShowDialog();
+        }
+
         void btnHistoryBack_Click(object sender, RoutedEventArgs e)
         {
             if (FilterRunner == null || !AnyTextFilterSettings.Current.History.Any()) return;
