@@ -209,6 +209,43 @@ namespace lpubsppop01.AnyTextFilterVSIX
                     (itemPath) => FilterHistoryItem.Load(adapter, itemPath)));
         }
 
+        public static bool RepairCurrent()
+        {
+            bool modified = false;
+
+            // Set new ID to filters that have empty ID
+            foreach (var filter in Current.Filters)
+            {
+                if (filter.ID == Guid.Empty)
+                {
+                    filter.ID = Guid.NewGuid();
+                    modified = true;
+                }
+            }
+
+            // Remove histories that have empty or invalid ID
+            var invalidHistoryItems = new List<FilterHistoryItem>();
+            foreach (var history in Current.History)
+            {
+                if (history.FilterID == Guid.Empty || Current.Filters.All(f => f.ID != history.FilterID))
+                {
+                    invalidHistoryItems.Add(history);
+                }
+            }
+            if (invalidHistoryItems.Any())
+            {
+                while (invalidHistoryItems.Any())
+                {
+                    var history = invalidHistoryItems.First();
+                    invalidHistoryItems.RemoveAt(0);
+                    Current.History.Remove(history);
+                }
+                modified = true;
+            }
+
+            return modified;
+        }
+
         #endregion
     }
 }

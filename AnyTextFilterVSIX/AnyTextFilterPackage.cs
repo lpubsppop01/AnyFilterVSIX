@@ -75,6 +75,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 };
                 if (dialog.ShowDialog() ?? false)
                 {
+                    if (AnyTextFilterSettings.RepairCurrent()) MessageBox.Show("Invalid settings were repaired.");
                     AnyTextFilterSettings.SaveCurrent();
                     menuItem.Text = Properties.Resources.AnyTextFilterSettings_;
                     UpdateRunFilterMenuItems();
