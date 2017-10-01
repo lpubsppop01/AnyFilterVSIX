@@ -73,6 +73,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             {
                 AnyTextFilterSettings.Current.EndEdit();
             }
+            LoadHistory();
         }
 
         public void IncrementIndex()
