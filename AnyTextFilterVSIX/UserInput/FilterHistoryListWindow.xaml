@@ -1,43 +1,42 @@
 ﻿<Window x:Class="lpubsppop01.AnyTextFilterVSIX.FilterHistoryListWindow"
+        x:ClassModifier="internal"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:lpubsppop01.AnyTextFilterVSIX"
         mc:Ignorable="d"
-        Title="FilterHistoryWindow" Height="315" Width="600">
+        Title="Filter History" Height="320" Width="600">
     <Window.Resources>
-        <x:Array x:Key="sampleHistory" Type="{x:Type local:FilterHistoryWindowListItem}">
-            <local:FilterHistoryWindowListItem FilterTitle="01. Title" UserInputText="UserInput"/>
-            <local:FilterHistoryWindowListItem FilterTitle="02. Title" UserInputText="UserInput"/>
-            <local:FilterHistoryWindowListItem FilterTitle="03. Title" UserInputText="UserInput"/>
-            <local:FilterHistoryWindowListItem FilterTitle="04. Title" UserInputText="UserInput"/>
-            <local:FilterHistoryWindowListItem FilterTitle="05. Title" UserInputText="UserInput"/>
-            <local:FilterHistoryWindowListItem FilterTitle="06. Title" UserInputText="UserInput"/>
-            <local:FilterHistoryWindowListItem FilterTitle="07. Title" UserInputText="UserInput"/>
-            <local:FilterHistoryWindowListItem FilterTitle="08. Title" UserInputText="UserInput"/>
-            <local:FilterHistoryWindowListItem FilterTitle="09. Title" UserInputText="UserInput"/>
-            <local:FilterHistoryWindowListItem FilterTitle="10. Title" UserInputText="UserInput"/>
+        <x:Array x:Key="sampleHistory" Type="{x:Type local:FilterHistoryListWindowItem}">
+            <local:FilterHistoryListWindowItem FilterTitle="01. Title" UserInputText="UserInput"/>
+            <local:FilterHistoryListWindowItem FilterTitle="02. Title" UserInputText="UserInput"/>
+            <local:FilterHistoryListWindowItem FilterTitle="03. Title" UserInputText="UserInput"/>
+            <local:FilterHistoryListWindowItem FilterTitle="04. Title" UserInputText="UserInput"/>
+            <local:FilterHistoryListWindowItem FilterTitle="05. Title" UserInputText="UserInput"/>
+            <local:FilterHistoryListWindowItem FilterTitle="06. Title" UserInputText="UserInput"/>
+            <local:FilterHistoryListWindowItem FilterTitle="07. Title" UserInputText="UserInput"/>
+            <local:FilterHistoryListWindowItem FilterTitle="08. Title" UserInputText="UserInput"/>
+            <local:FilterHistoryListWindowItem FilterTitle="09. Title" UserInputText="UserInput"/>
+            <local:FilterHistoryListWindowItem FilterTitle="10. Title" UserInputText="UserInput"/>
         </x:Array>
     </Window.Resources>
-    <Grid Margin="3">
-        <ListBox Name="lstHistory" ItemsSource="{StaticResource sampleHistory}" HorizontalContentAlignment="Stretch" Margin="3">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" Background="LightGray" Width="60" CornerRadius="3" Padding="3">
-                            <TextBlock Text="{Binding FilterTitle}"
-                                       HorizontalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                        </Border>
-                        <TextBlock Grid.Column="1" Text="{Binding UserInputText}"
-                                   VerticalAlignment="Center" Margin="10,0,0,0" TextTrimming="CharacterEllipsis"/>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+    <Grid Margin="6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ListView Grid.Row="0" Name="lstHistory" ItemsSource="{StaticResource sampleHistory}" HorizontalContentAlignment="Stretch"
+                  MouseDoubleClick="lstHistory_MouseDoubleClick">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding FilterTitle}" Header="Filter"/>
+                    <GridViewColumn DisplayMemberBinding="{Binding UserInputText}" Header="User Input"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft" Margin="0,6,0,0">
+            <Button Name="btnClose" IsCancel="True" Click="btnClose_Click" Width="70" Content="{local:NameToResourceBinding Close}"/>
+        </StackPanel>
     </Grid>
 </Window>

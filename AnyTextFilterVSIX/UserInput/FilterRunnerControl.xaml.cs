@@ -133,21 +133,27 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         void btnHistory_Click(object sender, RoutedEventArgs e)
         {
-            var items = AnyTextFilterSettings.Current.History.Select(h =>
+            var items = AnyTextFilterSettings.Current.History.Select((h, i) =>
             {
                 var filter = AnyTextFilterSettings.Current.Filters.FirstOrDefault(f => f.ID == h.FilterID);
-                return new FilterHistoryWindowListItem
+                return new FilterHistoryListWindowItem
                 {
                     FilterTitle = (filter != null) ? filter.Title : "Removed",
-                    UserInputText = h.UserInputText
+                    UserInputText = h.UserInputText,
+                    SourceIndex = i
                 };
             }).ToArray();
+            var selectedValue = historyManager.CurrentIndex < items.Length ? items[historyManager.CurrentIndex] : null;
             var dialog = new FilterHistoryListWindow
             {
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                ItemsSource = new System.Collections.ObjectModel.ObservableCollection<FilterHistoryWindowListItem>(items)
+                ItemsSource = new System.Collections.ObjectModel.ObservableCollection<FilterHistoryListWindowItem>(items),
+                SelectedValue = selectedValue
             };
-            dialog.ShowDialog();
+            if ((dialog.ShowDialog() ?? false) && dialog.SelectedValue != null)
+            {
+                historyManager.CurrentIndex = dialog.SelectedValue.SourceIndex;
+            }
         }
 
         void btnHistoryBack_Click(object sender, RoutedEventArgs e)

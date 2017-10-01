@@ -20,7 +20,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
     /// <summary>
     /// Interaction logic for FilterHistoryListWindow.xaml
     /// </summary>
-    public partial class FilterHistoryListWindow : Window
+    partial class FilterHistoryListWindow : Window
     {
         #region Constructor
 
@@ -33,16 +33,37 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         #region Properties
 
-        public ObservableCollection<FilterHistoryWindowListItem> ItemsSource
+        public ObservableCollection<FilterHistoryListWindowItem> ItemsSource
         {
-            get { return lstHistory.ItemsSource as ObservableCollection<FilterHistoryWindowListItem>; }
+            get { return lstHistory.ItemsSource as ObservableCollection<FilterHistoryListWindowItem>; }
             set { lstHistory.ItemsSource = value; }
+        }
+
+        public FilterHistoryListWindowItem SelectedValue
+        {
+            get { return lstHistory.SelectedValue as FilterHistoryListWindowItem; }
+            set { lstHistory.SelectedValue = value; }
+        }
+
+        #endregion
+
+        #region Event Handlers
+
+        void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        void lstHistory_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            DialogResult = true;
+            Close();
         }
 
         #endregion
     }
 
-    public class FilterHistoryWindowListItem : INotifyPropertyChanged
+    class FilterHistoryListWindowItem : INotifyPropertyChanged
     {
         #region Properties
 
@@ -58,6 +79,13 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             get { return m_UserInputText; }
             set { m_UserInputText = value; OnPropertyChanged(); }
+        }
+
+        int m_SourceIndex;
+        public int SourceIndex
+        {
+            get { return m_SourceIndex; }
+            set { m_SourceIndex = value; OnPropertyChanged(); }
         }
 
         #endregion
