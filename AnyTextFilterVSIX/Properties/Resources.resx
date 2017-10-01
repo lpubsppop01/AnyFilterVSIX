@@ -150,6 +150,9 @@
   <data name="CaretPosition" xml:space="preserve">
     <value>Caret Position (0-Length)</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
   <data name="Command" xml:space="preserve">
     <value>Command</value>
   </data>

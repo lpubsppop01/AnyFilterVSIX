@@ -5,7 +5,7 @@
         Title="{local:NameToResourceBinding AboutThisSoftware}" Height="600" Width="900">
     <DockPanel Margin="6">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,6,0,0">
-            <Button Name="btnOK" Click="btnOK_Click" IsDefault="True" IsCancel="True" Width="70" Content="{local:NameToResourceBinding OK}"/>
+            <Button Name="btnClose" Click="btnClose_Click" IsDefault="True" IsCancel="True" Width="70" Content="{local:NameToResourceBinding Close}"/>
         </StackPanel>
         <WebBrowser Name="ctrlMain"/>
     </DockPanel>

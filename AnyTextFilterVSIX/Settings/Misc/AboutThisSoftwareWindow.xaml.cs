@@ -62,7 +62,7 @@ body {{ font-family: sans-serif; }}
 
         #region Event Handlers
 
-        void btnOK_Click(object sender, RoutedEventArgs e)
+        void btnClose_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }

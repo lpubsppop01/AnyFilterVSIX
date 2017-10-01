@@ -150,6 +150,9 @@
   <data name="CaretPosition" xml:space="preserve">
     <value>キャレット位置（長さ 0）</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>閉じる</value>
+  </data>
   <data name="Command" xml:space="preserve">
     <value>コマンド</value>
   </data>
