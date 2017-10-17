@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.Shell;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -147,7 +148,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             var dialog = new FilterHistoryListWindow
             {
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                ItemsSource = new System.Collections.ObjectModel.ObservableCollection<FilterHistoryListWindowItem>(items),
+                ItemsSource = new ObservableCollection<FilterHistoryListWindowItem>(items),
                 SelectedValue = selectedValue
             };
             if ((dialog.ShowDialog() ?? false) && dialog.SelectedValue != null)
@@ -178,7 +179,11 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             if (e.PropertyName != "CurrentItem") return;
             var currHistoryItem = historyManager.CurrentItem;
-            if (currHistoryItem == null) return;
+            if (currHistoryItem == null)
+            {
+                MessageBox.Show("historyManager.CurrentItem is null.", "Error");
+                return;
+            }
             BeginEdit();
             try
             {
@@ -189,6 +194,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 }
                 else
                 {
+                    MessageBox.Show("currHistoryItem.FilterID is empty." + Environment.NewLine + "Update of settings may repair this.", "Error");
                     FilterRunner.UserInputText = "";
                 }
             }
