@@ -42,6 +42,11 @@ namespace lpubsppop01.AnyTextFilterVSIX
             }
         }
 
+        public bool CurrentItemIsDummy
+        {
+            get { return CurrentIndex >= AnyTextFilterSettings.Current.History.Count; }
+        }
+
         #endregion
 
         #region Methods
@@ -63,9 +68,10 @@ namespace lpubsppop01.AnyTextFilterVSIX
             {
                 AnyTextFilterSettings.LoadCurrentHistory();
                 AnyTextFilterSettings.Current.History.Add(newItem);
-                while (AnyTextFilterSettings.Current.History.Count > AnyTextFilterSettings.HistoryCountMax)
+                while (AnyTextFilterSettings.Current.History.Count(h => !h.IsPinned) > AnyTextFilterSettings.HistoryUnpinnedCountMax)
                 {
-                    AnyTextFilterSettings.Current.History.RemoveAt(0);
+                    var iFirstUnpinned = AnyTextFilterSettings.Current.History.Select((v, i) => new { v, i }).First(i => !i.v.IsPinned).i;
+                    AnyTextFilterSettings.Current.History.RemoveAt(iFirstUnpinned);
                 }
                 AnyTextFilterSettings.SaveCurrentHistory();
             }

@@ -49,6 +49,13 @@ namespace lpubsppop01.AnyTextFilterVSIX
             set { m_UserInputText = value; OnPropertyChanged(); }
         }
 
+        bool m_IsPinned;
+        public bool IsPinned
+        {
+            get { return m_IsPinned; }
+            set { m_IsPinned = value; OnPropertyChanged(); }
+        }
+
         #endregion
 
         #region Serialization
@@ -57,6 +64,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
         {
             settingsStore.SetGuid(collectionPath, "FilterID", FilterID);
             settingsStore.SetString(collectionPath, "UserInputText", UserInputText);
+            settingsStore.SetBoolean(collectionPath, "IsPinned", IsPinned);
         }
 
         public static FilterHistoryItem Load(ISettingsStoreAdapter settingsStore, string collectionPath)
@@ -64,7 +72,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
             return new FilterHistoryItem
             {
                 FilterID = settingsStore.GetGuid(collectionPath, "FilterID", Guid.Empty),
-                UserInputText = settingsStore.GetString(collectionPath, "UserInputText", "")
+                UserInputText = settingsStore.GetString(collectionPath, "UserInputText", ""),
+                IsPinned = settingsStore.GetBoolean(collectionPath, "IsPinned", false)
             };
         }
 
@@ -90,10 +99,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

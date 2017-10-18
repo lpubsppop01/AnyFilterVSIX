@@ -81,6 +81,13 @@ namespace lpubsppop01.AnyTextFilterVSIX
             set { m_UserInputText = value; OnPropertyChanged(); }
         }
 
+        bool m_IsPinned;
+        public bool IsPinned
+        {
+            get { return m_IsPinned; }
+            set { m_IsPinned = value; OnPropertyChanged(); }
+        }
+
         int m_SourceIndex;
         public int SourceIndex
         {

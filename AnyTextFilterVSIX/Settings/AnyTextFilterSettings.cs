@@ -150,7 +150,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         public static AnyTextFilterSettings Current { get; private set; }
 
-        public static readonly int HistoryCountMax = 10;
+        public static readonly int HistoryUnpinnedCountMax = 10;
 
         static AnyTextFilterSettings()
         {

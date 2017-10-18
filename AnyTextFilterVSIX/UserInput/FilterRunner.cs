@@ -18,7 +18,6 @@ namespace lpubsppop01.AnyTextFilterVSIX
         public FilterRunner(Func<IWpfTextView> getWpfTextView)
         {
             this.getWpfTextView = getWpfTextView;
-            UserInputText = "";
         }
 
         #endregion
@@ -32,7 +31,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             set { hasUserInputVariables = value; OnPropertyChanged(); }
         }
 
-        string userInputText;
+        string userInputText = "";
         public string UserInputText
         {
             get { return userInputText; }
@@ -59,6 +58,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
             get { return m_IsRunning; }
             private set { m_IsRunning = value; OnPropertyChanged(); }
         }
+
+        public FilterHistoryManager HistoryManager { get; private set; } = new FilterHistoryManager();
 
         #endregion
 
@@ -228,8 +229,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             }
             textEdit.Apply();
 
-            var historyManager = new FilterHistoryManager();
-            historyManager.AddHistoryItem(new FilterHistoryItem
+            HistoryManager.AddHistoryItem(new FilterHistoryItem
             {
                 FilterID = filter.ID,
                 UserInputText = UserInputText

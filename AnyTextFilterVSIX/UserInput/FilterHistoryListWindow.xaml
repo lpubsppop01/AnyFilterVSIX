@@ -9,7 +9,7 @@
         Title="Filter History" Height="320" Width="600">
     <Window.Resources>
         <x:Array x:Key="sampleHistory" Type="{x:Type local:FilterHistoryListWindowItem}">
-            <local:FilterHistoryListWindowItem FilterTitle="01. Title" UserInputText="UserInput"/>
+            <local:FilterHistoryListWindowItem FilterTitle="01. Title" UserInputText="UserInput" IsPinned="True"/>
             <local:FilterHistoryListWindowItem FilterTitle="02. Title" UserInputText="UserInput"/>
             <local:FilterHistoryListWindowItem FilterTitle="03. Title" UserInputText="UserInput"/>
             <local:FilterHistoryListWindowItem FilterTitle="04. Title" UserInputText="UserInput"/>
@@ -32,6 +32,14 @@
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding FilterTitle}" Header="Filter"/>
                     <GridViewColumn DisplayMemberBinding="{Binding UserInputText}" Header="User Input"/>
+                    <GridViewColumn Header="Pinned">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox IsChecked="{Binding IsPinned}"
+                                          HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
