@@ -67,19 +67,42 @@ namespace lpubsppop01.AnyTextFilterVSIX
             try
             {
                 AnyTextFilterSettings.LoadCurrentHistory();
-                AnyTextFilterSettings.Current.History.Add(newItem);
-                while (AnyTextFilterSettings.Current.History.Count(h => !h.IsPinned) > AnyTextFilterSettings.HistoryUnpinnedCountMax)
+                if (AddHistoryItemCore(newItem))
                 {
-                    var iFirstUnpinned = AnyTextFilterSettings.Current.History.Select((v, i) => new { v, i }).First(i => !i.v.IsPinned).i;
-                    AnyTextFilterSettings.Current.History.RemoveAt(iFirstUnpinned);
+                    AnyTextFilterSettings.SaveCurrentHistory();
                 }
-                AnyTextFilterSettings.SaveCurrentHistory();
             }
             finally
             {
                 AnyTextFilterSettings.Current.EndEdit();
             }
             LoadHistory();
+        }
+
+        bool AddHistoryItemCore(FilterHistoryItem newItem)
+        {
+            // Do nothing if matdhed to last history item 
+            if (AnyTextFilterSettings.Current.History.Any() && AnyTextFilterSettings.Current.History.Last().Equals(newItem)) return false;
+
+            // Move to last if matched to pinned history item
+            var pinnedCopyItem = newItem.Clone();
+            pinnedCopyItem.IsPinned = true;
+            var pinnedMatchedItem = AnyTextFilterSettings.Current.History.FirstOrDefault(h => h.Equals(pinnedCopyItem));
+            if (pinnedMatchedItem != null)
+            {
+                AnyTextFilterSettings.Current.History.Remove(pinnedMatchedItem);
+                AnyTextFilterSettings.Current.History.Add(pinnedMatchedItem);
+                return true;
+            }
+
+            // Add to last
+            AnyTextFilterSettings.Current.History.Add(newItem);
+            while (AnyTextFilterSettings.Current.History.Count(h => !h.IsPinned) > AnyTextFilterSettings.HistoryUnpinnedCountMax)
+            {
+                var iFirstUnpinned = AnyTextFilterSettings.Current.History.Select((v, i) => new { v, i }).First(i => !i.v.IsPinned).i;
+                AnyTextFilterSettings.Current.History.RemoveAt(iFirstUnpinned);
+            }
+            return true;
         }
 
         public void IncrementIndex()

@@ -58,6 +58,22 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         #endregion
 
+        #region Overrides
+
+        public override bool Equals(object obj)
+        {
+            var another = obj as FilterHistoryItem;
+            if (another == null) return false;
+            if (FilterID != another.FilterID) return false;
+            if (UserInputText != another.UserInputText) return false;
+            if (IsPinned != another.IsPinned) return false;
+            return true;
+        }
+
+        public override int GetHashCode() => Tuple.Create(FilterID, UserInputText, IsPinned).GetHashCode();
+
+        #endregion
+
         #region Serialization
 
         public void Save(ISettingsStoreAdapter settingsStore, string collectionPath)

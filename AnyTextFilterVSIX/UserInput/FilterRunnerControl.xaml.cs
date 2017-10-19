@@ -150,7 +150,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                     IsPinned = h.IsPinned,
                     SourceIndex = i
                 };
-            }).ToArray();
+            }).Reverse().ToArray();
             var selectedValue = FilterRunner.HistoryManager.CurrentIndex < listItems.Length ? listItems[FilterRunner.HistoryManager.CurrentIndex] : null;
 
             // Show dialog
