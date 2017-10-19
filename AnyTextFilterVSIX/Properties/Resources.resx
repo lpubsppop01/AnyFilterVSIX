@@ -159,9 +159,6 @@
   <data name="CurrentLine" xml:space="preserve">
     <value>Current Line</value>
   </data>
-  <data name="Diff" xml:space="preserve">
-    <value>Diff</value>
-  </data>
   <data name="EmacsLikeKeyBindings" xml:space="preserve">
     <value>Emacs Like Key Bindings</value>
   </data>
@@ -209,6 +206,9 @@
   </data>
   <data name="Settings_TemplateFilePathHint" xml:space="preserve">
     <value>$(InputText), $(UserInput) is available in template file content.</value>
+  </data>
+  <data name="ShowDiff" xml:space="preserve">
+    <value>Show Diff</value>
   </data>
   <data name="TargetSpanForNoSelection" xml:space="preserve">
     <value>Target Span for No Selection</value>

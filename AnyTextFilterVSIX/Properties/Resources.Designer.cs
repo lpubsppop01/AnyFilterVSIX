@@ -187,15 +187,6 @@ namespace lpubsppop01.AnyTextFilterVSIX.Properties {
         }
         
         /// <summary>
-        ///   Diff に類似しているローカライズされた文字列を検索します。
-        /// </summary>
-        public static string Diff {
-            get {
-                return ResourceManager.GetString("Diff", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Emacs Like Key Bindings に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string EmacsLikeKeyBindings {
@@ -336,6 +327,15 @@ namespace lpubsppop01.AnyTextFilterVSIX.Properties {
         public static string Settings_TemplateFilePathHint {
             get {
                 return ResourceManager.GetString("Settings_TemplateFilePathHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Show Diff に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ShowDiff {
+            get {
+                return ResourceManager.GetString("ShowDiff", resourceCulture);
             }
         }
         

@@ -23,7 +23,7 @@
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" Margin="0,0,0,6">
             <ComboBox MinWidth="100" Name="cmbFilter"/>
-            <CheckBox Margin="12,0,0,0" IsChecked="{Binding ShowsDifference}" Content="{local:NameToResourceBinding Diff}"/>
+            <CheckBox Margin="12,0,0,0" IsChecked="{Binding ShowsDifference}" Content="{local:NameToResourceBinding ShowDiff}"/>
             <local:XamlImageButton Width="22" Margin="3,0,0,0" Click="btnPrevious_Click"
                                    IsEnabled="{Binding ShowsDifference}"
                                    ImageSource="pack://application:,,,/lpubsppop01.AnyTextFilterVSIX;component/_Icons/appbar.chevron.up.xaml"/>
