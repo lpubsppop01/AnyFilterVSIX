@@ -37,21 +37,11 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         #endregion
 
-        #region Event
-
-        public event TextChangedEventHandler TextChanged;
-
-        protected void OnTextChanged(TextChangedEventArgs e)
-        {
-            TextChanged?.Invoke(this, e);
-        }
-
-        #endregion
-
         #region Event Handlers
 
         void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (Dictionary == null) return;
             string word = WordPicker.GetWord(TextBox.Text, TextBox.CaretIndex);
             int iWordStart = TextBox.Text.LastIndexOf(word, TextBox.CaretIndex);
             lstWords.ItemsSource = Dictionary.GetWords(word);
@@ -61,7 +51,6 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 var rect = TextBox.GetRectFromCharacterIndex(iWordStart);
                 Popup.HorizontalOffset = rect.X;
             }
-            OnTextChanged(e);
         }
 
         void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)

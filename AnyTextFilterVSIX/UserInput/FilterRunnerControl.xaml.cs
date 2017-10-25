@@ -67,6 +67,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 var newValue = FilterRunner;
                 if (newValue != null)
                 {
+                    UpdateAutoCompleteDictionary();
                     newValue.PropertyChanged += FilterRunner_PropertyChanged;
                     newValue.HistoryManager.PropertyChanged += HistoryManager_PropertyChanged;
                 }
@@ -99,7 +100,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         void this_Loaded(object sender, RoutedEventArgs e)
         {
-            Keyboard.Focus(txtInput);
+            Keyboard.Focus(txtInput.TextBox);
         }
 
         void AnyTextFilterSettings_Current_Loaded(object sender, EventArgs e)
@@ -137,9 +138,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
         void txtInput_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             if (FilterRunner == null) return;
-
-            txtInput.Dictionary = new NGramDictionary(2);
-            txtInput.Dictionary.AddDocument(Guid.NewGuid(), "", FilterRunner.ViewText);
+            UpdateAutoCompleteDictionary();
         }
 
         void btnNext_Click(object sender, RoutedEventArgs e)
@@ -356,8 +355,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
             var fontSizeConverter = new FontSizeConverter();
             double fontSizePx = (double)fontSizeConverter.ConvertFromString(string.Format("{0}pt", fontSizePt));
 
-            txtInput.FontFamily = new FontFamily(fontName);
-            txtInput.FontSize = fontSizePx;
+            txtInput.TextBox.FontFamily = new FontFamily(fontName);
+            txtInput.TextBox.FontSize = fontSizePx;
             txtInputHint.FontFamily = new FontFamily(fontName);
             txtInputHint.FontSize = fontSizePx;
             txtPreview.FontFamily = new FontFamily(fontName);
@@ -437,6 +436,16 @@ namespace lpubsppop01.AnyTextFilterVSIX
             if (currTag == null) return;
             if (FilterRunner == null) return;
             FilterRunner.EnsureMainViewLineVisible(currTag.LineIndex);
+        }
+
+        #endregion
+
+        #region Auto Complete Dictionary Update
+
+        void UpdateAutoCompleteDictionary()
+        {
+            txtInput.Dictionary = new NGramDictionary(2);
+            txtInput.Dictionary.AddDocument(Guid.NewGuid(), "", FilterRunner.ViewText);
         }
 
         #endregion
