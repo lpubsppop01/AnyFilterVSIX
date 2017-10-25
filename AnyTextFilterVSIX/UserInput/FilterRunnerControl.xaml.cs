@@ -277,7 +277,15 @@ namespace lpubsppop01.AnyTextFilterVSIX
         MyTextEdit textEdit;
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
-        {
+       {
+            if (txtInput.Popup.IsOpen)
+            {
+                if (txtInput.TryHandleKeyEvent(e))
+                {
+                    e.Handled = true;
+                    return;
+                }
+            }
             if (AnyTextFilterSettings.Current.UsesEmacsLikeKeybindings && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 if (textEdit == null)
@@ -288,6 +296,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 if (textEdit.TryHandleKeyEvent(e))
                 {
                     e.Handled = true;
+                    return;
                 }
             }
             base.OnPreviewKeyDown(e);

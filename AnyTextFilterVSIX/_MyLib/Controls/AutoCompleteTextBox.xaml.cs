@@ -33,6 +33,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
         #region Properties
 
         public NGramDictionary Dictionary { get; set; }
+        public bool HandlesPreviewKeyDownEvent { get; set; }
 
         #endregion
 
@@ -54,98 +55,121 @@ namespace lpubsppop01.AnyTextFilterVSIX
             string word = WordPicker.GetWord(TextBox.Text, TextBox.CaretIndex);
             int iWordStart = TextBox.Text.LastIndexOf(word, TextBox.CaretIndex);
             lstWords.ItemsSource = Dictionary.GetWords(word);
-            popup.IsOpen = (lstWords.ItemsSource as IEnumerable<string>).Any();
+            Popup.IsOpen = (lstWords.ItemsSource as IEnumerable<string>).Any();
             if (iWordStart >= 0)
             {
                 var rect = TextBox.GetRectFromCharacterIndex(iWordStart);
-                popup.HorizontalOffset = rect.X;
+                Popup.HorizontalOffset = rect.X;
             }
             OnTextChanged(e);
         }
 
         void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            TextBox.TextChanged -= TextBox_TextChanged;
-            try
-            {
-                if (e.Key == Key.Escape)
-                {
-                    popup.IsOpen = false;
-                    TextBox.Focus();
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.Down)
-                {
-                    if (!lstWords.IsFocused)
-                    {
-                        lstWords.Focus();
-                        lstWords.SelectedIndex = 0;
-                    }
-                    else
-                    {
-                        var words = lstWords.ItemsSource as IEnumerable<string>;
-                        lstWords.SelectedIndex = (lstWords.SelectedIndex < words.Count() - 1) ? lstWords.SelectedIndex + 1 : 0;
-                    }
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.Up)
-                {
-                    if (!lstWords.IsFocused)
-                    {
-                        lstWords.Focus();
-                        var words = lstWords.ItemsSource as IEnumerable<string>;
-                        lstWords.SelectedIndex = words.Count() - 1;
-                    }
-                    else
-                    {
-                        var words = lstWords.ItemsSource as IEnumerable<string>;
-                        lstWords.SelectedIndex = (lstWords.SelectedIndex > 0) ? lstWords.SelectedIndex - 1 : words.Count() - 1;
-                    }
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.Tab)
-                {
-                    if (!lstWords.IsFocused)
-                    {
-                        lstWords.Focus();
-                        lstWords.SelectedIndex = 0;
-                        e.Handled = true;
-                    }
-                }
-            }
-            finally
-            {
-                TextBox.TextChanged += TextBox_TextChanged;
-            }
+            if (!HandlesPreviewKeyDownEvent) return;
+            e.Handled = TryHandleKeyEvent(e);
         }
 
         void lstWords_PreviewKeyDown(object sender, KeyEventArgs e)
         {
+            if (!HandlesPreviewKeyDownEvent) return;
+            e.Handled = TryHandleKeyEvent(e);
+        }
+
+        #endregion
+
+        #region TryHandleKeyEvent
+
+        public bool TryHandleKeyEvent(KeyEventArgs e)
+        {
             TextBox.TextChanged -= TextBox_TextChanged;
             try
             {
-                if (e.Key == Key.Escape)
+                if (TextBox.IsFocused)
                 {
-                    popup.IsOpen = false;
-                    TextBox.Focus();
-                    e.Handled = true;
+                    if (e.Key == Key.Escape || (e.Key == Key.G && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)))
+                    {
+                        Popup.IsOpen = false;
+                        TextBox.Focus();
+                        return true;
+                    }
+                    else if (e.Key == Key.Down || (e.Key == Key.N && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)))
+                    {
+                        if (!lstWords.IsFocused)
+                        {
+                            lstWords.Focus();
+                            lstWords.SelectedIndex = 0;
+                        }
+                        else
+                        {
+                            var words = lstWords.ItemsSource as IEnumerable<string>;
+                            lstWords.SelectedIndex = (lstWords.SelectedIndex < words.Count() - 1) ? lstWords.SelectedIndex + 1 : 0;
+                        }
+                        return true;
+                    }
+                    else if (e.Key == Key.Up || (e.Key == Key.P && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)))
+                    {
+                        if (!lstWords.IsFocused)
+                        {
+                            lstWords.Focus();
+                            var words = lstWords.ItemsSource as IEnumerable<string>;
+                            lstWords.SelectedIndex = words.Count() - 1;
+                        }
+                        else
+                        {
+                            var words = lstWords.ItemsSource as IEnumerable<string>;
+                            lstWords.SelectedIndex = (lstWords.SelectedIndex > 0) ? lstWords.SelectedIndex - 1 : words.Count() - 1;
+                        }
+                        return true;
+                    }
+                    else if (e.Key == Key.Tab)
+                    {
+                        if (!lstWords.IsFocused)
+                        {
+                            lstWords.Focus();
+                            lstWords.SelectedIndex = 0;
+                            return true;
+                        }
+                    }
                 }
-                else if (e.Key == Key.Enter || e.Key == Key.Tab)
+                else if (lstWords.IsFocused)
                 {
-                    string word = WordPicker.GetWord(TextBox.Text, TextBox.CaretIndex);
-                    int iWordStart = TextBox.Text.LastIndexOf(word, TextBox.CaretIndex);
-                    string selectedWord = (string)lstWords.SelectedValue;
-                    TextBox.Text = TextBox.Text.Substring(0, iWordStart) + selectedWord + TextBox.Text.Substring(iWordStart + word.Length);
-                    popup.IsOpen = false;
-                    TextBox.Focus();
-                    TextBox.CaretIndex = iWordStart + selectedWord.Length;
-                    e.Handled = true;
+                    if (e.Key == Key.Escape || (e.Key == Key.G && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)))
+                    {
+                        Popup.IsOpen = false;
+                        TextBox.Focus();
+                        return true;
+                    }
+                    else if (e.Key == Key.Enter || e.Key == Key.Tab)
+                    {
+                        string word = WordPicker.GetWord(TextBox.Text, TextBox.CaretIndex);
+                        int iWordStart = TextBox.Text.LastIndexOf(word, TextBox.CaretIndex);
+                        string selectedWord = (string)lstWords.SelectedValue;
+                        TextBox.Text = TextBox.Text.Substring(0, iWordStart) + selectedWord + TextBox.Text.Substring(iWordStart + word.Length);
+                        Popup.IsOpen = false;
+                        TextBox.Focus();
+                        TextBox.CaretIndex = iWordStart + selectedWord.Length;
+                        return true;
+                    }
+                    else if (e.Key == Key.N && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                    {
+                        var words = lstWords.ItemsSource as IEnumerable<string>;
+                        lstWords.SelectedIndex = (lstWords.SelectedIndex < words.Count() - 1) ? lstWords.SelectedIndex + 1 : 0;
+                        return true;
+                    }
+                    else if (e.Key == Key.P && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                    {
+                        var words = lstWords.ItemsSource as IEnumerable<string>;
+                        lstWords.SelectedIndex = (lstWords.SelectedIndex > 0) ? lstWords.SelectedIndex - 1 : words.Count() - 1;
+                        return true;
+                    }
                 }
             }
             finally
             {
                 TextBox.TextChanged += TextBox_TextChanged;
             }
+            return false;
         }
 
         #endregion
