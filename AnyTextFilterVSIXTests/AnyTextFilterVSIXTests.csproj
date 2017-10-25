@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="_MyLib\Misc\MyTextEditTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_MyLib\Misc\NGramDictionaryTests.cs" />
     <Compile Include="_MyLib\Serialization\JSONSettingsStoreAdapterTests.cs" />
   </ItemGroup>
   <ItemGroup>

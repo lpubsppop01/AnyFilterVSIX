@@ -251,6 +251,9 @@
     <Compile Include="UserInput\FilterRunner.cs" />
     <Compile Include="UserInput\UserInputPreviewDocument.cs" />
     <Compile Include="UserInput\FilterRunnerWindowPane.cs" />
+    <Compile Include="_MyLib\Controls\AutoCompleteTextBox.xaml.cs">
+      <DependentUpon>AutoCompleteTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="_MyLib\Controls\XamlImageButton.cs" />
     <Compile Include="_MyLib\Converters\BooleanToInvertedConverter.cs" />
     <Compile Include="_MyLib\Converters\EnumToStringConverter.cs" />
@@ -275,10 +278,12 @@
       <DependentUpon>AnyTextFilterSettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="_MyLib\Misc\MyTextEdit.cs" />
+    <Compile Include="_MyLib\Misc\NGramDictionary.cs" />
     <Compile Include="_MyLib\Misc\RepeatedAsyncTaskSupport.cs" />
     <Compile Include="UserInput\FilterRunnerControl.xaml.cs">
       <DependentUpon>FilterRunnerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="_MyLib\Misc\WordPicker.cs" />
     <Compile Include="_MyLib\Serialization\ISettingsStoreAdapter.cs" />
     <Compile Include="_MyLib\Serialization\JSONSettingsStoreAdapter.cs" />
     <Compile Include="_MyLib\Serialization\WritableSettingsStoreAdapter.cs" />
@@ -380,6 +385,10 @@
     <Page Include="UserInput\FilterRunnerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="_MyLib\Controls\AutoCompleteTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Resource Include="_Icons\appbar.chevron.down.xaml">
       <Generator>MSBuild:Compile</Generator>

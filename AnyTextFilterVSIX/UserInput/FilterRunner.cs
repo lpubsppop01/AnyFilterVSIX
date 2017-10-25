@@ -61,6 +61,16 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         public FilterHistoryManager HistoryManager { get; private set; } = new FilterHistoryManager();
 
+        public string ViewText
+        {
+            get
+            {
+                var wpfTextView = getWpfTextView();
+                if (wpfTextView == null) return "";
+                return wpfTextView.TextSnapshot.GetText();
+            }
+        }
+
         #endregion
 
         #region Start/Stop

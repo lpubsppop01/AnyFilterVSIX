@@ -41,10 +41,7 @@
             <CheckBox DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="6,0,0,0"
                       Name="chkUsesEmacsKeyBindings" Content="{local:NameToResourceBinding UseEmacsLikeKeyBindings}"/>
         </DockPanel>
-        <TextBox Grid.Row="1" Name="txtInput" Text="{Binding UserInputText, UpdateSourceTrigger=PropertyChanged}"
-                 AcceptsReturn="True" PreviewKeyDown="txtInput_PreviewKeyDown" TextChanged="txtInput_TextChanged"
-                 VerticalScrollBarVisibility="Auto" VerticalAlignment="Top"
-                 MaxHeight="{local:DoubleToHalfBinding ActualHeight, ElementName=pnlMain}"/>
+        <local:AutoCompleteTextBox Grid.Row="1" x:Name="txtInput"/>
         <TextBlock Grid.Row="1" Name="txtInputHint" Foreground="Gray" Margin="3,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"
                    Height="{Binding ActualHeight, ElementName=txtInput}" Text="{local:NameToResourceBinding UserInput_UserInputTextHint}"/>
         

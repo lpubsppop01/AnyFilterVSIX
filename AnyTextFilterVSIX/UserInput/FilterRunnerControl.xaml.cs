@@ -37,6 +37,15 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 Source = AnyTextFilterSettings.Current
             });
             chkUsesEmacsKeyBindings.Checked += chkUsesEmacsKeyBindings_Checked;
+
+            txtInput.TextBox.SetBinding(TextBox.TextProperty, new Binding("UserInputText") { UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged });
+            txtInput.TextBox.SetBinding(TextBox.MaxHeightProperty, new DoubleToHalfBinding("ActualHeight") { Source = pnlMain });
+            txtInput.TextBox.AcceptsReturn = true;
+            txtInput.TextBox.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            txtInput.TextBox.VerticalAlignment = VerticalAlignment.Top;
+            txtInput.TextBox.PreviewKeyDown += txtInput_PreviewKeyDown;
+            txtInput.TextBox.TextChanged += txtInput_TextChanged;
+            txtInput.TextBox.GotKeyboardFocus += txtInput_GotKeyboardFocus;
         }
 
         #endregion
@@ -120,9 +129,17 @@ namespace lpubsppop01.AnyTextFilterVSIX
             }
         }
 
-        void txtInput_TextChanged(object sender, RoutedEventArgs e)
+        void txtInput_TextChanged(object sender, TextChangedEventArgs e)
         {
-            txtInputHint.Visibility = string.IsNullOrEmpty(txtInput.Text) ? Visibility.Visible : Visibility.Hidden;
+            txtInputHint.Visibility = string.IsNullOrEmpty(txtInput.TextBox.Text) ? Visibility.Visible : Visibility.Hidden;
+        }
+
+        void txtInput_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            if (FilterRunner == null) return;
+
+            txtInput.Dictionary = new NGramDictionary(2);
+            txtInput.Dictionary.AddDocument(Guid.NewGuid(), "", FilterRunner.ViewText);
         }
 
         void btnNext_Click(object sender, RoutedEventArgs e)
@@ -265,7 +282,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
             {
                 if (textEdit == null)
                 {
-                    textEdit = new MyTextEdit(() => txtInput.Text, (t) => txtInput.Text = t, () => txtInput.CaretIndex, (i) => txtInput.CaretIndex = i);
+                    textEdit = new MyTextEdit(() => txtInput.TextBox.Text, (t) => txtInput.TextBox.Text = t,
+                        () => txtInput.TextBox.CaretIndex, (i) => txtInput.TextBox.CaretIndex = i);
                 }
                 if (textEdit.TryHandleKeyEvent(e))
                 {
