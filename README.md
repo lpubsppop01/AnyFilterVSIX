@@ -7,8 +7,12 @@ that passes target text to an arbitrary external program and replace the text by
 
 ## Features
 * Settings by "AnyTextFilter Settings..." in Tools menu.
-* Registered filter commands will show following the Settings command.
+* "AnyTextFilter" tool window will be shown by registered filter command.
 * Some samples are available on filter registration: sed, AWK, Cygwin bash, Mono C# Script and so on
+
+<p align="center">
+<img src="_Images/Screenshot.png"/>
+</p>
 
 ## Download
 [AnyTextFilterVSIX Latest Build - AppVeyor](https://ci.appveyor.com/api/projects/lpubsppop01/anytextfiltervsix-2772p/artifacts/AnyTextFilterVSIX%2Fbin%2FRelease%2Flpubsppop01.AnyTextFilterVSIX.vsix)
