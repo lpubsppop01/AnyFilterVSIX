@@ -7,8 +7,11 @@
              mc:Ignorable="d" d:DesignHeight="20" d:DesignWidth="150" Name="this">
     <Grid>
         <TextBox Name="TextBox" TextChanged="TextBox_TextChanged" PreviewKeyDown="TextBox_PreviewKeyDown"/>
-        <Popup x:Name="Popup" Height="100" PlacementTarget="{Binding ElementName=tbInput}" Placement="Bottom" VerticalOffset="-1" StaysOpen="True"
-               MaxWidth="{Binding ActualWidth, ElementName=tbInput}" AllowsTransparency="True">
+        <Popup x:Name="Popup" Height="100" AllowsTransparency="True"
+               Placement="Custom" StaysOpen="True"
+               PlacementTarget="{Binding ElementName=TextBox}"
+               CustomPopupPlacementCallback="Popup_CustomPopupPlacement"
+               MaxWidth="{Binding ActualWidth, ElementName=TextBox}">
             <ListBox Name="lstWords" BorderThickness="1" PreviewKeyDown="lstWords_PreviewKeyDown" IsSynchronizedWithCurrentItem="True"/>
         </Popup>
     </Grid>

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -34,6 +35,15 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         public NGramDictionary Dictionary { get; set; }
         public bool HandlesPreviewKeyDownEvent { get; set; }
+
+        #endregion
+
+        #region Popup Placement
+
+        CustomPopupPlacement[] Popup_CustomPopupPlacement(Size popupSize, Size targetSize, Point offset)
+        {
+            return new[] { new CustomPopupPlacement(new Point(0, targetSize.Height), PopupPrimaryAxis.Vertical) };
+        }
 
         #endregion
 
@@ -74,7 +84,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             TextBox.TextChanged -= TextBox_TextChanged;
             try
             {
-                if (TextBox.IsFocused)
+                if (TextBox.IsKeyboardFocused)
                 {
                     if (e.Key == Key.Escape || (e.Key == Key.G && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)))
                     {
@@ -84,44 +94,27 @@ namespace lpubsppop01.AnyTextFilterVSIX
                     }
                     else if (e.Key == Key.Down || (e.Key == Key.N && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)))
                     {
-                        if (!lstWords.IsFocused)
-                        {
-                            lstWords.Focus();
-                            lstWords.SelectedIndex = 0;
-                        }
-                        else
-                        {
-                            var words = lstWords.ItemsSource as IEnumerable<string>;
-                            lstWords.SelectedIndex = (lstWords.SelectedIndex < words.Count() - 1) ? lstWords.SelectedIndex + 1 : 0;
-                        }
+                        lstWords.Focus();
+                        lstWords.SelectedIndex = 0;
+                        lstWords.ScrollIntoView(lstWords.SelectedItem);
                         return true;
                     }
                     else if (e.Key == Key.Up || (e.Key == Key.P && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)))
                     {
-                        if (!lstWords.IsFocused)
-                        {
-                            lstWords.Focus();
-                            var words = lstWords.ItemsSource as IEnumerable<string>;
-                            lstWords.SelectedIndex = words.Count() - 1;
-                        }
-                        else
-                        {
-                            var words = lstWords.ItemsSource as IEnumerable<string>;
-                            lstWords.SelectedIndex = (lstWords.SelectedIndex > 0) ? lstWords.SelectedIndex - 1 : words.Count() - 1;
-                        }
+                        lstWords.Focus();
+                        var words = lstWords.ItemsSource as IEnumerable<string>;
+                        lstWords.SelectedIndex = words.Count() - 1;
+                        lstWords.ScrollIntoView(lstWords.SelectedItem);
                         return true;
                     }
                     else if (e.Key == Key.Tab)
                     {
-                        if (!lstWords.IsFocused)
-                        {
-                            lstWords.Focus();
-                            lstWords.SelectedIndex = 0;
-                            return true;
-                        }
+                        lstWords.Focus();
+                        lstWords.SelectedIndex = 0;
+                        return true;
                     }
                 }
-                else if (lstWords.IsFocused)
+                else if (lstWords.IsKeyboardFocused)
                 {
                     if (e.Key == Key.Escape || (e.Key == Key.G && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)))
                     {
@@ -144,12 +137,14 @@ namespace lpubsppop01.AnyTextFilterVSIX
                     {
                         var words = lstWords.ItemsSource as IEnumerable<string>;
                         lstWords.SelectedIndex = (lstWords.SelectedIndex < words.Count() - 1) ? lstWords.SelectedIndex + 1 : 0;
+                        lstWords.ScrollIntoView(lstWords.SelectedItem);
                         return true;
                     }
                     else if (e.Key == Key.P && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
                     {
                         var words = lstWords.ItemsSource as IEnumerable<string>;
                         lstWords.SelectedIndex = (lstWords.SelectedIndex > 0) ? lstWords.SelectedIndex - 1 : words.Count() - 1;
+                        lstWords.ScrollIntoView(lstWords.SelectedItem);
                         return true;
                     }
                 }
