@@ -158,11 +158,6 @@ namespace lpubsppop01.AnyTextFilterVSIX
             PropertyChanged -= this_PropertyChanged;
             taskSupport.PropertyChanged -= taskSupport_PropertyChanged;
             IsRunning = false;
-
-            // Save settings
-            if (filter == null) return;
-            filter.UserInputWindow_ShowsDifference = ShowsDifference;
-            AnyTextFilterSettings.SaveCurrent();
         }
 
         #endregion
@@ -174,8 +169,18 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         void this_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName != "UserInputText" && e.PropertyName != "ShowsDifference") return;
-            TryStartFilteringTask();
+            // Start filtering task
+            if (e.PropertyName == "UserInputText" || e.PropertyName == "ShowsDifference")
+            {
+                TryStartFilteringTask();
+            }
+
+            // Save settings
+            if (e.PropertyName == "ShowsDifference" && filter != null)
+            {
+                filter.UserInputWindow_ShowsDifference = ShowsDifference;
+                AnyTextFilterSettings.SaveCurrent();
+            }
         }
 
         void taskSupport_PropertyChanged(object sender, PropertyChangedEventArgs e)
