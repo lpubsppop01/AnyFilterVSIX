@@ -41,7 +41,8 @@
             <CheckBox DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="6,0,0,0"
                       Name="chkUsesEmacsKeyBindings" Content="{local:NameToResourceBinding UseEmacsLikeKeyBindings}"/>
         </DockPanel>
-        <local:AutoCompleteTextBox Grid.Row="1" x:Name="txtInput"/>
+        <TextBox Grid.Row="1" x:Name="txtInput"/>
+        <local:AutoCompletePopup x:Name="autoCompletePopup"/>
         <TextBlock Grid.Row="1" Name="txtInputHint" Foreground="Gray" Margin="3,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"
                    Height="{Binding ActualHeight, ElementName=txtInput}" Text="{local:NameToResourceBinding UserInput_UserInputTextHint}"/>
         

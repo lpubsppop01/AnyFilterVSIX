@@ -38,14 +38,16 @@ namespace lpubsppop01.AnyTextFilterVSIX
             });
             chkUsesEmacsKeyBindings.Checked += chkUsesEmacsKeyBindings_Checked;
 
-            txtInput.TextBox.SetBinding(TextBox.TextProperty, new Binding("UserInputText") { UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged });
-            txtInput.TextBox.SetBinding(TextBox.MaxHeightProperty, new DoubleToHalfBinding("ActualHeight") { Source = pnlMain });
-            txtInput.TextBox.AcceptsReturn = true;
-            txtInput.TextBox.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
-            txtInput.TextBox.VerticalAlignment = VerticalAlignment.Top;
-            txtInput.TextBox.PreviewKeyDown += txtInput_PreviewKeyDown;
-            txtInput.TextBox.TextChanged += txtInput_TextChanged;
-            txtInput.TextBox.GotKeyboardFocus += txtInput_GotKeyboardFocus;
+            txtInput.SetBinding(TextBox.TextProperty, new Binding("UserInputText") { UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged });
+            txtInput.SetBinding(TextBox.MaxHeightProperty, new DoubleToHalfBinding("ActualHeight") { Source = pnlMain });
+            txtInput.AcceptsReturn = true;
+            txtInput.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            txtInput.VerticalAlignment = VerticalAlignment.Top;
+            txtInput.PreviewKeyDown += txtInput_PreviewKeyDown;
+            txtInput.TextChanged += txtInput_TextChanged;
+            txtInput.GotKeyboardFocus += txtInput_GotKeyboardFocus;
+
+            autoCompletePopup.TargetTextBox = txtInput;
         }
 
         #endregion
@@ -100,7 +102,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         void this_Loaded(object sender, RoutedEventArgs e)
         {
-            Keyboard.Focus(txtInput.TextBox);
+            Keyboard.Focus(txtInput);
         }
 
         void AnyTextFilterSettings_Current_Loaded(object sender, EventArgs e)
@@ -132,7 +134,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         void txtInput_TextChanged(object sender, TextChangedEventArgs e)
         {
-            txtInputHint.Visibility = string.IsNullOrEmpty(txtInput.TextBox.Text) ? Visibility.Visible : Visibility.Hidden;
+            txtInputHint.Visibility = string.IsNullOrEmpty(txtInput.Text) ? Visibility.Visible : Visibility.Hidden;
         }
 
         void txtInput_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -277,9 +279,9 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
        {
-            if (txtInput.Popup.IsOpen)
+            if (autoCompletePopup.IsOpen)
             {
-                if (txtInput.TryHandleKeyEvent(e))
+                if (autoCompletePopup.TryHandleKeyEvent(e))
                 {
                     e.Handled = true;
                     return;
@@ -289,8 +291,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
             {
                 if (textEdit == null)
                 {
-                    textEdit = new MyTextEdit(() => txtInput.TextBox.Text, (t) => txtInput.TextBox.Text = t,
-                        () => txtInput.TextBox.CaretIndex, (i) => txtInput.TextBox.CaretIndex = i);
+                    textEdit = new MyTextEdit(() => txtInput.Text, (t) => txtInput.Text = t,
+                        () => txtInput.CaretIndex, (i) => txtInput.CaretIndex = i);
                 }
                 if (textEdit.TryHandleKeyEvent(e))
                 {
@@ -355,8 +357,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
             var fontSizeConverter = new FontSizeConverter();
             double fontSizePx = (double)fontSizeConverter.ConvertFromString(string.Format("{0}pt", fontSizePt));
 
-            txtInput.TextBox.FontFamily = new FontFamily(fontName);
-            txtInput.TextBox.FontSize = fontSizePx;
+            txtInput.FontFamily = new FontFamily(fontName);
+            txtInput.FontSize = fontSizePx;
             txtInputHint.FontFamily = new FontFamily(fontName);
             txtInputHint.FontSize = fontSizePx;
             txtPreview.FontFamily = new FontFamily(fontName);
@@ -444,8 +446,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         void UpdateAutoCompleteDictionary()
         {
-            txtInput.Dictionary = new NGramDictionary(2);
-            txtInput.Dictionary.AddDocument(Guid.NewGuid(), "", FilterRunner.ViewText);
+            autoCompletePopup.Dictionary = new NGramDictionary(2);
+            autoCompletePopup.Dictionary.AddDocument(Guid.NewGuid(), "", FilterRunner.ViewText);
         }
 
         #endregion
