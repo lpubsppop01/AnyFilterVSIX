@@ -17,44 +17,48 @@ namespace lpubsppop01.AnyTextFilterVSIX
     [Guid(GuidList.guidAnyTextFilterPkgString)]
     public sealed class AnyTextFilterPackage : Package
     {
+        #region Properties
+
+        OleMenuCommandService m_menuCommandService;
+        OleMenuCommandService MenuCommandService
+        {
+            get
+            {
+                if (m_menuCommandService == null)
+                {
+                    m_menuCommandService = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
+                }
+                return m_menuCommandService;
+            }
+        }
+
+        #endregion
+
         #region Overrides
 
         protected override void Initialize()
         {
             base.Initialize();
 
-            if (!TryCacheRequiredServices()) return;
+            if (MenuCommandService == null) return;
 
-            NameToResourceBinding.Culture = AnyTextFilterSettings.Current.Culture;
-            AnyTextFilterSettings.Current.PropertyChanged += (sender, e) =>
-            {
-                if (e.PropertyName != "Culture") return;
-                NameToResourceBinding.Culture = AnyTextFilterSettings.Current.Culture;
-            };
-
+            SetResourceCulture();
             AddSettingsMenuItem();
             UpdateRunFilterMenuItems();
         }
 
         #endregion
 
-        #region Service Cache
+        #region Settings
 
-        OleMenuCommandService menuCommandService;
-
-        bool TryCacheRequiredServices()
+        void SetResourceCulture()
         {
-            menuCommandService = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
-            if (menuCommandService == null) return false;
-            return true;
-        }
-
-        void ActivateToolWindow(Filter filter)
-        {
-            var window = FindToolWindow(typeof(FilterRunnerWindowPane), id: 0, create: true) as FilterRunnerWindowPane;
-            if (window == null) return;
-            window.Content.SelectedFilter = filter;
-            ErrorHandler.ThrowOnFailure(window.Frame.Show());
+            NameToResourceBinding.Culture = AnyTextFilterSettings.Current.Culture;
+            AnyTextFilterSettings.Current.PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName != "Culture") return;
+                NameToResourceBinding.Culture = AnyTextFilterSettings.Current.Culture;
+            };
         }
 
         #endregion
@@ -88,7 +92,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             {
                 Text = Properties.Resources.AnyTextFilterSettings_
             };
-            menuCommandService.AddCommand(menuItem);
+            MenuCommandService.AddCommand(menuItem);
         }
 
         void UpdateRunFilterMenuItems()
@@ -108,9 +112,9 @@ namespace lpubsppop01.AnyTextFilterVSIX
         void RemoveRunFilterMenuItem(int iFilter)
         {
             var menuCommandID = new CommandID(GuidList.guidAnyTextFilterCmdSet, (int)PkgCmdIDList.GetCmdidRunFilter(iFilter));
-            var menuItem = menuCommandService.FindCommand(menuCommandID);
+            var menuItem = MenuCommandService.FindCommand(menuCommandID);
             if (menuItem == null) return;
-            menuCommandService.RemoveCommand(menuItem);
+            MenuCommandService.RemoveCommand(menuItem);
         }
 
         void AddRunFilterMenuItem(int iFilter)
@@ -126,7 +130,15 @@ namespace lpubsppop01.AnyTextFilterVSIX
             {
                 Text = filter.Title
             };
-            menuCommandService.AddCommand(menuItem);
+            MenuCommandService.AddCommand(menuItem);
+        }
+
+        void ActivateToolWindow(Filter filter)
+        {
+            var window = FindToolWindow(typeof(FilterRunnerWindowPane), id: 0, create: true) as FilterRunnerWindowPane;
+            if (window == null) return;
+            window.Content.SelectedFilter = filter;
+            ErrorHandler.ThrowOnFailure(window.Frame.Show());
         }
 
         #endregion
