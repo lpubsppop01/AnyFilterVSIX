@@ -40,6 +40,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             TemplateFilePath = "";
             Memo = "";
             UserInputWindow_ShowsDifference = false;
+            UserInputWindow_UsesAutoComplete = false;
         }
 
         public void Copy(Filter src)
@@ -60,6 +61,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             TemplateFilePath = src.TemplateFilePath;
             Memo = src.Memo;
             UserInputWindow_ShowsDifference = src.UserInputWindow_ShowsDifference;
+            UserInputWindow_UsesAutoComplete = src.UserInputWindow_UsesAutoComplete;
         }
 
         #endregion
@@ -178,6 +180,13 @@ namespace lpubsppop01.AnyTextFilterVSIX
             set { m_UserInputWindow_ShowsDifference = value; OnPropertyChanged(); }
         }
 
+        bool m_UserInputWindow_UsesAutoComplete;
+        public bool UserInputWindow_UsesAutoComplete
+        {
+            get { return m_UserInputWindow_UsesAutoComplete; }
+            set { m_UserInputWindow_UsesAutoComplete = value; OnPropertyChanged(); }
+        }
+
         #endregion
 
         #region Variable Check
@@ -224,6 +233,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             settingsStore.SetString(collectionPath, "TemplateFilePath", TemplateFilePath);
             settingsStore.SetString(collectionPath, "Memo", Memo);
             settingsStore.SetBoolean(collectionPath, "UserInputWindow_ShowsDifference", UserInputWindow_ShowsDifference);
+            settingsStore.SetBoolean(collectionPath, "UserInputWindow_UsesAutoComplete", UserInputWindow_UsesAutoComplete);
         }
 
         public static Filter Load(ISettingsStoreAdapter settingsStore, string collectionPath)
@@ -245,6 +255,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 TemplateFilePath = settingsStore.GetString(collectionPath, "TemplateFilePath", ""),
                 Memo = settingsStore.GetString(collectionPath, "Memo", ""),
                 UserInputWindow_ShowsDifference = settingsStore.GetBoolean(collectionPath, "UserInputWindow_ShowsDifference", false),
+                UserInputWindow_UsesAutoComplete = settingsStore.GetBoolean(collectionPath, "UserInputWindow_UsesAutoComplete", false),
             };
         }
 

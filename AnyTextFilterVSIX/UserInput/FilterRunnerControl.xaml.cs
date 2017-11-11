@@ -37,6 +37,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 Source = AnyTextFilterSettings.Current
             });
             chkUsesEmacsKeyBindings.Checked += chkUsesEmacsKeyBindings_Checked;
+            chkUsesAutoComplete.Checked += chkUsesAutoComplete_CheckedOrUnchecked;
+            chkUsesAutoComplete.Unchecked += chkUsesAutoComplete_CheckedOrUnchecked;
 
             txtInput.SetBinding(TextBox.TextProperty, new Binding("UserInputText") { UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged });
             txtInput.SetBinding(TextBox.MaxHeightProperty, new DoubleToHalfBinding("ActualHeight") { Source = pnlMain });
@@ -263,6 +265,15 @@ namespace lpubsppop01.AnyTextFilterVSIX
             }
         }
 
+        void chkUsesAutoComplete_CheckedOrUnchecked(object sender, RoutedEventArgs e)
+        {
+            if (SelectedFilter == null) return;
+            if (autoCompletePopup.IsOpen) autoCompletePopup.IsOpen = false;
+            UpdateAutoCompleteDictionary();
+            SelectedFilter.UserInputWindow_UsesAutoComplete = chkUsesAutoComplete.IsChecked ?? false;
+            AnyTextFilterSettings.SaveCurrent();
+        }
+
         void btnApply_Click(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
@@ -316,6 +327,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             {
                 FilterRunner.Stop();
                 if (SelectedFilter == null) return;
+                chkUsesAutoComplete.IsChecked = SelectedFilter.UserInputWindow_UsesAutoComplete;
                 FilterRunner.Start(SelectedFilter);
             }
         }
@@ -446,8 +458,16 @@ namespace lpubsppop01.AnyTextFilterVSIX
 
         void UpdateAutoCompleteDictionary()
         {
-            autoCompletePopup.Dictionary = new NGramDictionary(2);
-            autoCompletePopup.Dictionary.AddDocument(Guid.NewGuid(), "", FilterRunner.ViewText);
+            if (SelectedFilter == null) return;
+            if (SelectedFilter.UserInputWindow_UsesAutoComplete)
+            {
+                autoCompletePopup.Dictionary = new NGramDictionary(2);
+                autoCompletePopup.Dictionary.AddDocument(Guid.NewGuid(), "", FilterRunner.ViewText);
+            }
+            else
+            {
+                autoCompletePopup.Dictionary = null;
+            }
         }
 
         #endregion

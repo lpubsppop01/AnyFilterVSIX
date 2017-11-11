@@ -367,6 +367,15 @@ namespace lpubsppop01.AnyTextFilterVSIX.Properties {
         }
         
         /// <summary>
+        ///   Use auto complete に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string UseAutoComplete {
+            get {
+                return ResourceManager.GetString("UseAutoComplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Use Emacs like key bindings に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string UseEmacsLikeKeyBindings {

@@ -45,11 +45,11 @@ namespace lpubsppop01.AnyTextFilterVSIX
             set { previewDocument = value; OnPropertyChanged(); }
         }
 
-        bool showsDifference;
+        bool m_ShowsDifference;
         public bool ShowsDifference
         {
-            get { return showsDifference; }
-            set { showsDifference = value; OnPropertyChanged(); }
+            get { return m_ShowsDifference; }
+            set { m_ShowsDifference = value; OnPropertyChanged(); }
         }
 
         bool m_IsRunning;

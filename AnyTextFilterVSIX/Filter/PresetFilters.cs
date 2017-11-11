@@ -34,6 +34,8 @@ namespace lpubsppop01.AnyTextFilterVSIX
                     filter.PassesInputTextToStandardInput = true;
                     filter.Memo = @"I use the following sed-4.2+alpha (Japanese site):
 http://ac206223.ppp.asahi-net.or.jp/adiary/memo/adiary.cgi/hirosugu/GNU%20sed%20%E3%82%92Windows%E3%81%A7%E4%BD%BF%E3%81%86";
+                    filter.UserInputWindow_ShowsDifference = true;
+                    filter.UserInputWindow_UsesAutoComplete = true;
                     break;
                 case PresetFilterID.Awk:
                     filter.Title = "AWK";
@@ -47,6 +49,7 @@ http://ac206223.ppp.asahi-net.or.jp/adiary/memo/adiary.cgi/hirosugu/GNU%20sed%20
                     filter.PassesInputTextToStandardInput = true;
                     filter.Memo = @"I use the following gawk-4.1.2:
 http://www.klabaster.com/freeware.htm";
+                    filter.UserInputWindow_UsesAutoComplete = true;
                     break;
                 case PresetFilterID.MonoCSharpScript:
                     filter.Title = "Mono C# Script";
@@ -55,6 +58,7 @@ http://www.klabaster.com/freeware.htm";
                     filter.TempFileExtension = ".cs";
                     filter.TargetSpanForNoSelection = TargetSpanForNoSelection.CurrentLine;
                     filter.InsertsAfterTargetSpan = true;
+                    filter.UserInputWindow_UsesAutoComplete = true;
                     break;
                 case PresetFilterID.CygwinBash:
                     filter.Title = "Cygwin bash";
@@ -79,6 +83,8 @@ http://www.klabaster.com/freeware.htm";
                     filter.TempFileExtension = ".sed";
                     filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
                     filter.PassesInputTextToStandardInput = true;
+                    filter.UserInputWindow_ShowsDifference = true;
+                    filter.UserInputWindow_UsesAutoComplete = true;
                     break;
                 case PresetFilterID.CygwinGawk:
                     filter.Title = "Cygwin Gawk";
@@ -91,6 +97,7 @@ http://www.klabaster.com/freeware.htm";
                     filter.TempFileExtension = ".awk";
                     filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
                     filter.PassesInputTextToStandardInput = true;
+                    filter.UserInputWindow_UsesAutoComplete = true;
                     break;
                 case PresetFilterID.CMigemo:
                     filter.Title = "C/Migemo";
@@ -100,6 +107,7 @@ http://www.klabaster.com/freeware.htm";
                     filter.TargetSpanForNoSelection = TargetSpanForNoSelection.WholeDocument;
                     filter.TemplateFilePath = Path.Combine(GetTemplateDirectoryPath(), "CMigemo.txt");
                     filter.UsesTemplateFile = true;
+                    filter.UserInputWindow_ShowsDifference = true;
                     break;
             }
             return filter;

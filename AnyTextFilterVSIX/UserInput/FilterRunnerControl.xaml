@@ -40,6 +40,8 @@
                     Click="btnApply_Click" Content="{local:NameToResourceBinding Apply}"/>
             <CheckBox DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="6,0,0,0"
                       Name="chkUsesEmacsKeyBindings" Content="{local:NameToResourceBinding UseEmacsLikeKeyBindings}"/>
+            <CheckBox DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="6,0,0,0"
+                      Name="chkUsesAutoComplete" Content="{local:NameToResourceBinding UseAutoComplete}"/>
         </DockPanel>
         <TextBox Grid.Row="1" x:Name="txtInput"/>
         <local:AutoCompletePopup x:Name="autoCompletePopup"/>
