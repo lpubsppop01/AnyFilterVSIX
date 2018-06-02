@@ -109,7 +109,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
             TargetTextBox.TextChanged -= TargetTextBox_TextChanged;
             try
             {
-                if (TargetTextBox.IsKeyboardFocused)
+                if (TargetTextBox.IsKeyboardFocusWithin)
                 {
                     if (e.Key == Key.Escape || (e.Key == Key.G && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)))
                     {
@@ -139,7 +139,7 @@ namespace lpubsppop01.AnyTextFilterVSIX
                         return true;
                     }
                 }
-                else if (WordListBox.IsKeyboardFocused)
+                else if (WordListBox.IsKeyboardFocusWithin)
                 {
                     if (e.Key == Key.Escape || (e.Key == Key.G && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)))
                     {
