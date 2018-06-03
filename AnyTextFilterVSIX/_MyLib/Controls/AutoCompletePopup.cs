@@ -109,67 +109,26 @@ namespace lpubsppop01.AnyTextFilterVSIX
             TargetTextBox.TextChanged -= TargetTextBox_TextChanged;
             try
             {
-                if (TargetTextBox.IsKeyboardFocusWithin)
+                if (TargetTextBox.IsKeyboardFocusWithin || WordListBox.IsKeyboardFocusWithin)
                 {
-                    if (e.Key == Key.Escape || (e.Key == Key.G && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)))
+                    if (e.Key == Key.Down || (e.Key == Key.N && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)))
                     {
-                        IsOpen = false;
-                        TargetTextBox.Focus();
-                        return true;
-                    }
-                    else if (e.Key == Key.Down || (e.Key == Key.N && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)))
-                    {
-                        WordListBox.Focus();
-                        WordListBox.SelectedIndex = 0;
-                        WordListBox.ScrollIntoView(WordListBox.SelectedItem);
+                        Down();
                         return true;
                     }
                     else if (e.Key == Key.Up || (e.Key == Key.P && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)))
                     {
-                        WordListBox.Focus();
-                        var words = WordListBox.ItemsSource as IEnumerable<string>;
-                        WordListBox.SelectedIndex = words.Count() - 1;
-                        WordListBox.ScrollIntoView(WordListBox.SelectedItem);
+                        Up();
                         return true;
                     }
-                    else if (e.Key == Key.Tab)
+                    else if (e.Key == Key.Escape || (e.Key == Key.G && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)))
                     {
-                        WordListBox.Focus();
-                        WordListBox.SelectedIndex = 0;
-                        return true;
-                    }
-                }
-                else if (WordListBox.IsKeyboardFocusWithin)
-                {
-                    if (e.Key == Key.Escape || (e.Key == Key.G && Keyboard.Modifiers.HasFlag(ModifierKeys.Control)))
-                    {
-                        IsOpen = false;
-                        TargetTextBox.Focus();
+                        Escape();
                         return true;
                     }
                     else if (e.Key == Key.Enter || e.Key == Key.Tab)
                     {
-                        string word = WordPicker.GetWord(TargetTextBox.Text, TargetTextBox.CaretIndex);
-                        int iWordStart = TargetTextBox.Text.LastIndexOf(word, TargetTextBox.CaretIndex);
-                        string selectedWord = (string)WordListBox.SelectedValue;
-                        TargetTextBox.Text = TargetTextBox.Text.Substring(0, iWordStart) + selectedWord + TargetTextBox.Text.Substring(iWordStart + word.Length);
-                        IsOpen = false;
-                        TargetTextBox.Focus();
-                        TargetTextBox.CaretIndex = iWordStart + selectedWord.Length;
-                        return true;
-                    }
-                    else if (e.Key == Key.N && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
-                    {
-                        var words = WordListBox.ItemsSource as IEnumerable<string>;
-                        WordListBox.SelectedIndex = (WordListBox.SelectedIndex < words.Count() - 1) ? WordListBox.SelectedIndex + 1 : 0;
-                        WordListBox.ScrollIntoView(WordListBox.SelectedItem);
-                        return true;
-                    }
-                    else if (e.Key == Key.P && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
-                    {
-                        var words = WordListBox.ItemsSource as IEnumerable<string>;
-                        WordListBox.SelectedIndex = (WordListBox.SelectedIndex > 0) ? WordListBox.SelectedIndex - 1 : words.Count() - 1;
-                        WordListBox.ScrollIntoView(WordListBox.SelectedItem);
+                        Enter();
                         return true;
                     }
                 }
@@ -179,6 +138,39 @@ namespace lpubsppop01.AnyTextFilterVSIX
                 TargetTextBox.TextChanged += TargetTextBox_TextChanged;
             }
             return false;
+        }
+
+        void Down()
+        {
+            if (!WordListBox.IsKeyboardFocused) WordListBox.Focus();
+            var words = WordListBox.ItemsSource as IEnumerable<string>;
+            WordListBox.SelectedIndex = (WordListBox.SelectedIndex < words.Count() - 1) ? WordListBox.SelectedIndex + 1 : 0;
+            WordListBox.ScrollIntoView(WordListBox.SelectedItem);
+        }
+
+        void Up()
+        {
+            if (!WordListBox.IsKeyboardFocused) WordListBox.Focus();
+            var words = WordListBox.ItemsSource as IEnumerable<string>;
+            WordListBox.SelectedIndex = (WordListBox.SelectedIndex > 0) ? WordListBox.SelectedIndex - 1 : words.Count() - 1;
+            WordListBox.ScrollIntoView(WordListBox.SelectedItem);
+        }
+
+        void Escape()
+        {
+            IsOpen = false;
+            TargetTextBox.Focus();
+        }
+
+        void Enter()
+        {
+            string word = WordPicker.GetWord(TargetTextBox.Text, TargetTextBox.CaretIndex);
+            int iWordStart = TargetTextBox.Text.LastIndexOf(word, TargetTextBox.CaretIndex);
+            string selectedWord = (string)WordListBox.SelectedValue;
+            TargetTextBox.Text = TargetTextBox.Text.Substring(0, iWordStart) + selectedWord + TargetTextBox.Text.Substring(iWordStart + word.Length);
+            IsOpen = false;
+            TargetTextBox.Focus();
+            TargetTextBox.CaretIndex = iWordStart + selectedWord.Length;
         }
 
         #endregion
